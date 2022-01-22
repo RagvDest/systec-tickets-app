@@ -25,7 +25,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import LaptopIcon from '@mui/icons-material/Laptop';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ButtonProfile from './ButtonProfile';
+import Panel from './Panel';
+import {Link as LinkRoute} from 'react-router-dom';
+import Usuarios from '../pages/Usuarios';
 
 const drawerWidth = 240;
 
@@ -138,6 +141,36 @@ export default function SideBar(props) {
     setOpen(false);
   };
 
+  /*
+  const Lista = () => {
+    const text = ['RESUMEN','USUARIOS','PEDIDOS','MANUAL'];
+    
+    const lista = text.map(
+      (item) =>{
+        return (
+          <ListItem button key={item,index} sx={{p:3}}>
+              <ListItemIcon>
+                {() => {
+                  switch (item){
+                    case "RESUMEN": return <DashboardIcon sx={{color:'white'}}/>;
+                    case "USUARIOS": return  <PersonIcon sx={{color:'white'}}/>;
+                    case "PEDIDOS": return  <LaptopIcon sx={{color:'white'}}/>;
+                    case "MANUAL": return  <LibraryBooksIcon sx={{color:'white'}}/>
+                  }
+                } 
+              }
+              </ListItemIcon>
+              <ListItemText >{item}</ListItemText>
+          </ListItem>
+        );
+      }
+    );
+
+    return (
+      {lista}
+    )
+  }*/
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -165,12 +198,7 @@ export default function SideBar(props) {
                         <Systec>SYSTEC</Systec>
                     </Typography>
                     <Box>
-                        <Button color="inherit">
-                            <AccountCircleIcon/>
-                                <Typography   variant="caption" component="h1" sx={{ flexGrow: 1, mx:2}}>
-                                    {props.user.username}
-                                </Typography>
-                        </Button>
+                        <ButtonProfile user={props.user}/>
                     </Box>
         </Toolbar>
       </AppBar>
@@ -189,10 +217,10 @@ export default function SideBar(props) {
               <ListItemText >RESUMEN</ListItemText>
             </ListItem>
             <ListItem button key={'Usuarios'} sx={{p:3}}>
-              <ListItemIcon>
-                <PersonIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >USUARIOS</ListItemText>
+                <ListItemIcon>
+                  <PersonIcon sx={{color:'white'}}/>
+                </ListItemIcon>
+                <ListItemText >USUARIOS</ListItemText>
             </ListItem>
             <ListItem button key={'Pedidos'} sx={{p:3}}>
               <ListItemIcon>
@@ -227,36 +255,7 @@ export default function SideBar(props) {
           </RightsContainer>
         </FooterContainer>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Box>
+      <Usuarios/>
     </Box>
   );
 }
