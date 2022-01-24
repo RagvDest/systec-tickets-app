@@ -7,7 +7,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button, Link, Typography } from '@mui/material';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -176,30 +176,41 @@ export default function SideBar(props) {
       <CssBaseline />
       <AppBar position="fixed" open={open} sx={{backgroundColor:'#254E58'}}>
         <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-                }}>
-                <MenuIcon />
-            </IconButton>
-                    <Box component="img" sx={{
+          <Grid container>
+            <Grid item xs={2} md={1} sx={{margin:'auto'}}>
+              <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={handleDrawerOpen}
+                  edge="start"
+                  sx={{
+                  marginRight: '36px',
+                  ...(open && { display: 'none' }),
+                  }}>
+                  <MenuIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={8} md={10} sx={{display:'flex',margin:'auto'}}>
+              <Box component="img" sx={{
                             height: 50,
-                            mx:2,
-                            width: 50
+                            width: 50,
+                            mx:3
                         }}
                         alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
                     />
-                    <Typography   variant="h4" component="h1" sx={{ flexGrow: 1, mx:3}}>
+                    <Typography   variant="h4" component="h1" sx={{ flexGrow: 1}}>
                         <Systec>SYSTEC</Systec>
                     </Typography>
-                    <Box>
+            </Grid>
+            <Grid item xs={2} md={1} sx={{margin:'auto'}}>
+               <Box>
                         <ButtonProfile user={props.user}/>
                     </Box>
+            </Grid>
+          </Grid>
+            
+                    
+                   
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

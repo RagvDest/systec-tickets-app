@@ -5,7 +5,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
-import { login } from '../features/userSlice';
 import { logicLogin } from '../features/actions/userActions';
 
 const Container = styled.div`

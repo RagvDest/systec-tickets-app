@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import { baseUrl } from '../shared/baseUrl';
 
 export const userSlice = createSlice({
     name:"user",

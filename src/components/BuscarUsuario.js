@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import {styled as styled1} from '@mui/material/styles';
 
 import SearchIcon from '@mui/icons-material/Search';
+import { useDispatch } from 'react-redux';
+import { searchUsers } from '../features/actions/searchUsersActions';
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
     display: 'flex',
@@ -18,30 +20,26 @@ const Container = styled.div`
     flex-direction: column;
     
 `
-const MenuContainer = styled.div`
-    position:fixed;
-    inset:40 auto;
-    display:none;
-`
 
 const BuscarUsuario = () => {
+    const dispatch = useDispatch();
     const [filtro,setFiltro] = useState("");
-    const [text,setText] = useState("");
   
     const filtros = [
-        {label:'Username'},
-        {label:'Nombres'}
+        {label:'Username', id:0},
+        {label:'Nombres', id:1},
+        {label:'Cédula', id:2},
+        {label:'Correo',id:3}
     ]
 
     const handleSearch = (e) => {
         if(e.key == 'Enter'){
-            setText(e.target.value);
+            dispatch(searchUsers(filtro,e.target.value));
         }
             
     }
 
     const handleSelect = (e) => {
-        console.log(e.target.value);
         setFiltro(e.target.value);
     }
 
@@ -54,6 +52,7 @@ const BuscarUsuario = () => {
                     <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mx:3, width:'100%'}}>
                         <Autocomplete
                         disablePortal
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
                         id="combo-box-demo"
                         options={filtros}
                         sx={{ width: '100%' }}

@@ -15,7 +15,8 @@ function App() {
   const user = useSelector(selectUser);
   return (
       <React.Fragment>
-          {user ? <Home user={user}/> : <LogIn/>}
+           {/* {user ? <Home user={user}/> : <LogIn/>} */}
+           <Home user={'Renny Goro'}/>
       </React.Fragment>
   );
 }

@@ -8,7 +8,8 @@ import styled from 'styled-components';
 const MenuContainer = styled.div`
     position:fixed;
     inset:40 auto;
-    display:none;
+    visibility:hidden;
+    display:block;
 `
 
 const ButtonProfile = (props) => {
@@ -24,14 +25,14 @@ const ButtonProfile = (props) => {
 
   const handleToggle = () => {
     setOpen((prevOpen)=> !prevOpen);
-    if(open) menuContainer.style.display='block';
-    else menuContainer.style.display='none';
+    if(open) menuContainer.style.visibility='visible';
+    else menuContainer.style.visibility='hidden';
   };
 
   const handleClose = (event) => {
         setOpen(false);
-        if(open) menuContainer.style.display='block';
-        else menuContainer.style.display='none';
+        if(open) menuContainer.style.visibility='visible';
+        else menuContainer.style.visibility='hidden';
   };
 
 
