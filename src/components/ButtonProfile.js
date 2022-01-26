@@ -40,7 +40,7 @@ const ButtonProfile = (props) => {
       <React.Fragment>
           <Button id="button-profile" color="inherit" aria-controls={open ? 'split-button-menu' : undefined}
                     onClick={handleToggle}>
-                <AccountCircleIcon hidden/>
+                <AccountCircleIcon />
                     <Typography   variant="caption" component="h1" sx={{ flexGrow: 1, mx:2}}>
                         {props.user.username}
                     </Typography>
@@ -49,18 +49,22 @@ const ButtonProfile = (props) => {
                 <Paper>
                     <ClickAwayListener onClickAway={handleClose}>
                         <MenuList id="split-button-menu">
+                            <Button color='inherit' sx={{width:'100%'}} onClick={props.togglePerfil}>
                             <MenuItem
                                 key='1'
                                 onClick={(event) => handleProfileClick(event)}
                             >
                             Perfil
                             </MenuItem>
+                            </Button>
+                            <Button color='inherit' sx={{width:'100%'}} onClick={props.logOut}>
                             <MenuItem
                                 key='2'
                                 onClick={(event) => handleProfileClick(event)}
                             >
                             Cerrar sesión
                             </MenuItem>
+                            </Button>
                         </MenuList>
                     </ClickAwayListener>
                 </Paper>

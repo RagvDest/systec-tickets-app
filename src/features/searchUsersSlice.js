@@ -16,7 +16,8 @@ export const searchUsersSlice = createSlice({
     }
 });
 
-export const {getUsuarios} = searchUsersSlice.actions;
+export const {getUsuarios, addUsuario} = searchUsersSlice.actions;
+
 
 export const selectUsers = (state) => state.searchUser.users;
 

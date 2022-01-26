@@ -26,6 +26,7 @@ const Image = styled.img`
 `
 
 const LogIn = () => {
+
   return (
       <Container>
           <ImgContainer>

@@ -7,7 +7,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button, Grid, Link, Typography } from '@mui/material';
+import { Button, Dialog, Grid, Link, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -29,6 +29,9 @@ import ButtonProfile from './ButtonProfile';
 import Panel from './Panel';
 import {Link as LinkRoute} from 'react-router-dom';
 import Usuarios from '../pages/Usuarios';
+import Perfil from './Perfil';
+import { useDispatch } from 'react-redux';
+import { logicLogout } from '../features/actions/userActions';
 
 const drawerWidth = 240;
 
@@ -130,6 +133,8 @@ const RedContainer = styled1.div`
 export default function SideBar(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openPerfil, setOpenPerfil] = React.useState(false);
+  const dispatch = useDispatch();
   
 
 
@@ -140,6 +145,15 @@ export default function SideBar(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const togglePerfil = () => {
+    setOpenPerfil(!openPerfil);
+  };
+
+  const logOut = () =>{
+    dispatch(logicLogout())
+  }
+
 
   /*
   const Lista = () => {
@@ -204,7 +218,7 @@ export default function SideBar(props) {
             </Grid>
             <Grid item xs={2} md={1} sx={{margin:'auto'}}>
                <Box>
-                        <ButtonProfile user={props.user}/>
+                        <ButtonProfile user={props.user} togglePerfil={togglePerfil} logOut={logOut}/>
                     </Box>
             </Grid>
           </Grid>
@@ -267,6 +281,14 @@ export default function SideBar(props) {
         </FooterContainer>
       </Drawer>
       <Usuarios/>
+      <Dialog
+                  open={openPerfil}
+                  onClose={togglePerfil}
+                  fullWidth
+                  PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                ><Perfil/></Dialog>
     </Box>
   );
 }

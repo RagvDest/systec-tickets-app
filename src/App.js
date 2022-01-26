@@ -1,13 +1,14 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
 import './App.css';
-import LogIn from './pages/LogIn';
 import { selectUser } from './features/userSlice';
 import Home from './pages/Home';
 import React from 'react';
+import {Provider} from 'react-redux';
 import { useSelector } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistedStore, store } from './app/store';
+import {Loading} from './components/LoadingComponent';
+import { BrowserRouter } from 'react-router-dom';
+import Main from './components/Main';
 
 
 
@@ -15,8 +16,15 @@ function App() {
   const user = useSelector(selectUser);
   return (
       <React.Fragment>
-           {/* {user ? <Home user={user}/> : <LogIn/>} */}
-           <Home user={'Renny Goro'}/>
+          <Provider store={store}>
+            <PersistGate loading={<Loading/>} persistor={persistedStore}>
+                <BrowserRouter>
+                  <Main/>
+                </BrowserRouter>
+            </PersistGate>
+
+          </Provider>
+           {/* {user ? <Home user={user}/> : <LogIn/>} */}  
       </React.Fragment>
   );
 }

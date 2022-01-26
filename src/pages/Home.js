@@ -7,14 +7,6 @@ import {Routes, Route, useRoutes, BrowserRouter} from "react-router-dom";
 import BuscarUsuario from '../components/BuscarUsuario';
 import Usuarios from './Usuarios';
 
-const Routs = () => {
-  const routes = useRoutes([
-    {path:"/", element:<Panel/>},
-    {path:"/users", element:<Usuarios/>}
-  ])
-  return routes;
-}
-
 const Home = (props) => {
   const dispatch = useDispatch();
   const handleLogOut = (e) => {
@@ -23,9 +15,7 @@ const Home = (props) => {
 
   
   return (
-      <BrowserRouter>
-            <SideBar user={props.user}/>
-      </BrowserRouter>
+        <SideBar user={props.user}/>
   );
 };
 

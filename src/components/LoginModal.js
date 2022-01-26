@@ -6,6 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
 import { logicLogin } from '../features/actions/userActions';
+import { useNavigate } from 'react-router';
 
 const Container = styled.div`
     position: absolute;
@@ -48,6 +49,7 @@ const LoginModal = () => {
 
     const [usuario, setUsuario] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
 
     const dispatch = useDispatch();
 
@@ -67,12 +69,13 @@ const LoginModal = () => {
             username:usuario,
             password:password,
             loggedIn:true
-        }))
+        }));
+        navigate('/');
     }
 
     const card = (
         <React.Fragment>
-            <CardContent>
+            <CardContent sx={{textAlign:'center'}}>
                 <Box component="form" onSubmit={(e) =>{handleSubmit(e)}}>
                     <Typography variant="h5" sx={{fontWeight:'bold', p:2}}>
                         Iniciar Sesión

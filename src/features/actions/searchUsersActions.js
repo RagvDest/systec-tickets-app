@@ -1,5 +1,5 @@
 import {baseUrl} from "../../shared/baseUrl";
-import { getUsuarios } from "../searchUsersSlice";
+import { getUsuarios, addUsuario } from "../searchUsersSlice";
 
 export const searchUsers = (filtro,input) =>(dispatch) => {
     const op = filtro === 'Username' || filtro === 'Correo' ? 'u' : 'p';
@@ -28,4 +28,45 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
             throw errmess;
         }).then(response => response.json())
         .then(response =>{dispatch(getUsuarios(response.results))})
+}
+
+export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch) =>{
+    debugger;
+    const body = {
+        usuario:{
+            u_usuario:username,
+            u_mail:mail
+        },
+        persona:{
+            p_nombres:nombres,
+            p_cedula:cedula,
+            p_apellidos:apellidos
+        },
+        rol:rol
+    };
+    console.log(body);
+    return fetch(baseUrl+'users/crear',{
+        method:'POST',
+        body:JSON.stringify(body),
+        headers:{
+            'Content-Type':'application/json'
+        },
+        credentials:'include'})
+        .then(response => {
+            if(response.ok){
+                return response;
+            }
+            else {
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                console.log(response);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        }).then(response => response.json())
+        .then(response => dispatch(addUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .catch(error=>{console.log('Crear Usuario',error.message)});
 }
