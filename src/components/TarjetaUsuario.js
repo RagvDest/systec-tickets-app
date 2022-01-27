@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Dialog, Grid, Typography } from '@mui/material';
 import React from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
@@ -11,16 +11,20 @@ const IconContainer = styled.div`
     margin-block:auto;
 `
 
+
 const TarjetaUsuario = (props) => {
+
+    
+
   return (
-      <Button sx={{width:'100%'}}>
-        <Card sx={{width:'100%'}}>
-            <CardContent>
+      <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
+        <Card sx={{width:'100%'}} >
+            <CardContent >
                 <Grid container>
                     <Grid item xs={12} md={3} sx={{textAlign:'center', marginBlock:'auto'}} >
                         <AccountCircleIcon fontSize='large'/>
                         <Typography   variant="body1" component="h1" sx={{ flexGrow: 1, mx:2}}>
-                            {props.info.usuario.u_usuario}
+                            {props.info.username.u_usuario}
                         </Typography>
                     </Grid>
                     <Grid item container xs={12} md={9} sx={{textAlign:'left'}} spacing={1}>
@@ -43,7 +47,7 @@ const TarjetaUsuario = (props) => {
                                 <Grid item xs sx={{display:'flex'}}>
                                     <MailIcon className='icon-center-vertically' fontSize='medium' />
                                     <Typography variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto', wordBreak:'break-word'}}>
-                                        {props.info.usuario.u_mail}
+                                        {props.info.username.u_mail}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs sx={{display:'flex'}}>

@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Divider, FormControl, Input, InputLabel, Link, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -45,7 +45,7 @@ const LoginCode = styled.button`
     }
 `
 
-const LoginModal = () => {
+const LoginModal = (props) => {
 
     const [usuario, setUsuario] = useState("");
     const [password, setPassword] = useState("");
@@ -70,7 +70,6 @@ const LoginModal = () => {
             password:password,
             loggedIn:true
         }));
-        navigate('/');
     }
 
     const card = (

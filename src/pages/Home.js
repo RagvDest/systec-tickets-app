@@ -9,13 +9,14 @@ import Usuarios from './Usuarios';
 
 const Home = (props) => {
   const dispatch = useDispatch();
+
   const handleLogOut = (e) => {
     dispatch(logicLogout());
   }
 
   
   return (
-        <SideBar user={props.user}/>
+        <SideBar user={props.user==null ? 1 : 0}/>
   );
 };
 

@@ -52,6 +52,7 @@ const BuscarUsuario = () => {
                     <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mx:3, width:'100%'}}>
                         <Autocomplete
                         disablePortal
+                        disableClearable
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         id="combo-box-demo"
                         options={filtros}

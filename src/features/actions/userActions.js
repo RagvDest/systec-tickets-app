@@ -28,7 +28,7 @@ export const logicLogin = ({username,password}) => (dispatch) =>{
             throw errmess;
         })
         .then(response => response.json())
-        .then(response => dispatch(login({username:response.usuario,rol:response.rol})))
+        .then(response => dispatch(login({username:response.usuario,rol:response.rol,persona:response.persona})))
         .catch(error=>{console.log('Log In',error.message)});
 };
 

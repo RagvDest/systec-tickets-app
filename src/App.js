@@ -13,7 +13,6 @@ import Main from './components/Main';
 
 
 function App() {
-  const user = useSelector(selectUser);
   return (
       <React.Fragment>
           <Provider store={store}>

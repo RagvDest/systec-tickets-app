@@ -73,7 +73,7 @@ class Usuarios extends React.Component{
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario addUser={this.props.addUsuario} resetForm={this.props.resetForm}/></Dialog>
+                ><FormUsuario addUser={this.props.addUsuario} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
                 <ListaContainer items={this.props.users} />

@@ -17,7 +17,7 @@ const mapStateToProps = state => {
 
 function RequireAuth({ children, redirectTo, user }) {
     let isAuthenticated = user!=null;
-    return isAuthenticated ? children : <Navigate to={redirectTo} />;
+    return isAuthenticated ? children[0] : children[1];
 }
 
 const Main = (props) =>{
@@ -26,10 +26,10 @@ const Main = (props) =>{
           <TransitionGroup>
                     <CSSTransition key='1234' classNames="page" timeout={300}>
                         <Routes>
-                            <Route path="/login" element={<LogIn/>}/>
                             <Route path='/' element={
-                                <RequireAuth redirectTo="/login" user={props.user}>
+                                <RequireAuth redirectTo="" user={props.user}>
                                     <Home user={props.user}/>
+                                    <LogIn/>
                                 </RequireAuth>
                             }/>
                             <Route path="/users" element={<Home user={props.user}/>}/>

@@ -22,7 +22,7 @@ class FormUsuario extends React.Component{
             open:false,
             mensaje:''
         }
-
+debugger;
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
     };
@@ -32,17 +32,44 @@ class FormUsuario extends React.Component{
     }
     
     handleSubmit = (values) =>{
-        this.props.addUser(values);
-        this.props.resetForm();
+        debugger;
+        if(this.props.mode==='u'){
+            this.props.updateUser(values);
+        }else{
+            this.props.addUser(values);
+            this.props.resetForm();
+        }
+            
     }
 
     render(){
+        const RolInput = (props) =>{
+            if(props.mode==='u'){
+                return(<React.Fragment/>);
+            }else{
+            return (
+                
+                <React.Fragment>
+                <InputLabel sx={{py:1}} htmlFor='demo-simple-select'>Rol*</InputLabel>
+                                                <Control.select     className='form-control'
+                                                                    sx={{width:'100%'}}
+                                                                    model='.rol'
+                                                                    id="demo-simple-select"
+                                                >
+                                                    <option value={'61e7dc21aed590273949963d'}>EMPLEADO</option>
+                                                    <option value={'61e7dc27aed590273949963f'}>CLIENTE</option>
+                                                </Control.select>
+                </React.Fragment>
+            )
+            }
+        }
+
         return (
             <React.Fragment>
-                <Box className="modal-simple">
+                <Box className="">
                 <Card>
                 <Form model='userInfo' onSubmit={(values) => {this.handleSubmit(values)}}>
-                    <CardHeader title="Crear Usuario" subheader="Formulario para crear usuario" sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
+                    <CardHeader title={this.props.mode==='u' ? 'Actualizar Usuario' : 'Crear Usuario'} sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
                     <CardContent>
                             <Grid container direction="column" spacing={2} sx={{px:3,py:1}}>
                                     <Grid item container spacing={3}>
@@ -54,7 +81,8 @@ class FormUsuario extends React.Component{
                                                             validators={{
                                                                 required, minLength:minLength(4), maxLength: maxLength(8)
                                                             }}
-                                                            model=".username"/>
+                                                            model=".username"
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.username.u_usuario : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".username"
@@ -76,7 +104,7 @@ class FormUsuario extends React.Component{
                                                                 required
                                                             }}
                                                             model=".nombres"
-                                                            />
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_nombres : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".nombres"
@@ -92,8 +120,8 @@ class FormUsuario extends React.Component{
                                                             sx={{width:'100%'}} 
                                                             id='apellidos' name="apellidos" 
                                                             validators={{required}}
-                                                            model='.apellidos'/>
-                                            <Errors
+                                                            model='.apellidos'
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_apellidos : ''} />                                            <Errors
                                                 className="text-danger"
                                                 model=".apellidos"
                                                 show="touched"
@@ -111,7 +139,9 @@ class FormUsuario extends React.Component{
                                                             sx={{width:'100%'}} 
                                                             id='cedula' name="cedula" 
                                                             validators={{required,isNumber}}
-                                                            model='.cedula'/>
+                                                            model='.cedula'
+                                                            readOnly
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_cedula : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".cedula"
@@ -132,7 +162,8 @@ class FormUsuario extends React.Component{
                                                             sx={{width:'100%'}} 
                                                             id='mail' name="mail" 
                                                             validators={{required,validEmail}}
-                                                            model='.mail'/>
+                                                            model='.mail'
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.username.u_mail : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".mail"
@@ -144,15 +175,13 @@ class FormUsuario extends React.Component{
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
-                                                <InputLabel sx={{py:1}} htmlFor='demo-simple-select'>Rol*</InputLabel>
-                                                <Control.select     className='form-control'
-                                                                    sx={{width:'100%'}}
-                                                                    model='.rol'
-                                                                    id="demo-simple-select"
-                                                >
-                                                    <option value={'61e7dc21aed590273949963d'}>EMPLEADO</option>
-                                                    <option value={'61e7dc27aed590273949963f'}>CLIENTE</option>
-                                                </Control.select>
+                                                <RolInput mode={this.props.mode}/>
+                                        </Grid>
+                                        <Grid item xs={0} md={0}>
+                                                <Control.text hidden
+                                                model='.id'
+                                                defaultValue={this.props.mode==='u' ? this.props.userSelected.username._id : ''} />
+
                                         </Grid>
                                     </Grid>
                             </Grid>

@@ -30,7 +30,7 @@ import Panel from './Panel';
 import {Link as LinkRoute} from 'react-router-dom';
 import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
 
 const drawerWidth = 240;
@@ -130,7 +130,14 @@ const RedContainer = styled1.div`
   
 `
 
-export default function SideBar(props) {
+const mapStateToProps = state => {
+  return {
+      user:state.user.user
+  };
+};
+
+
+function SideBar(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
@@ -147,6 +154,7 @@ export default function SideBar(props) {
   };
 
   const togglePerfil = () => {
+    debugger;
     setOpenPerfil(!openPerfil);
   };
 
@@ -288,7 +296,9 @@ export default function SideBar(props) {
                   PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil/></Dialog>
+                ><Perfil user={props.user}/></Dialog>
     </Box>
   );
 }
+
+export default connect(mapStateToProps)(SideBar)

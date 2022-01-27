@@ -12,11 +12,15 @@ export const searchUsersSlice = createSlice({
         },
         addUsuario:(state,action)=>{
             state.users.push(action.payload);
+        },
+        updateUsuario:(state,action)=>{
+            debugger;
+            console.log('Usuario_id: '+action.payload.usuario._id +'- Actualizado');
         }
     }
 });
 
-export const {getUsuarios, addUsuario} = searchUsersSlice.actions;
+export const {getUsuarios, addUsuario, updateUsuario} = searchUsersSlice.actions;
 
 
 export const selectUsers = (state) => state.searchUser.users;

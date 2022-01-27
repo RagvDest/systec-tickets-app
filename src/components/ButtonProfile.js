@@ -2,6 +2,7 @@ import { Button, ClickAwayListener, Fade, Grow, MenuItem, MenuList, Paper, Poppe
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 
 
@@ -17,13 +18,8 @@ const ButtonProfile = (props) => {
   const menuContainer = document.getElementById("menu-container")
 
 
-
-  const handleProfileClick = (event) => {
-      // do something
-    setOpen(false);
-  };
-
   const handleToggle = () => {
+      debugger;
     setOpen((prevOpen)=> !prevOpen);
     if(open) menuContainer.style.visibility='visible';
     else menuContainer.style.visibility='hidden';
@@ -42,7 +38,7 @@ const ButtonProfile = (props) => {
                     onClick={handleToggle}>
                 <AccountCircleIcon />
                     <Typography   variant="caption" component="h1" sx={{ flexGrow: 1, mx:2}}>
-                        {props.user.username}
+                        {props.user.username.u_usuario}
                     </Typography>
             </Button>
             <MenuContainer id='menu-container'>
@@ -52,7 +48,6 @@ const ButtonProfile = (props) => {
                             <Button color='inherit' sx={{width:'100%'}} onClick={props.togglePerfil}>
                             <MenuItem
                                 key='1'
-                                onClick={(event) => handleProfileClick(event)}
                             >
                             Perfil
                             </MenuItem>
@@ -60,7 +55,6 @@ const ButtonProfile = (props) => {
                             <Button color='inherit' sx={{width:'100%'}} onClick={props.logOut}>
                             <MenuItem
                                 key='2'
-                                onClick={(event) => handleProfileClick(event)}
                             >
                             Cerrar sesión
                             </MenuItem>
