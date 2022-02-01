@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { selectUser } from './features/userSlice';
+import Home from './pages/Home';
+import React from 'react';
+import {Provider} from 'react-redux';
+import { useSelector } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistedStore, store } from './app/store';
+import {Loading} from './components/LoadingComponent';
+import { BrowserRouter } from 'react-router-dom';
+import Main from './components/Main';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <React.Fragment>
+          <Provider store={store}>
+            <PersistGate loading={<Loading/>} persistor={persistedStore}>
+                <BrowserRouter>
+                  <Main/>
+                </BrowserRouter>
+            </PersistGate>
+
+          </Provider>
+           {/* {user ? <Home user={user}/> : <LogIn/>} */}  
+      </React.Fragment>
   );
 }
 

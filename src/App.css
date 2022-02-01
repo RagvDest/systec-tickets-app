@@ -2,9 +2,57 @@
   text-align: center;
 }
 
+.rectangle-radius{
+  border-top-left-radius: 5% 15%;
+  border-bottom-right-radius: 5% 15%;
+  border-top-right-radius: 5% 15%;
+  border-bottom-left-radius: 5% 15%;
+
+}
+
+.icon-center-vertically{
+  margin-block:auto;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.sombreado-blanco{
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white
+}
+
+.modal-simple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: auto;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    max-height: 80vh;
+    box-shadow: 24;
+    padding: 4
 }
 
 @media (prefers-reduced-motion: no-preference) {
