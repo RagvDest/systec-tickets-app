@@ -2,6 +2,7 @@ import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import Perfil from './Perfil';
+import TarjetaPedido from './TarjetaPedido';
 import TarjetaUsuario from './TarjetaUsuario';
 
 
@@ -21,6 +22,14 @@ const ListaContainer = (props) => {
     setOpenPerfil(false);
   }
 
+  const Tarjetas = (item,index) =>{
+    debugger;
+    if(props.tipo==='us')
+      return(<TarjetaUsuario info={item.item} key_user={index} togglePerfil={togglePerfil}/>);
+    else if(props.tipo==='ped')
+      return(<TarjetaPedido/>)
+  }
+
   
   return (
       <React.Fragment>
@@ -28,11 +37,12 @@ const ListaContainer = (props) => {
           <Box className='rectangle-radius' sx={{maxHeight:'200vh', overflow:'auto', m:'2%', p:2}}>
             <Grid container className='rectangle-radius' sx={{px:3, py:2}} spacing={3}>
                 {props.items.map(
-                    (usuario, index) =>{
+                    (item, index) =>{
                       console.log(index);
                         return (
                         <Grid item xs={12} key={index}>
-                            <TarjetaUsuario info={usuario} key_user={index} togglePerfil={togglePerfil}/>
+                            <Tarjetas item={item} index={index}/>
+                            
                         </Grid>
                         )
                     }
@@ -46,7 +56,9 @@ const ListaContainer = (props) => {
                   PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil user={userSelected}/></Dialog>
+                >
+                  <Perfil user={userSelected}/>
+          </Dialog>
         </React.Fragment>
   );
 };

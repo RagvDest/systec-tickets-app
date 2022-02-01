@@ -76,7 +76,7 @@ class Usuarios extends React.Component{
                 ><FormUsuario addUser={this.props.addUsuario} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
-                <ListaContainer items={this.props.users} />
+                <ListaContainer items={this.props.users} tipo='us' />
               </Grid>
           </Grid>
         </React.Fragment>

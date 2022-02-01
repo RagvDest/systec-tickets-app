@@ -32,6 +32,7 @@ import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
 import { connect, useDispatch } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
+import Pedidos from '../pages/Pedidos';
 
 const drawerWidth = 240;
 
@@ -141,9 +142,12 @@ function SideBar(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
+  const [pag,setPag] = React.useState("");
   const dispatch = useDispatch();
   
-
+  React.useEffect(()=>{
+    debugger
+  },[pag]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -162,6 +166,11 @@ function SideBar(props) {
     dispatch(logicLogout())
   }
 
+  const handleChangePag = (e) =>{
+    setPag(e);
+  }
+
+ 
 
   /*
   const Lista = () => {
@@ -249,13 +258,13 @@ function SideBar(props) {
               </ListItemIcon>
               <ListItemText >RESUMEN</ListItemText>
             </ListItem>
-            <ListItem button key={'Usuarios'} sx={{p:3}}>
+            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
                 <ListItemIcon>
                   <PersonIcon sx={{color:'white'}}/>
                 </ListItemIcon>
-                <ListItemText >USUARIOS</ListItemText>
+                  <ListItemText >USUARIOS</ListItemText>
             </ListItem>
-            <ListItem button key={'Pedidos'} sx={{p:3}}>
+            <ListItem button onClick={()=>{handleChangePag('ped')}} key={'Pedidos'} sx={{p:3}}>
               <ListItemIcon>
                 <LaptopIcon sx={{color:'white'}}/>
               </ListItemIcon>
@@ -288,7 +297,9 @@ function SideBar(props) {
           </RightsContainer>
         </FooterContainer>
       </Drawer>
-      <Usuarios/>
+      {pag==='us' ? <Usuarios/> : null }
+      {pag==='ped' ? <Pedidos/> : null}
+      
       <Dialog
                   open={openPerfil}
                   onClose={togglePerfil}

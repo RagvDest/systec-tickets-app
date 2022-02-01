@@ -44,7 +44,7 @@ const BuscarUsuario = () => {
     }
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 5, mr:4 }}>
+    <Box component="main" sx={{ flexGrow: 1, p: 6}}>
         <DrawerHeader />
         <Container>
             <Grid container spacing={1}>
@@ -66,6 +66,7 @@ const BuscarUsuario = () => {
                     <OutlinedInput
                     id="outlined-adornment-weight"
                     placeholder="Buscar . . ."
+                    label=''
                     onKeyDown={handleSearch}
                     endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>} sx={{mx:3, width:'100%', size:'small'}}/>
                 </Grid>
