@@ -2,6 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from "redux";
 import {createForms} from 'react-redux-form';
 import userReducer from '../features/userSlice';
 import searchUsersReducer from '../features/searchUsersSlice';
+import pedidoReducer from '../features/pedidoSlice';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import {InitialUserInfo} from "./Forms";
@@ -17,6 +18,7 @@ const persistenceConfigs = {
 const persistedReducer = persistReducer(persistenceConfigs,combineReducers({
     user:userReducer,
     searchUser:searchUsersReducer,
+    pedido:pedidoReducer,
     ...createForms({
         userInfo:InitialUserInfo
     })

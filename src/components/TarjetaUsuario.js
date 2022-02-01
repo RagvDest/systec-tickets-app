@@ -1,5 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Dialog, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -13,9 +13,6 @@ const IconContainer = styled.div`
 
 
 const TarjetaUsuario = (props) => {
-
-    
-
   return (
       <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
         <Card sx={{width:'100%'}} >

@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Box, ButtonGroup, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
+import { searchPedidos } from '../features/actions/pedidoActions';
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
     display: 'flex',
@@ -25,7 +26,8 @@ const Container = styled.div`
 const Busqueda = () => {
     const dispatch = useDispatch();
     const [filtro,setFiltro] = useState("");
-    const [orden,setOrden] = useState("des");
+    const [orden,setOrden] = useState("desc");
+    const [estado,setEstado] = useState("TODOS");
   
     const filtros = [
         {label:'Nombres', id:0},
@@ -34,7 +36,7 @@ const Busqueda = () => {
 
     const handleSearch = (e) => {
         if(e.key == 'Enter'){
-           // dispatch(searchUsers(filtro,e.target.value));
+           dispatch(searchPedidos(filtro,e.target.value,orden,estado));
         }
             
     }
@@ -83,7 +85,7 @@ const Busqueda = () => {
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
                     >
-                    <MenuItem value={'des'} selected>Más nuevos</MenuItem>
+                    <MenuItem value={'desc'} selected>Más nuevos</MenuItem>
                     <MenuItem value={'asc'}>Más antiguos</MenuItem>
                     </Select>
                 </FormControl>

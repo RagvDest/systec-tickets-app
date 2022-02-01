@@ -21,7 +21,7 @@ const Container = styled.div`
     
 `
 
-const BuscarUsuario = () => {
+const BuscarUsuario = (props) => {
     const dispatch = useDispatch();
     const [filtro,setFiltro] = useState("");
   
@@ -45,7 +45,7 @@ const BuscarUsuario = () => {
 
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 6}}>
-        <DrawerHeader />
+        {props.mode==="q" ? null : <DrawerHeader />}
         <Container>
             <Grid container spacing={1}>
                 <Grid item xs={12} md={4} sx={{m:'auto'}}>

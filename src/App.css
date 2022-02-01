@@ -43,6 +43,10 @@
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white
 }
 
+.datepicker {
+  width: 100%;
+}
+
 .modal-simple {
     position: absolute;
     top: 50%;

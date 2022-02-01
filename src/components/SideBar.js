@@ -146,7 +146,6 @@ function SideBar(props) {
   const dispatch = useDispatch();
   
   React.useEffect(()=>{
-    debugger
   },[pag]);
 
   const handleDrawerOpen = () => {

@@ -19,7 +19,6 @@ const ButtonProfile = (props) => {
 
 
   const handleToggle = () => {
-      debugger;
     setOpen((prevOpen)=> !prevOpen);
     if(open) menuContainer.style.visibility='visible';
     else menuContainer.style.visibility='hidden';
@@ -27,6 +26,7 @@ const ButtonProfile = (props) => {
 
   const handleClose = (event) => {
         setOpen(false);
+        if(menuContainer===null) return;
         if(open) menuContainer.style.visibility='visible';
         else menuContainer.style.visibility='hidden';
   };

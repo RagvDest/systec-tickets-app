@@ -12,9 +12,12 @@ const ListaContainer = (props) => {
   const [userSelected, setUserSelected] = React.useState({});
     
   const togglePerfil = (value) => {
-    debugger;
     setUserSelected(props.items[value]);
-    setOpenPerfil(!openPerfil);
+    if(props.mode==='n')
+      setOpenPerfil(!openPerfil);
+    else{
+        props.selectUser(props.items[value]);
+    }
     console.log(props.items[value]);
   };
 
@@ -22,12 +25,12 @@ const ListaContainer = (props) => {
     setOpenPerfil(false);
   }
 
-  const Tarjetas = (item,index) =>{
+  const Tarjetas = (items,mode) =>{
     debugger;
     if(props.tipo==='us')
-      return(<TarjetaUsuario info={item.item} key_user={index} togglePerfil={togglePerfil}/>);
+      return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode}/>);
     else if(props.tipo==='ped')
-      return(<TarjetaPedido/>)
+      return(<TarjetaPedido info={items.items}/>)
   }
 
   
@@ -41,8 +44,7 @@ const ListaContainer = (props) => {
                       console.log(index);
                         return (
                         <Grid item xs={12} key={index}>
-                            <Tarjetas item={item} index={index}/>
-                            
+                            <Tarjetas items={item} index={index} mode={props.mode}/>
                         </Grid>
                         )
                     }
