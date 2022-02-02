@@ -3,6 +3,8 @@ import {createForms} from 'react-redux-form';
 import userReducer from '../features/userSlice';
 import searchUsersReducer from '../features/searchUsersSlice';
 import pedidoReducer from '../features/pedidoSlice';
+import pagReducer from '../features/pagSlice';
+import ticketReducer from '../features/ticketSlice';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import {InitialUserInfo} from "./Forms";
@@ -19,6 +21,8 @@ const persistedReducer = persistReducer(persistenceConfigs,combineReducers({
     user:userReducer,
     searchUser:searchUsersReducer,
     pedido:pedidoReducer,
+    pag:pagReducer,
+    ticket:ticketReducer,
     ...createForms({
         userInfo:InitialUserInfo
     })

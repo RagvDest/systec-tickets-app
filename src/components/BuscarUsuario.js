@@ -44,7 +44,7 @@ const BuscarUsuario = (props) => {
     }
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 6}}>
+    <Box component="main" sx={{ flexGrow: 1, pt: 6,px:6}}>
         {props.mode==="q" ? null : <DrawerHeader />}
         <Container>
             <Grid container spacing={1}>

@@ -9,6 +9,7 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import styled from 'styled-components'
 import { Box } from '@mui/system';
 import { DateRangeOutlined, SportsScore } from '@mui/icons-material';
+import { fcConvert } from '../app/utils';
 
 const IconContainer = styled.div`
     margin-block:auto;
@@ -16,15 +17,10 @@ const IconContainer = styled.div`
 
 const TarjetaPedido = (props) => {
     let fcRegistro = new Date(props.info.pedido.ped_fc_registro);
+    let fcFin = new Date(props.info.pedido.ped_fc_fin);
 
-    const fcConvert = (fc) =>{
-        if(fc.getMonth()<9)
-            return (fc.getDate()+"/"+"0"+parseInt(fc.getMonth())+1+"/"+fc.getFullYear())
-        else
-            return (fc.getDate()+"/"+fc.getMonth()+1+"/"+fc.getFullYear())
-    }
   return (
-        <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
+        <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.info,"pedq")}} >
         <Card sx={{width:'100%'}} >
             <CardContent >
                 <Grid container>
@@ -60,7 +56,7 @@ const TarjetaPedido = (props) => {
                                 <Grid item xs sx={{display:'flex'}}>
                                     <SportsScore className='icon-center-vertically' fontSize='medium'/>
                                     <Typography   variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto'}}>
-                                        {props.info.pedido.ped_fc_fin}
+                                        {props.info.pedido.ped_fc_fin == null ? "NO APLICA" : fcConvert(fcFin)}
                                     </Typography>
                                 </Grid>
                         </Grid>
@@ -71,7 +67,6 @@ const TarjetaPedido = (props) => {
                             <Grid item xs>
                                 2
                             </Grid>
-                            
                         </Grid>
                     </Grid>
                 </Grid>

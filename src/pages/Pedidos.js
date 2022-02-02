@@ -39,7 +39,7 @@ const Pedidos = (props) =>{
             ><FormPedido mode='c'/></Dialog>
           </Grid>
           <Grid item xs={12}>
-            <ListaContainer items={pedidos} tipo='ped' />
+            <ListaContainer items={pedidos} tipo='ped' mode="ped"/>
           </Grid>
       </Grid>
     </React.Fragment>

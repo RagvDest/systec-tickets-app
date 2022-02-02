@@ -49,7 +49,7 @@ const Busqueda = () => {
         setFiltro(e.target.value);
     }
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 5, mr:4 }}>
+    <Box component="main" sx={{ flexGrow: 1, pt:5,px:5, mr:4 }}>
     <DrawerHeader />
     <Container>
         <Grid container spacing={4}>

@@ -1,8 +1,12 @@
 import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPagina } from '../features/pagSlice';
+import { pedidoSelect } from '../features/pedidoSlice';
 import Perfil from './Perfil';
 import TarjetaPedido from './TarjetaPedido';
+import TarjetaTicket from './TarjetaTicket';
 import TarjetaUsuario from './TarjetaUsuario';
 
 
@@ -10,11 +14,17 @@ const ListaContainer = (props) => {
 
   const [openPerfil, setOpenPerfil] = React.useState(false);
   const [userSelected, setUserSelected] = React.useState({});
+  const dispatch = useDispatch();
     
-  const togglePerfil = (value) => {
+  const togglePerfil = (value, modo) => {
     setUserSelected(props.items[value]);
     if(props.mode==='n')
       setOpenPerfil(!openPerfil);
+    else if(modo==='pedq'){
+      debugger;
+      dispatch(pedidoSelect(value));
+      dispatch(setPagina('pedinfo'));
+    }
     else{
         props.selectUser(props.items[value]);
     }
@@ -30,7 +40,9 @@ const ListaContainer = (props) => {
     if(props.tipo==='us')
       return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode}/>);
     else if(props.tipo==='ped')
-      return(<TarjetaPedido info={items.items}/>)
+      return(<TarjetaPedido info={items.items} togglePerfil={togglePerfil} mode="ped"/>)
+    else if(props.tipo==='ti')
+      return(<TarjetaTicket info={items.items} togglePerfil={togglePerfil} mode={mode}/>)
   }
 
   

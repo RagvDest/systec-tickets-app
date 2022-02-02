@@ -30,9 +30,11 @@ import Panel from './Panel';
 import {Link as LinkRoute} from 'react-router-dom';
 import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
 import Pedidos from '../pages/Pedidos';
+import { selectPag, setPagina } from '../features/pagSlice';
+import PedidoContainer from '../pages/PedidoContainer';
 
 const drawerWidth = 240;
 
@@ -142,10 +144,11 @@ function SideBar(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
-  const [pag,setPag] = React.useState("");
+  const pag = useSelector(selectPag);
   const dispatch = useDispatch();
   
   React.useEffect(()=>{
+    console.log(pag);
   },[pag]);
 
   const handleDrawerOpen = () => {
@@ -166,10 +169,8 @@ function SideBar(props) {
   }
 
   const handleChangePag = (e) =>{
-    setPag(e);
-  }
-
- 
+    dispatch(setPagina(e));
+  } 
 
   /*
   const Lista = () => {
@@ -298,6 +299,7 @@ function SideBar(props) {
       </Drawer>
       {pag==='us' ? <Usuarios/> : null }
       {pag==='ped' ? <Pedidos/> : null}
+      {pag==='pedinfo' ? <PedidoContainer/> : null}
       
       <Dialog
                   open={openPerfil}
