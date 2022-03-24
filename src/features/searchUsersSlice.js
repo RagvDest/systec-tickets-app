@@ -19,10 +19,6 @@ export const searchUsersSlice = createSlice({
         }
     }
 });
-
 export const {getUsuarios, addUsuario, updateUsuario} = searchUsersSlice.actions;
-
-
 export const selectUsers = (state) => state.searchUser.users;
-
 export default searchUsersSlice.reducer;

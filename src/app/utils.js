@@ -12,3 +12,37 @@ export const equipos = [
         {id:"lap",eq_nombre:"LAPTOP"},
         {id:"imp",eq_nombre:"IMPRESORA/ESCANER"}
 ];
+
+export const estadosTickets = [
+    {id:"diag",est_nombre:"DIAGNÓSTICO"},
+    {id:"repa",est_nombre:"REPARACIÓN"},
+    {id:"espe",est_nombre:"EN ESPERA"},
+    {id:"comp",est_nombre:"COMPLETO"},
+    {id:"cerr",est_nombre:"CERRADO"}
+];
+
+export const round10 = (type, value, exp) => {
+    // If the exp is undefined or zero...
+    if (typeof exp === 'undefined' || +exp === 0) {
+        return Math[type](value);
+    }
+    value = +value;
+    exp = +exp;
+    // If the value is not a number or the exp is not an integer...
+    if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+        return NaN;
+    }
+    // Shift
+    value = value.toString().split('e');
+    value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+    // Shift back
+    value = value.toString().split('e');
+    return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+}
+
+// Data Set ejemplo para Historial
+export const historial = [
+    {code:'com',estado:'Completo',tecnico:'José',observacion:'Lorem ipsum dorime'},
+    {code:'rep',estado:'Reparación',tecnico:'José',observacion:'Formateada y lista para entrega'},
+    {code:'diag',estado:'Diagnóstico',tecnico:'José',observacion:'Ameno machide dorime'}
+]

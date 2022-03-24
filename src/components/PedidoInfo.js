@@ -2,9 +2,11 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import {styled as styled1} from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import { pedidoSelect, selectPedidoOne } from '../features/pedidoSlice';
+import { useDispatch } from 'react-redux';
+import { selectTickets } from '../features/ticketSlice';
 import { fcConvert } from '../app/utils';
 import EditIcon from '@mui/icons-material/Edit';
+import { searchTickets } from '../features/actions/ticketActions';
 
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
@@ -17,7 +19,15 @@ const DrawerHeader = styled1('div')(({ theme }) => ({
   }));
 
 const PedidoInfo = (props) => {
-    let pedidoInfo = useSelector(selectPedidoOne);
+    let pedidoInfo = props.pedidoSelect;
+    const tickets = useSelector(selectTickets);
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        debugger;
+        dispatch(searchTickets(pedidoInfo.pedido._id))
+      },[]);
 
   return (
       <Box sx={{px:2, pt:3}}>
@@ -60,9 +70,12 @@ const PedidoInfo = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} md={12} lg={3} container direction='column'>
-                    <Grid item container>
-                        <Grid item xs={12} >
+                <Grid item xs={12} md={12} lg={3} container direction='column' >
+                    <Grid item container  >
+                        <Grid item xs={6} sx={{mt: 0.9}}>
+                            Nro. Orden: 156132
+                        </Grid>
+                        <Grid item xs={6} >
                             <Box sx={{display:'flex',justifyContent:'center'}}>
                                 <Button><EditIcon color='action' fontSize="large"/></Button>
                             </Box>

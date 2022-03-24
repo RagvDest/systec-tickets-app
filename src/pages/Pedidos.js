@@ -13,6 +13,11 @@ const Pedidos = (props) =>{
   const pedidos = useSelector(selectPedidos);
   const dispatch = useDispatch();
 
+  const [mensaje,setMensaje] = useState([]);
+  const [tipoAlert,setTipoAlert] = useState("info");
+  const [open,setOpen] =useState(false);
+
+
   useEffect(()=>{
     debugger;
     dispatch(searchPedidos("","","","",""))
@@ -21,8 +26,21 @@ const Pedidos = (props) =>{
   const toggleModal = ()=>{
     setOpenModal(!openModal);
 };
+
+const closePedido = () =>{
+  setOpenModal(false);
+  dispatch(searchPedidos("","","","",""))
+  //toast();
+};
+
+const toast = async () =>{
+    setOpen(true);
+  console.log(mensaje);
+}
+
     return (
       <React.Fragment > 
+        
       <Grid container>
           <Grid item xs={12}>
             <Busqueda/>
@@ -33,10 +51,10 @@ const Pedidos = (props) =>{
               open={openModal}
               onClose={toggleModal}
               fullWidth
-              PaperProps={{sx:{height:'100%'}}}
+              PaperProps={{sx:{}}}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
-            ><FormPedido mode='c'/></Dialog>
+            ><FormPedido mode='c' closePedido={closePedido}/></Dialog>
           </Grid>
           <Grid item xs={12}>
             <ListaContainer items={pedidos} tipo='ped' mode="ped"/>

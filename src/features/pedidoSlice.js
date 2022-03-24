@@ -8,9 +8,11 @@ export const pedidoSlice = createSlice({
     },
     reducers:{
         createPedido:(state, action)=>{
-            state.pedidos = state.pedidos.push(action.payload);
+//            state.pedidos = state.pedidos.push(action.payload);
+console.log("Pedido Creado");
         },
         getPedidos:(state, action) => {
+            debugger;
             state.pedidos = action.payload;
 
         },

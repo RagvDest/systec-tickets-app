@@ -11,6 +11,7 @@ import {InitialUserInfo} from "./Forms";
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+
 const persistenceConfigs = {
     key: 'rgvSystec', // whatever you want to keep as your key
     storage

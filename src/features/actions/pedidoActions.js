@@ -3,9 +3,6 @@ import { createPedido, getPedidos } from "../pedidoSlice";
 
 
 export const searchPedidos = (filtro,input, orden, estado) =>(dispatch) => {
-    console.log('Filtro: '+filtro);
-    console.log('Input: '+input);
-    debugger;
     let query='';
     if(input!=='')
         query = '?input='+input+'&orden='+orden+'&filtro='+filtro+'&estado='+estado;
@@ -28,9 +25,7 @@ export const searchPedidos = (filtro,input, orden, estado) =>(dispatch) => {
         }).then(response => response.json())
         .then(response =>{dispatch(getPedidos(response.results))})
 }
-
 export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
-    debugger;
     const body = {
         pedido:{
             ped_fc_registro:fechaIni,
@@ -38,7 +33,6 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         },
         id_usuario:id_usuario
     };
-    console.log(body);
     return fetch(baseUrl+'pedido/crear',{
         method:'POST',
         body:JSON.stringify(body),
@@ -64,22 +58,13 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         .then(response => dispatch(createPedido(response.pedidoCreado)))
         .catch(error=>{console.log('Crear Pedido',error.message)});
 }
-/*
-export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch) =>{
-    debugger;
+export const updatePed = (pedido_id,fechaIni,fechaFin) => (dispatch) =>{
+    console.log(pedido_id,fechaIni,fechaFin);
     const body = {
-        usuario:{
-            u_usuario:username,
-            u_mail:mail
-        },
-        persona:{
-            p_nombres:nombres,
-            p_cedula:cedula,
-            p_apellidos:apellidos
-        }
+        
     };
     console.log(body);
-    return fetch(baseUrl+'users/update/'+id,{
+    return fetch(baseUrl+'users/update/',{
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
@@ -101,7 +86,10 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .then(response => dispatch())
         .catch(error=>{console.log('Actualizar Usuario',error.message)});
 }
-*/
+export const changeEstado = (pedido_id,estado) => (dispatch) =>{
+    console.log(pedido_id,estado);
+    dispatch();
+}

@@ -29,7 +29,6 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
         }).then(response => response.json())
         .then(response =>{dispatch(getUsuarios(response.results))})
 }
-
 export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch) =>{
     debugger;
     const body = {
@@ -70,9 +69,7 @@ export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispat
         .then(response => dispatch(addUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
         .catch(error=>{console.log('Crear Usuario',error.message)});
 }
-
 export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch) =>{
-    debugger;
     const body = {
         usuario:{
             u_usuario:username,
@@ -84,7 +81,6 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             p_apellidos:apellidos
         }
     };
-    console.log(body);
     return fetch(baseUrl+'users/update/'+id,{
         method:'PATCH',
         body:JSON.stringify(body),

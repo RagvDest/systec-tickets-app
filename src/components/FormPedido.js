@@ -42,6 +42,7 @@ const FormPedido = (props) => {
             console.log("Error validacion");
         else{
             dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+            props.closePedido();
         }
     }
 
