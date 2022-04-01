@@ -17,8 +17,7 @@ const persistenceConfigs = {
     storage
 };
 
-
-const persistedReducer = persistReducer(persistenceConfigs,combineReducers({
+const appReducer = combineReducers({
     user:userReducer,
     searchUser:searchUsersReducer,
     pedido:pedidoReducer,
@@ -27,7 +26,9 @@ const persistedReducer = persistReducer(persistenceConfigs,combineReducers({
     ...createForms({
         userInfo:InitialUserInfo
     })
-}));
+});
+
+const persistedReducer = persistReducer(persistenceConfigs, appReducer);
 
 export const store = createStore(persistedReducer,
     applyMiddleware(thunk, logger));

@@ -7,7 +7,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button, Dialog, Grid, Link, Typography } from '@mui/material';
+import { Alert, AlertTitle, Button, Dialog, Grid, Link, Snackbar, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -33,8 +33,13 @@ import Perfil from './Perfil';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
 import Pedidos from '../pages/Pedidos';
-import { selectPag, setPagina } from '../features/pagSlice';
+import { selectPag, selectToast, setPagina } from '../features/pagSlice';
 import PedidoContainer from '../pages/PedidoContainer';
+import { selectUser } from '../features/userSlice';
+import { clearPedidoState } from '../features/pedidoSlice';
+import { clearTicketState } from '../features/ticketSlice';
+import { clearUser } from '../features/userSlice';
+import { clearUsers } from '../features/searchUsersSlice';
 
 const drawerWidth = 240;
 
@@ -145,11 +150,51 @@ function SideBar(props) {
   const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
   const pag = useSelector(selectPag);
+
+   // Para SnackBar
+   const [openToast,setOpenToast] = React.useState(false);
+   const [mensaje,setMensaje] = React.useState([]);
+   const [tipoAlert,setTipoAlert] = React.useState("info");
+
+  const toast = useSelector(selectToast);
+
+  const userLogin = useSelector(selectUser);
+
+
+
   const dispatch = useDispatch();
   
   React.useEffect(()=>{
     console.log(pag);
   },[pag]);
+
+ /* React.useEffect(()=>{
+    debugger;
+    setMensaje(currentMensaje => currentMensaje.concat(toast));
+    setOpenToast(true);
+    setTipoAlert("error");
+  },[toast])*/
+
+  React.useEffect(async ()=>{
+    const getNotificationFromServer= (data) =>{
+      setMensaje(currentMensaje => currentMensaje.concat(data));
+      setOpenToast(true);
+      setTipoAlert("info");
+    }
+
+    props.socket.on('getNotificationFromServer', getNotificationFromServer)
+    
+    props.socket.emit('connected',userLogin.username['_id']);
+
+
+    return () => props.socket.off('getNotificationFromServer',getNotificationFromServer);
+
+  },[props.socket]);
+
+  const handleClose = () =>{
+    setMensaje([]);
+    setOpenToast(false);
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -166,41 +211,37 @@ function SideBar(props) {
 
   const logOut = () =>{
     dispatch(logicLogout())
+    dispatch(clearPedidoState());
+    dispatch(clearTicketState());
+    dispatch(clearUsers());
+    dispatch(clearUser());
+    dispatch(setPagina('ped'));
   }
 
   const handleChangePag = (e) =>{
     dispatch(setPagina(e));
   } 
 
-  /*
-  const Lista = () => {
-    const text = ['RESUMEN','USUARIOS','PEDIDOS','MANUAL'];
-    
-    const lista = text.map(
-      (item) =>{
-        return (
-          <ListItem button key={item,index} sx={{p:3}}>
+  const Lista = () =>{
+    if(['Administrador','Empleado'].includes(userLogin.rol))
+      return(
+          <React.Fragment>
+          <ListItem button key={'Resumen'} sx={{p:3}}>
               <ListItemIcon>
-                {() => {
-                  switch (item){
-                    case "RESUMEN": return <DashboardIcon sx={{color:'white'}}/>;
-                    case "USUARIOS": return  <PersonIcon sx={{color:'white'}}/>;
-                    case "PEDIDOS": return  <LaptopIcon sx={{color:'white'}}/>;
-                    case "MANUAL": return  <LibraryBooksIcon sx={{color:'white'}}/>
-                  }
-                } 
-              }
+                <DashboardIcon sx={{color:'white'}}/>
               </ListItemIcon>
-              <ListItemText >{item}</ListItemText>
-          </ListItem>
-        );
-      }
-    );
-
-    return (
-      {lista}
-    )
-  }*/
+              <ListItemText >RESUMEN</ListItemText>
+            </ListItem>
+            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
+                <ListItemIcon>
+                  <PersonIcon sx={{color:'white'}}/>
+                </ListItemIcon>
+                  <ListItemText >USUARIOS</ListItemText>
+            </ListItem>
+          </React.Fragment>
+      );
+      else return null;
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -252,18 +293,7 @@ function SideBar(props) {
         </DrawerHeader>
         <Divider />
         <List sx={{backgroundColor:"#254E58",color:'white'}}>
-            <ListItem button key={'Resumen'} sx={{p:3}}>
-              <ListItemIcon>
-                <DashboardIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >RESUMEN</ListItemText>
-            </ListItem>
-            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
-                <ListItemIcon>
-                  <PersonIcon sx={{color:'white'}}/>
-                </ListItemIcon>
-                  <ListItemText >USUARIOS</ListItemText>
-            </ListItem>
+            <Lista/>
             <ListItem button onClick={()=>{handleChangePag('ped')}} key={'Pedidos'} sx={{p:3}}>
               <ListItemIcon>
                 <LaptopIcon sx={{color:'white'}}/>
@@ -297,9 +327,9 @@ function SideBar(props) {
           </RightsContainer>
         </FooterContainer>
       </Drawer>
-      {pag==='us' ? <Usuarios/> : null }
-      {pag==='ped' ? <Pedidos/> : null}
-      {pag==='pedinfo' ? <PedidoContainer/> : null}
+      {pag==='us' ? <Usuarios socket={props.socket}/> : null }
+      {pag==='ped' ? <Pedidos user={userLogin}/> : null}
+      {pag==='pedinfo' ? <PedidoContainer user={userLogin}/> : null}
       
       <Dialog
                   open={openPerfil}
@@ -309,6 +339,22 @@ function SideBar(props) {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 ><Perfil user={props.user}/></Dialog>
+    
+    
+    
+    <Snackbar open={openToast} 
+          autoHideDuration={6000} 
+          onClose={handleClose}
+          anchorOrigin={{vertical: "top",
+          horizontal: "right"}}>
+      <Alert onClose={handleClose} severity={tipoAlert} sx={{ width: '100%' }}>
+      {mensaje.map((item,index)=>{
+          return(
+              <AlertTitle key={index}>{item}</AlertTitle>
+          )
+      })}            
+      </Alert>
+    </Snackbar>                
     </Box>
   );
 }

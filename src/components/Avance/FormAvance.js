@@ -11,7 +11,7 @@ const FormAvance = (props) => {
     const userLogin = useSelector(selectUser);
     const [tecnico,setTecnico] = useState("");
     const [estado,setEstado] = useState("");
-    const [comentario, setComentario] = useState("");
+    const [msj, setMsj] = useState([]);
     const [observacion, setObservacion] = useState("");
     const dispatch = useDispatch();
     const historial = useSelector(selectHistorial);
@@ -37,9 +37,10 @@ const FormAvance = (props) => {
         setObservacion(e.target.value);
     }
 
-    const onSubmit =  async (e) =>{
-        if(!validar){
-            console.log("Error de validación");
+    const onSubmit = async (e) =>{
+        debugger;
+        if(!validar()){
+            props.notifiValidar(msj);
         }else{
             await dispatch(crearAvance({estado:estado,detalle:observacion,usuario:userLogin,ticket:props.ticket['_id']}));
             props.closeAvance();
@@ -47,18 +48,19 @@ const FormAvance = (props) => {
     }
 
     const validar = () => {
-        let mensaje="";
+        debugger;
+        let mensaje=[];
         let valido = true;
         if(estado == ""){
-            mensaje += "Seleccionar Estado.\n"
+            mensaje.push("Seleccionar Estado");
             valido = false;
         }
         if(observacion == ""){
-            mensaje+="Ingresar detalle del avance";
+            mensaje.push("Ingresar detalle del avance");
             valido = false;
         }
 
-        alert(mensaje);
+        setMsj(mensaje);
         return valido;
     }
 

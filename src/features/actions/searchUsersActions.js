@@ -1,4 +1,5 @@
 import {baseUrl} from "../../shared/baseUrl";
+import { setToast } from "../pagSlice";
 import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
 
 export const searchUsers = (filtro,input) =>(dispatch) => {
@@ -28,6 +29,7 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
             throw errmess;
         }).then(response => response.json())
         .then(response =>{dispatch(getUsuarios(response.results))})
+        .catch(error=>{dispatch(setToast(error.message))});
 }
 export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch) =>{
     debugger;

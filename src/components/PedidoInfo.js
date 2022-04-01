@@ -75,11 +75,11 @@ const PedidoInfo = (props) => {
                         <Grid item xs={6} sx={{mt: 0.9}}>
                             Nro. Orden: 156132
                         </Grid>
-                        <Grid item xs={6} >
+                        {props.user.rol!='Cliente' && <Grid item xs={6} >
                             <Box sx={{display:'flex',justifyContent:'center'}}>
                                 <Button><EditIcon color='action' fontSize="large"/></Button>
                             </Box>
-                        </Grid>
+                        </Grid>}
                     </Grid>
                     <Grid item container sx={{textAlign:'center'}}>
                         <Grid item xs={3}>

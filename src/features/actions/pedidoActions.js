@@ -1,13 +1,22 @@
 import {baseUrl} from "../../shared/baseUrl";
+import { setToast } from "../pagSlice";
 import { createPedido, getPedidos } from "../pedidoSlice";
 
 
-export const searchPedidos = (filtro,input, orden, estado) =>(dispatch) => {
+export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch) => {
     let query='';
+    let body = {
+        usuario:user
+    }
+    debugger;
     if(input!=='')
         query = '?input='+input+'&orden='+orden+'&filtro='+filtro+'&estado='+estado;
     return fetch(baseUrl+'pedido/all'+query,{
-        method:'GET',
+        method:'POST',
+        body:JSON.stringify(body),
+        headers:{
+            'Content-Type':'application/json'
+        },
         credentials:'include'})
         .then(response=>{
             if(response.ok){
@@ -56,7 +65,7 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
             throw errmess;
         }).then(response => response.json())
         .then(response => dispatch(createPedido(response.pedidoCreado)))
-        .catch(error=>{console.log('Crear Pedido',error.message)});
+        .catch(error=>{dispatch(setToast(error))});
 }
 export const updatePed = (pedido_id,fechaIni,fechaFin) => (dispatch) =>{
     console.log(pedido_id,fechaIni,fechaFin);

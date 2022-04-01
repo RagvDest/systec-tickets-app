@@ -31,6 +31,7 @@
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1",
     "serve": "^13.0.2",
+    "socket.io-client": "^4.4.1",
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4",
     "webpack-pwa-manifest": "^4.3.0",
@@ -41,7 +42,6 @@
     "build": "react-scripts build",
     "dev": "webpack serve",
     "start:dev": "react-scripts start",
-
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -68,6 +68,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.3",
+    "deep-freeze": "0.0.1",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",

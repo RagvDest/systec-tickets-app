@@ -19,11 +19,15 @@ console.log("Pedido Creado");
         pedidoSelect:(state,action) => {
             debugger;
             state.pedidoSelect = action.payload;
+        },
+        clearPedidoState:(state) =>{
+            state.pedidos = [];
+            state.pedidoSelect = null;
         }
     }
 });
 
-export const {createPedido, getPedidos, pedidoSelect} = pedidoSlice.actions;
+export const {createPedido, getPedidos, pedidoSelect, clearPedidoState} = pedidoSlice.actions;
 
 export const selectPedidos = (state) => state.pedido.pedidos;
 export const selectPedidoOne = (state) => state.pedido.pedidoSelect;

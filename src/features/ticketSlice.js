@@ -1,19 +1,21 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+const initialStateX = {
+    p_nombres: '',
+    tickets:[],
+    ticketSelected:null,
+    resultado:{
+        tipo:null,
+        mensajes:[],
+        mostrar:false
+    },
+    historial:[],
+    estadoSelected:null
+};
+
 export const ticketSlice = createSlice({
     name:"ticket",
-    initialState:{
-        p_nombres: '',
-        tickets:[],
-        ticketSelected:null,
-        resultado:{
-            tipo:null,
-            mensajes:[],
-            mostrar:false
-        },
-        historial:[],
-        estadoSelected:null
-    },
+    initialState:initialStateX,
     reducers:{
         createTicket:(state, action)=>{
             debugger;
@@ -75,6 +77,9 @@ export const ticketSlice = createSlice({
         },
         changeEstadoSelected:(state,action)=>{
             state.estadoSelected = action.payload;
+        },
+        clearTicketState:(state)=>{
+            return initialStateX;
         }
     }
 });
@@ -82,7 +87,8 @@ export const ticketSlice = createSlice({
 export const {
     createTicket, getTickets, 
     ticketSelect, updateTicketSlice, 
-    getHistorial, changeEstadoSelected} = ticketSlice.actions;
+    getHistorial, changeEstadoSelected,
+    clearTicketState    } = ticketSlice.actions;
 
 export const selectTickets = (state) => state.ticket.tickets;
 export const selectHistorial = (state) => state.ticket.historial;

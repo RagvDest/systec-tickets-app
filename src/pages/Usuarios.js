@@ -56,6 +56,10 @@ class Usuarios extends React.Component{
     })
   };
 
+  handleNotificacion = () =>{
+    this.props.socket.emit('notificacion','61e902d8996cc57b8dca918d');
+  }
+
   render(){
 
     
@@ -65,6 +69,7 @@ class Usuarios extends React.Component{
           <Grid container>
               <Grid item xs={12}>
                 <BuscarUsuario mode={this.props.mode}/>
+                <Button onClick={this.handleNotificacion}>Notificacion</Button>
               </Grid>
               <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
                 <Button variant='contained' onClick={this.toggleModal}>Nuevo</Button>

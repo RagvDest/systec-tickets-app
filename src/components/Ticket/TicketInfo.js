@@ -53,9 +53,9 @@ const TicketInfo = (props) => {
                                 <Grid item xs={12} md={11}>
                                     <Typography sx={{fontSize:'1.75rem'}} variant='h6' component='span'><i>Ticket: {ticket.ticket.t_num}</i></Typography>
                                 </Grid>
-                                <Grid item xs={12} md={1} sx={{textAlign:'end '}}>
+                                {props.user.rol!='Cliente' && <Grid item xs={12} md={1} sx={{textAlign:'end '}}>
                                     <Button color="inherit" onClick={toggleUpdate}><EditIcon/></Button>
-                                </Grid>
+                                </Grid>}
                             </Grid>
                             <Grid item spacing={2} container sx={{px:3, py:1}}>
                                 <Grid item xs={12}><Divider/></Grid>
@@ -86,9 +86,9 @@ const TicketInfo = (props) => {
                                     <Grid item xs={12}>
                                         <Historial idTicket={ticket} openAvance={toggleAvance}/>
                                     </Grid>
-                                    <Grid item xs={12} sx={{textAlign:'end',px:3}}>
+                                    {props.user.rol!='Cliente' && <Grid item xs={12} sx={{textAlign:'end',px:3}}>
                                         <Button variant='contained' onClick={()=>toggleAvance('c')}>Nuevo</Button>
-                                    </Grid>
+                                    </Grid>}
                                     <Grid item xs={12}>
                                     <Divider/>
                                     </Grid>
@@ -130,6 +130,7 @@ const TicketInfo = (props) => {
                     closeAvance={closeAvance} 
                     ticket={ticket.ticket}
                     info={avance}
+                    notifiValidar={(msj)=> {debugger; props.notifiValidar(msj)}}
                     /></Dialog>
         </React.Fragment>
   )

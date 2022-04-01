@@ -1,5 +1,5 @@
 import { Button, Dialog, Grid } from '@mui/material';
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, Fragment, useEffect, useState } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import Busqueda from '../components/Busqueda';
 import FormPedido from '../components/FormPedido';
@@ -20,7 +20,7 @@ const Pedidos = (props) =>{
 
   useEffect(()=>{
     debugger;
-    dispatch(searchPedidos("","","","",""))
+    dispatch(searchPedidos("","","","",props.user))
   },[]);
 
   const toggleModal = ()=>{
@@ -29,7 +29,7 @@ const Pedidos = (props) =>{
 
 const closePedido = () =>{
   setOpenModal(false);
-  dispatch(searchPedidos("","","","",""))
+  dispatch(searchPedidos("","","","",props.user))
   //toast();
 };
 
@@ -46,7 +46,7 @@ const toast = async () =>{
             <Busqueda/>
           </Grid>
           <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
-            <Button variant='contained' onClick={toggleModal}>Nuevo</Button>
+            {props.user.rol!='Cliente' && <Fragment><Button variant='contained' onClick={toggleModal}>Nuevo</Button>
             <Dialog
               open={openModal}
               onClose={toggleModal}
@@ -54,7 +54,7 @@ const toast = async () =>{
               PaperProps={{sx:{}}}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
-            ><FormPedido mode='c' closePedido={closePedido}/></Dialog>
+            ><FormPedido mode='c' closePedido={closePedido}/></Dialog></Fragment>}
           </Grid>
           <Grid item xs={12}>
             <ListaContainer items={pedidos} tipo='ped' mode="ped"/>

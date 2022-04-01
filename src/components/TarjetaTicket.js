@@ -45,7 +45,7 @@ const TarjetaTicket = (props) => {
                 </Grid>
                 <Grid item xs={6} sx={{width:'100%',borderLeft:'1px solid black'}}>
                     <BoxData sx={{textAlign:'initial'}}>
-                      {props.info.t_detalle.substring(0,50)}...
+                      {props.info.t_detalle.substring(0,50)}{props.info.t_detalle.length>50 && <span>...</span>}
                     </BoxData>
                 </Grid>
               </Grid>

@@ -44,7 +44,13 @@ const PedidoContainer = (props) => {
       closeModal();
       setOpen(true);
     }
-    console.log(mensaje);
+  }
+
+  const notifiValidar = (notifi) =>{
+    debugger;
+    setMensaje(notifi);
+    setTipoAlert('error');
+    setOpen(true);
   }
 
   const toggleModal = (e,result,mensajes,tipo) =>{
@@ -92,9 +98,9 @@ const PedidoContainer = (props) => {
                 </Alert>
               </Snackbar>
                 <Grid item xs={12}>
-                    <PedidoInfo pedidoSelect={pedSelect}/>
+                    <PedidoInfo pedidoSelect={pedSelect} user={props.user}/>
                 </Grid>
-                <Grid item xs={12} sx={{textAlign:'center',py:3}}>
+                {props.user.rol!='Cliente' && <Grid item xs={12} sx={{textAlign:'center',py:3}}>
                     <Button variant='contained' onClick={toggleModal}>Nuevo Ticket</Button>
                     <Dialog
                       open={openModal}
@@ -104,7 +110,7 @@ const PedidoContainer = (props) => {
                       aria-labelledby="modal-modal-title"
                       aria-describedby="modal-modal-description"
                     ><FormTicket mode='c' p_nombres={pedSelect.p_nombres} idPed={pedSelect.pedido._id} closeModal={toggleModal}/></Dialog>
-                </Grid>
+                </Grid>}
                 <Grid item xs={12}>
                     <ListaContainer items={tickets} tipo="ti" mode="ti" handleTicket={handleOpenTicket} />
                 </Grid>
@@ -117,7 +123,11 @@ const PedidoContainer = (props) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                   >
-                    <TicketInfo ticket={ticketSelected}/>
+                    <TicketInfo 
+                      ticket={ticketSelected} 
+                      user={props.user}
+                      notifiValidar={(msj)=>notifiValidar(msj)}
+                      />
                   </Dialog>
               </Grid>
             </Grid>

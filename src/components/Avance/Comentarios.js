@@ -43,6 +43,7 @@ const Comentarios = () => {
   const addComen = async () =>{
     let usuario = userLogin.persona.p_nombres+" "+userLogin.persona.p_apellidos;
     await dispatch(addComentario(estadoSelected['_id'],comentario,usuario, userLogin.username['_id']));
+    setComentario("");
   }
 
   const changeComentario = (e) =>{
@@ -85,19 +86,19 @@ const Comentarios = () => {
             </Box>
             <Grid item container sx={{pt:3}}>
               <Grid item xs={10} sm={8}>
-                <Input size='small' onChange={changeComentario} sx={{fontSize:'0.8rem', width:'100%'}} placeholder='Añadir comentario..' inputProps={{ 'aria-label': 'description' }} />
+                <Input size='small' onKeyDown={(e)=>{if(e.key==='Enter') addComen();}} onChange={changeComentario} value={comentario} sx={{fontSize:'0.8rem', width:'100%'}} placeholder='Añadir comentario..' inputProps={{ 'aria-label': 'description' }} />
               </Grid> 
               <Grid item xs={2} sm={4}>
-                <BotonPc>
-                  <Button variant="contained" onClick={addComen} size='small' endIcon={<SendIcon />}>
-                    Enviar
-                  </Button>
-                </BotonPc>
-                <BotonMobil>
-                  <IconButton color="primary" onClick={addComen} aria-label="Agregar comentario">
-                    <SendIcon />
-                  </IconButton>
-                </BotonMobil>
+                  <BotonPc>
+                    <Button variant="contained" onClick={addComen} size='small' endIcon={<SendIcon />}>
+                      Enviar
+                    </Button>
+                  </BotonPc>
+                  <BotonMobil>
+                    <IconButton color="primary" onClick={addComen} aria-label="Agregar comentario">
+                      <SendIcon />
+                    </IconButton>
+                  </BotonMobil>
               </Grid> 
             </Grid>
           </Grid>
