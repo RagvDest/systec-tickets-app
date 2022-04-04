@@ -3,7 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 export const pagSlice = createSlice({
     name:"pag",
     initialState:{
-        pag:"ped",
+        pag:"login",
         toast:""
     },
     reducers:{

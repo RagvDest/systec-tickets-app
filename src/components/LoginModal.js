@@ -6,7 +6,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
 import { logicLogin } from '../features/actions/userActions';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     position: absolute;
@@ -62,14 +62,16 @@ const LoginModal = (props) => {
         setPassword(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); 
         console.log(usuario)
-        dispatch(logicLogin({
+        await dispatch(logicLogin({
             username:usuario,
             password:password,
             loggedIn:true
         }));
+        debugger;
+        navigate(`/`);
     }
 
     const card = (

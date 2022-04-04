@@ -130,7 +130,6 @@ const TicketInfo = (props) => {
                     closeAvance={closeAvance} 
                     ticket={ticket.ticket}
                     info={avance}
-                    notifiValidar={(msj)=> {debugger; props.notifiValidar(msj)}}
                     /></Dialog>
         </React.Fragment>
   )

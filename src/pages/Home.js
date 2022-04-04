@@ -4,7 +4,8 @@ import Panel from '../components/Panel';
 import SideBar from '../components/SideBar';
 import { logicLogout } from '../features/actions/userActions';
 import {Routes, Route, useRoutes, BrowserRouter} from "react-router-dom";
-import BuscarUsuario from '../components/BuscarUsuario';
+import PedidoContainer from './PedidoContainer';
+import Pedidos from './Pedidos';
 import Usuarios from './Usuarios';
 import io from 'socket.io-client';
 import { selectUser } from '../features/userSlice';
@@ -21,9 +22,7 @@ const Home = (props) => {
   useEffect(async () => {
     const newSocket = io(`http://${window.location.hostname}:3000`);
     await setSocket(newSocket);
-   
-
-
+   console.log(props);
     return () => {
       newSocket.close();
     }
@@ -31,7 +30,13 @@ const Home = (props) => {
   
   return (
     <React.Fragment>
-        <SideBar user={props.user==null ? 1 : 0} socket={socket}/>
+      <Routes>
+        <Route path="*" element={<SideBar user={props.user==null ? 1 : 0} socket={socket}/>}>
+          <Route path="users" element={<Usuarios user={props.user} />}/>
+          <Route path="pedidos" element={<Pedidos user={props.user}/>}/>
+          <Route path="pedido-info/:idPedido" element={<PedidoContainer user={props.user}/>}/>
+        </Route>
+      </Routes>
     </React.Fragment>
   );
 };

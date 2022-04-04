@@ -2,6 +2,7 @@ import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setPagina } from '../features/pagSlice';
 import { pedidoSelect } from '../features/pedidoSlice';
 import Perfil from './Perfil';
@@ -15,6 +16,7 @@ const ListaContainer = (props) => {
   const [openPerfil, setOpenPerfil] = React.useState(false);
   const [userSelected, setUserSelected] = React.useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
     
   const togglePerfil = (value, modo) => {
     debugger;
@@ -24,7 +26,8 @@ const ListaContainer = (props) => {
     else if(modo==='pedq'){
       debugger;
       dispatch(pedidoSelect(value));
-      dispatch(setPagina('pedinfo'));
+      //dispatch(setPagina('pedinfo'));
+      navigate(`/pedido-info/${value.pedido['_id']}`)
     }
     else{
         props.selectUser(props.items[value]);

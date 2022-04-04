@@ -27,7 +27,7 @@ import LaptopIcon from '@mui/icons-material/Laptop';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ButtonProfile from './ButtonProfile';
 import Panel from './Panel';
-import {Link as LinkRoute} from 'react-router-dom';
+import {Link as LinkRoute, Outlet} from 'react-router-dom';
 import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -226,18 +226,22 @@ function SideBar(props) {
     if(['Administrador','Empleado'].includes(userLogin.rol))
       return(
           <React.Fragment>
+            <LinkRoute to="/">
           <ListItem button key={'Resumen'} sx={{p:3}}>
               <ListItemIcon>
                 <DashboardIcon sx={{color:'white'}}/>
               </ListItemIcon>
               <ListItemText >RESUMEN</ListItemText>
             </ListItem>
+            </LinkRoute>
+            <LinkRoute to="users">
             <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
                 <ListItemIcon>
                   <PersonIcon sx={{color:'white'}}/>
                 </ListItemIcon>
                   <ListItemText >USUARIOS</ListItemText>
             </ListItem>
+            </LinkRoute>
           </React.Fragment>
       );
       else return null;
@@ -270,9 +274,11 @@ function SideBar(props) {
                         }}
                         alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
                     />
-                    <Typography   variant="h4" component="h1" sx={{ flexGrow: 1}}>
-                        <Systec>SYSTEC</Systec>
-                    </Typography>
+                    <LinkRoute to='*'>
+                      <Typography   variant="h4" component="h1" sx={{ flexGrow: 1}}>
+                          <Systec>SYSTEC</Systec>
+                      </Typography>
+                    </LinkRoute>
             </Grid>
             <Grid item xs={2} md={1} sx={{margin:'auto'}}>
                <Box>
@@ -294,12 +300,14 @@ function SideBar(props) {
         <Divider />
         <List sx={{backgroundColor:"#254E58",color:'white'}}>
             <Lista/>
-            <ListItem button onClick={()=>{handleChangePag('ped')}} key={'Pedidos'} sx={{p:3}}>
+            <LinkRoute to="pedidos">
+            <ListItem button sx={{p:3}}>
               <ListItemIcon>
                 <LaptopIcon sx={{color:'white'}}/>
               </ListItemIcon>
               <ListItemText >PEDIDOS</ListItemText>
             </ListItem>
+            </LinkRoute>
             <ListItem button key={'Manual'} sx={{p:3}}>
               <ListItemIcon>
                 <LibraryBooksIcon sx={{color:'white'}}/>
@@ -327,9 +335,8 @@ function SideBar(props) {
           </RightsContainer>
         </FooterContainer>
       </Drawer>
-      {pag==='us' ? <Usuarios socket={props.socket}/> : null }
-      {pag==='ped' ? <Pedidos user={userLogin}/> : null}
-      {pag==='pedinfo' ? <PedidoContainer user={userLogin}/> : null}
+
+      <Outlet/>
       
       <Dialog
                   open={openPerfil}

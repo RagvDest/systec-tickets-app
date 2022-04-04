@@ -78,7 +78,6 @@ const PedidoContainer = (props) => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
 
@@ -126,7 +125,6 @@ const PedidoContainer = (props) => {
                     <TicketInfo 
                       ticket={ticketSelected} 
                       user={props.user}
-                      notifiValidar={(msj)=>notifiValidar(msj)}
                       />
                   </Dialog>
               </Grid>
