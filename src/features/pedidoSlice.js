@@ -17,8 +17,11 @@ console.log("Pedido Creado");
 
         },
         pedidoSelect:(state,action) => {
-            debugger;
-            state.pedidoSelect = action.payload;
+            if(action.payload.updated==null)
+                state.pedidoSelect = action.payload;
+            else{
+                return {...state,pedidoSelect:{...state.pedidoSelect,pedido:action.payload.pedido}};
+            }
         },
         clearPedidoState:(state) =>{
             state.pedidos = [];

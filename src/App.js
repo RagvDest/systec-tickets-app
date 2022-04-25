@@ -9,6 +9,8 @@ import { persistedStore, store } from './app/store';
 import {Loading} from './components/LoadingComponent';
 import { BrowserRouter } from 'react-router-dom';
 import Main from './components/Main';
+import { ThemeProvider } from '@mui/material';
+import theme from "./assets/theme";
 
 
 function App() {
@@ -17,7 +19,9 @@ function App() {
           <Provider store={store}>
             <PersistGate loading={<Loading/>} persistor={persistedStore}>
                 <BrowserRouter>
+                <ThemeProvider theme={theme}>
                   <Main/>
+                  </ThemeProvider>
                 </BrowserRouter>
             </PersistGate>
 

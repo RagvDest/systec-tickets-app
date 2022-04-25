@@ -1,6 +1,6 @@
 import { Button, ClickAwayListener, Fade, Grow, MenuItem, MenuList, Paper, Popper, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -15,8 +15,13 @@ const MenuContainer = styled.div`
 
 const ButtonProfile = (props) => {
   const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState("");
   const menuContainer = document.getElementById("menu-container")
 
+    useEffect(()=>{
+        debugger;
+        setUsername(props.user.username==null ? "": props.user.username.u_usuario);
+    },[props.user]);
 
   const handleToggle = () => {
     setOpen((prevOpen)=> !prevOpen);
@@ -38,7 +43,7 @@ const ButtonProfile = (props) => {
                     onClick={handleToggle}>
                 <AccountCircleIcon />
                     <Typography   variant="caption" component="h1" sx={{ flexGrow: 1, mx:2}}>
-                        {props.user.username.u_usuario}
+                        {username}
                     </Typography>
             </Button>
             <MenuContainer id='menu-container'>

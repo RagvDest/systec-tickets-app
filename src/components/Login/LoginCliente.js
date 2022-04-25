@@ -3,6 +3,8 @@ import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import LoginIcon from '@mui/icons-material/Login';
+import { useDispatch } from 'react-redux';
+import { logicLogCli } from '../../features/actions/userActions';
 
 
 const Image = styled.img`
@@ -35,13 +37,15 @@ const Login = styled.button`
     }
 `
 
-const LoginCliente = () => {
+const LoginCliente = (props) => {
   const [identificacion,setIdentificacion] = useState("");
   const [orden,setOrden] = useState("");
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     debugger;
     e.preventDefault();
+    await dispatch(logicLogCli(identificacion,orden));
   };
   const onChangeOrden = (e) =>{
     setOrden(e.target.value);

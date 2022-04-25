@@ -1,6 +1,7 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { createPedido, getPedidos } from "../pedidoSlice";
-import { createTicket, getHistorial, getTickets, ticketSelect, updateTicketSlice } from "../ticketSlice";
+import { createTicket, errorTicket, getHistorial, getTickets, ticketSelect, updateTicketSlice } from "../ticketSlice";
+import { updatePed } from "./pedidoActions";
 
 export const crearAvance = (json) => (dispatch) =>{
     let body = {
@@ -34,7 +35,12 @@ export const crearAvance = (json) => (dispatch) =>{
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(getHistorial(response)))
+        .then( async response => {
+            await dispatch(getHistorial(response));
+            if(json.estado!='CERRAR'){
+                await dispatch(updatePed())
+            }
+        })
         .catch(error=>{console.log('Crear Avance',error.message)});
 }
 
@@ -82,13 +88,15 @@ export const searchTickets = (idPedido) =>(dispatch) => {
         }).then(response => response.json())
         .then(response =>{dispatch(getTickets(response.results))})
 }
-export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo) => (dispatch) =>{
+export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (dispatch) =>{
+    debugger;
     const body = {
         ticket:{
             t_detalle:detalle,
             t_total:total,
             t_abono:abono,
-            t_tipo_equipo:tipoEquipo
+            t_tipo_equipo:tipoEquipo,
+            t_re_abierto:check
         },
         id_pedido:id_pedido
     };
@@ -105,7 +113,7 @@ export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo) => (dispatch
             }
             else {
                 let error = new Error('Error '+response.status+': '+response.statusText);
-                console.log(response);
+                console.log(response.message);
                 error.response = response;
                 throw error;
             }
@@ -115,7 +123,7 @@ export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo) => (dispatch
             throw errmess;
         }).then(response => response.json())
         .then(response => dispatch(createTicket(response.ticketCreado)))
-        .catch(error=>{console.log('Crear Ticket',error.message)});
+        .catch(async error=>{await dispatch(errorTicket("Ticket no existe o está activo"))});
 }
 
 

@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 import { Box, fontSize } from '@mui/system';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 
 const BoxData = styled('div')(({theme})=>({
@@ -13,6 +13,30 @@ const BoxData = styled('div')(({theme})=>({
 }))
 
 const TarjetaTicket = (props) => {
+
+  const BoxEstado = () =>{
+    let colorEstado='inherent';
+    let value = props.info.t_estado;
+    if(value=='COMPLETO')
+        colorEstado = 'lightgreen';
+    if(value=='REPARACIÓN')
+        colorEstado = 'royalblue';
+    if(value=='DIAGNÓSTICO')
+        colorEstado = '#F0EF71';
+    if(value=='EN ESPERA')
+        colorEstado = '#eeeee4';
+    if(value=='ADQUISICIÓN')
+        colorEstado = '#85be92';
+    if(value=='CERRADO')
+        colorEstado='#E0e0e0';
+    value = <b>{value}</b>
+    return(
+      <Box sx={{fontSize:16,p:2.4,backgroundColor:colorEstado}}>
+        {value}
+      </Box>
+    )
+  }
+
   return (
     <React.Fragment>
       <Button sx={{width:'100%'}} onClick={()=>{props.toggleTicket(props.info)}} key={props.key}>
@@ -21,9 +45,7 @@ const TarjetaTicket = (props) => {
           <Grid item container sm={12} md={5} spacing={1}>
             <Grid item xs={12} sm={6}>
               <Card sx={{backgroundColor:'yellow', boxShadow:'none',border:'1px solid #2B7A72'}}>
-                  <Box sx={{fontSize:16,p:2.4}}>
-                    DIAGNOSTICO
-                  </Box>
+                  <BoxEstado/>
                   
               </Card>
             </Grid>
@@ -35,7 +57,7 @@ const TarjetaTicket = (props) => {
               </Card>
             </Grid>
           </Grid>
-          <Grid item sm={12} md={7}>
+          <Grid item xs={12} md={7}>
             <Card sx={{backgroundColor:'#DEF2F1', boxShadow:'none',border:'1px solid #2B7A72'}}>
               <Grid container>
                 <Grid item xs={6} sx={{width:'100%'}}>

@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.anchor-no-line{
+  text-decoration: unset;
+}
+
 .rectangle-radius{
   border-top-left-radius: 5% 15%;
   border-bottom-right-radius: 5% 15%;

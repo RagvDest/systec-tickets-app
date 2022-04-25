@@ -4,6 +4,7 @@ import userReducer from '../features/userSlice';
 import searchUsersReducer from '../features/searchUsersSlice';
 import pedidoReducer from '../features/pedidoSlice';
 import pagReducer from '../features/pagSlice';
+import appReducer from '../features/appSlice';
 import ticketReducer from '../features/ticketSlice';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -17,18 +18,19 @@ const persistenceConfigs = {
     storage
 };
 
-const appReducer = combineReducers({
+const applicationReducer = combineReducers({
     user:userReducer,
     searchUser:searchUsersReducer,
     pedido:pedidoReducer,
     pag:pagReducer,
+    app:appReducer,
     ticket:ticketReducer,
     ...createForms({
         userInfo:InitialUserInfo
     })
 });
 
-const persistedReducer = persistReducer(persistenceConfigs, appReducer);
+const persistedReducer = persistReducer(persistenceConfigs, applicationReducer);
 
 export const store = createStore(persistedReducer,
     applyMiddleware(thunk, logger));

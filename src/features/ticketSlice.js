@@ -80,6 +80,11 @@ export const ticketSlice = createSlice({
         },
         clearTicketState:(state)=>{
             return initialStateX;
+        },
+        errorTicket:(state,action)=>{
+            state.resultado.tipo = 'error';
+            state.resultado.mensajes=[action.payload];
+            state.resultado.mostrar=true;
         }
     }
 });
@@ -88,7 +93,7 @@ export const {
     createTicket, getTickets, 
     ticketSelect, updateTicketSlice, 
     getHistorial, changeEstadoSelected,
-    clearTicketState    } = ticketSlice.actions;
+    clearTicketState, errorTicket    } = ticketSlice.actions;
 
 export const selectTickets = (state) => state.ticket.tickets;
 export const selectHistorial = (state) => state.ticket.historial;

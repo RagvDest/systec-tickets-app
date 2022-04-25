@@ -1,6 +1,6 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { setToast } from "../pagSlice";
-import { createPedido, getPedidos } from "../pedidoSlice";
+import { createPedido, getPedidos, pedidoSelect } from "../pedidoSlice";
 
 
 export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch) => {
@@ -67,13 +67,18 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         .then(response => dispatch(createPedido(response.pedidoCreado)))
         .catch(error=>{dispatch(setToast(error))});
 }
-export const updatePed = (pedido_id,fechaIni,fechaFin) => (dispatch) =>{
+export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado) => (dispatch) =>{
     console.log(pedido_id,fechaIni,fechaFin);
     const body = {
-        
+        pedido:{
+            ped_fc_registro:fechaIni,
+            ped_fc_fin:fechaFin,
+            ped_nro_orden:orden,
+            ped_estado:estado
+        }
     };
     console.log(body);
-    return fetch(baseUrl+'users/update/',{
+    return fetch(baseUrl+'pedido/update/'+pedido_id,{
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
@@ -95,8 +100,12 @@ export const updatePed = (pedido_id,fechaIni,fechaFin) => (dispatch) =>{
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch())
-        .catch(error=>{console.log('Actualizar Usuario',error.message)});
+        .then(response => {
+            debugger;
+            dispatch(pedidoSelect({pedido:response.pedido,updated:true}));
+
+        })
+        .catch(error=>{console.log('Actualizar Pedido(Cambiar estado general)',error.message)});
 }
 export const changeEstado = (pedido_id,estado) => (dispatch) =>{
     console.log(pedido_id,estado);

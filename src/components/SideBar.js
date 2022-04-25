@@ -183,7 +183,7 @@ function SideBar(props) {
     }
 
     props.socket.on('getNotificationFromServer', getNotificationFromServer)
-    
+    debugger;
     props.socket.emit('connected',userLogin.username['_id']);
 
 
@@ -274,16 +274,16 @@ function SideBar(props) {
                         }}
                         alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
                     />
-                    <LinkRoute to='*'>
-                      <Typography   variant="h4" component="h1" sx={{ flexGrow: 1}}>
+                    <LinkRoute to='/' className="anchor-no-line">
+                      <Typography variant="h4" component="h1" sx={{ flexGrow: 1}}>
                           <Systec>SYSTEC</Systec>
                       </Typography>
                     </LinkRoute>
             </Grid>
             <Grid item xs={2} md={1} sx={{margin:'auto'}}>
                <Box>
-                        <ButtonProfile user={props.user} togglePerfil={togglePerfil} logOut={logOut}/>
-                    </Box>
+                      <ButtonProfile user={userLogin} togglePerfil={togglePerfil} logOut={logOut}/>
+                </Box>
             </Grid>
           </Grid>
             
@@ -345,7 +345,7 @@ function SideBar(props) {
                   PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil user={props.user}/></Dialog>
+                ><Perfil user={userLogin}/></Dialog>
     
     
     

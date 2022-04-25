@@ -119,10 +119,19 @@ const FormAvance = (props) => {
                                 inputProps={{ 'aria-label': 'Without label',readOnly:props.mode=='c' ? false:true }}
                                 >
                                     {estadosTickets.map((it)=>{
-                                        if(props.mode==='q' && it.est_nombre===estado)
+                                        debugger;
+                                        if(props.ticket.t_estado!='CERRADO'){
+                                            if(props.mode==='q' && it.est_nombre===estado)
+                                                return (<MenuItem value={it.est_nombre} selected>{it.est_nombre}</MenuItem>)
+                                            else
+                                                return (<MenuItem value={it.est_nombre}>{it.est_nombre}</MenuItem>)
+                                        }else{
+                                            if(it.est_nombre===estado)
                                             return (<MenuItem value={it.est_nombre} selected>{it.est_nombre}</MenuItem>)
-                                        else
+                                        else if(it.est_nombre==='RE-ABIERTO')
                                             return (<MenuItem value={it.est_nombre}>{it.est_nombre}</MenuItem>)
+                                        }
+                                        
                                     })}
                                 </Select>
                         </Grid> 

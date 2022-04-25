@@ -1,5 +1,5 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
+import { Box, Button, Dialog, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import {styled as styled1} from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -7,6 +7,8 @@ import { selectTickets } from '../features/ticketSlice';
 import { fcConvert } from '../app/utils';
 import EditIcon from '@mui/icons-material/Edit';
 import { searchTickets } from '../features/actions/ticketActions';
+import FormPedido from './FormPedido';
+import { searchPedidos } from '../features/actions/pedidoActions';
 
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
@@ -22,12 +24,24 @@ const PedidoInfo = (props) => {
     let pedidoInfo = props.pedidoSelect;
     const tickets = useSelector(selectTickets);
 
+    const [openModal,setOpenModal] = useState(false);
+
     const dispatch = useDispatch();
 
     useEffect(()=>{
         debugger;
         dispatch(searchTickets(pedidoInfo.pedido._id))
       },[]);
+
+      const toggleModal = ()=>{
+        setOpenModal(!openModal);
+      };
+    
+    const closePedido = () =>{
+      setOpenModal(false);
+      dispatch(searchPedidos("","","","",props.user))
+      //toast();
+    };
 
   return (
       <Box sx={{px:2, pt:3}}>
@@ -66,18 +80,18 @@ const PedidoInfo = (props) => {
                             <Typography variant='subtitle1' fontSize={18}><b>Fecha Fin:</b></Typography>
                         </Grid>
                         <Grid item xs={7}>
-                            <Typography variant='subtitle1' fontSize={18}>{pedidoInfo.pedido.ped_fc_fin==null ? "NO APLICA" : fcConvert(new Date(pedidoInfo.pedido.ped_fc_registro))}</Typography>
+                            <Typography variant='subtitle1' fontSize={18}>{pedidoInfo.pedido.ped_fc_fin==null ? "NO APLICA" : fcConvert(new Date(pedidoInfo.pedido.ped_fc_fin))}</Typography>
                         </Grid>
                     </Grid>
                 </Grid>
                 <Grid item xs={12} md={12} lg={3} container direction='column' >
                     <Grid item container  >
                         <Grid item xs={6} sx={{mt: 0.9}}>
-                            Nro. Orden: 156132
+                           <b>Nro. Orden:</b> {pedidoInfo.pedido.ped_nro_orden}
                         </Grid>
                         {props.user.rol!='Cliente' && <Grid item xs={6} >
                             <Box sx={{display:'flex',justifyContent:'center'}}>
-                                <Button><EditIcon color='action' fontSize="large"/></Button>
+                                <Button onClick={()=> setOpenModal(true)}><EditIcon color='action' fontSize="large"/></Button>
                             </Box>
                         </Grid>}
                     </Grid>
@@ -89,6 +103,16 @@ const PedidoInfo = (props) => {
                             <Typography variant='subtitle1' fontSize={18}>{pedidoInfo.pedido.ped_estado}</Typography>
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                <Dialog
+                  open={openModal}
+                  onClose={toggleModal}
+                  fullWidth
+                  PaperProps={{sx:{}}}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                ><FormPedido mode='u' ped={pedidoInfo} closePedido={closePedido}/></Dialog>
                 </Grid>
               </Grid>
           </Grid>

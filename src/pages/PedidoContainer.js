@@ -31,13 +31,14 @@ const PedidoContainer = (props) => {
 
   useEffect(async()=>{
     dispatch(searchTickets(pedSelect.pedido._id))
-  },[]);
+  },[ticketSelected]);
 
   useEffect(()=>{
     toast();
   },[resultado]);
 
   const toast = async () =>{
+    debugger;
     if(resultado.mostrar){
       setMensaje(resultado.mensajes);
       setTipoAlert(resultado.tipo);
@@ -99,7 +100,7 @@ const PedidoContainer = (props) => {
                 <Grid item xs={12}>
                     <PedidoInfo pedidoSelect={pedSelect} user={props.user}/>
                 </Grid>
-                {props.user.rol!='Cliente' && <Grid item xs={12} sx={{textAlign:'center',py:3}}>
+                {props.user.rol!='Cliente' && pedSelect.pedido.ped_estado!='CERRADO' && <Grid item xs={12} sx={{textAlign:'center',py:3}}>
                     <Button variant='contained' onClick={toggleModal}>Nuevo Ticket</Button>
                     <Dialog
                       open={openModal}

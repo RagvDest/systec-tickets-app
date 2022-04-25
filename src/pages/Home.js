@@ -10,6 +10,7 @@ import Usuarios from './Usuarios';
 import io from 'socket.io-client';
 import { selectUser } from '../features/userSlice';
 import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import Dashboard from './Dashboard';
 
 const Home = (props) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const Home = (props) => {
           <Route path="users" element={<Usuarios user={props.user} />}/>
           <Route path="pedidos" element={<Pedidos user={props.user}/>}/>
           <Route path="pedido-info/:idPedido" element={<PedidoContainer user={props.user}/>}/>
+          <Route index element={<Dashboard/>}/>
         </Route>
       </Routes>
     </React.Fragment>

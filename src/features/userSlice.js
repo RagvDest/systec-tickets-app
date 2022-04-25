@@ -15,11 +15,13 @@ export const userSlice = createSlice({
         clearUser:(state)=>{
             state.user=null;
         },
-        check:(state,action)=>{
-            return {...state,user:1};
-        }
+        logCli:(state,action)=>{
+            debugger;
+            return {...state,user:action.payload.user}
+        },
+
     }
 });
-export const {login, logout,clearUser} = userSlice.actions;
+export const {login, logout,clearUser,logCli} = userSlice.actions;
 export const selectUser = (state) => state.user.user;
 export default userSlice.reducer;

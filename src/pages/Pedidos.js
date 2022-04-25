@@ -25,7 +25,7 @@ const Pedidos = (props) =>{
 
   const toggleModal = ()=>{
     setOpenModal(!openModal);
-};
+  };
 
 const closePedido = () =>{
   setOpenModal(false);

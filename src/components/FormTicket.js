@@ -6,6 +6,9 @@ import { equipos, round10 } from '../app/utils';
 import TextField from '@mui/material/TextField';
 import { addTicket, updateTicket } from '../features/actions/ticketActions';
 import { selectResult } from '../features/ticketSlice';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 
 const FormTicket = (props) => {
@@ -16,13 +19,25 @@ const FormTicket = (props) => {
     const [nombres,setNombres] = useState("");
     const [total,setTotal] = useState(0.00);
     const [abono,setAbono] = useState(0.00);
+    const [reabierto, setReabierto] = useState(false);
     const [saldo,setSaldo] = useState(0.00);
     const [open,setOpen] =useState(false);
     const [mensaje,setMensaje] = useState([]);
     const [tipoAlert,setTipoAlert] = useState("success");
 
-    const detalleHelperText = document.getElementById('detalle-helper-text');
+    let detalleHelperText;
     const saldoHelperText = document.getElementById('saldo-helper-text');
+
+    const changeCheck = (e) =>{
+        debugger;
+        detalleHelperText = document.getElementById('detalle-helper-text');
+        setReabierto(e.target.checked);
+        if(e.target.checked){
+            detalleHelperText.innerText="Ingrese UNICAMENTE el nro del ticket a re-abrir";
+        }else{
+            detalleHelperText.innerText="";
+        }
+    }
 
     useEffect(()=>{
         debugger;
@@ -95,7 +110,7 @@ const FormTicket = (props) => {
             console.log("Error validacion");
         else{
             if(props.mode==='c')
-                dispatch(addTicket(props.idPed,detalle,total,abono,equipo));
+                dispatch(addTicket(props.idPed,detalle,total,abono,equipo,reabierto));
             else if(props.mode==='u'){
                 dispatch(updateTicket(props.ticket.ticket._id,detalle,total,abono,equipo));
             }
@@ -103,6 +118,7 @@ const FormTicket = (props) => {
     }
 
     const validar = () =>{
+        debugger;
         let valido=true, msj=[];
         if(detalle.length==""){
             msj.push("Detalle no debe estar vacío");
@@ -118,6 +134,10 @@ const FormTicket = (props) => {
         }
         if(saldo<0){
             msj.push("Saldo no debe ser negativo.");
+            valido=false;
+        }
+        if(equipo==""){
+            msj.push("Elija el tipo de equipo");
             valido=false;
         }
         if(!valido){
@@ -168,7 +188,7 @@ const FormTicket = (props) => {
                             <Grid item  xs={12} sm={2} sx={{marginBlock:'auto'}}>
                                 <Typography variant='subtitle1' sx={{float:'left'}} fontSize={16} marginY='auto'><b>Equipo:</b></Typography>
                             </Grid>
-                            <Grid item  xs={12} sm={7} sx={{marginBlock:'auto'}}>
+                            <Grid item  xs={12} sm={6} sx={{marginBlock:'auto'}}>
                                 <Select 
                                     value={equipo}
                                     onChange={changeEquipo}
@@ -176,7 +196,7 @@ const FormTicket = (props) => {
                                     label=" "
                                     variant='standard'
                                     sx={{ width: '100%' }}
-                                    inputProps={{ 'aria-label': 'Without label' }}
+                                    inputProps={{ 'aria-label': 'Without label'}}
                                     >
                                         {equipos.map((it)=>{
                                             if(props.mode==='u' && it.eq_nombre===equipo)
@@ -186,6 +206,12 @@ const FormTicket = (props) => {
                                         })}
                                     </Select>
                             </Grid> 
+                            <Grid item xs={0} sm={1}/>
+                            {props.mode==='c' && <Grid item sm={3}>
+                            <FormGroup>
+                                <FormControlLabel control={<Checkbox onChange={changeCheck}/>} value={reabierto} label="RE-ABIERTO" />
+                            </FormGroup>
+                            </Grid>}
                         </Grid>
                         <Grid item container xs={12} md={12} sx={{textAlign:'center'}}>
                             <Grid item xs={12} sx={{marginBlock:'auto'}}>
@@ -198,6 +224,7 @@ const FormTicket = (props) => {
                                     value={detalle}
                                     onChange={changeDetalle}
                                     multiline
+                                    helperText=' '
                                     rows={4}
                                     defaultValue=""
                                     sx={{width:'100%'}}

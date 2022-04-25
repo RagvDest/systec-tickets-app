@@ -18,6 +18,10 @@ const Historial = (props) => {
         await dispatch(getAvances(props.idTicket.ticket['_id']));
     },[resultado]);
 
+    useEffect(()=>{
+
+    },[historial])
+
     const Celdas = (params) =>{
         let value; 
         let colorEstado = 'inherent';
@@ -29,6 +33,12 @@ const Historial = (props) => {
                 colorEstado = 'royalblue';
             if(value=='DIAGNÓSTICO')
                 colorEstado = '#F0EF71';
+            if(value=='EN ESPERA')
+                colorEstado = '#eeeee4';
+            if(value=='ADQUISICIÓN')
+                colorEstado = '#85be92';
+            if(value=='CERRADO')
+                colorEstado='#E0e0e0';
             value = <b>{value}</b>
         }else if(params.column.id === 'tecnico'){
             value = params.row['e_usuario'];

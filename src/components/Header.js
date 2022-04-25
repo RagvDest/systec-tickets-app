@@ -45,14 +45,14 @@ function Header() {
                         alt="Logo"
                         src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
                     />
-                    
+                    <Link to='/' className="anchor-no-line">
                         <Typography 
                         variant="h4" 
                         component="h1"
-                        onClick={clickHeader}
                         sx={{ flexGrow: 1, mx:3}}>
                             <Systec>SYSTEC</Systec>
                         </Typography>
+                    </Link>
                 </Toolbar>
             </AppBar>
         </Box>

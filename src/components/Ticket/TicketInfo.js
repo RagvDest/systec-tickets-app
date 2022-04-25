@@ -37,10 +37,10 @@ const TicketInfo = (props) => {
     }
 
     const toggleAvance = async (mode,info) =>{
-        setModeAvance(mode);
-        setAvance(info);
-        await dispatch(changeEstadoSelected(info));
-        setOpenAvance(!openAvance);
+            setModeAvance(mode);
+            setAvance(info);
+            await dispatch(changeEstadoSelected(info));
+            setOpenAvance(!openAvance);
     }
 
   return (
@@ -53,7 +53,7 @@ const TicketInfo = (props) => {
                                 <Grid item xs={12} md={11}>
                                     <Typography sx={{fontSize:'1.75rem'}} variant='h6' component='span'><i>Ticket: {ticket.ticket.t_num}</i></Typography>
                                 </Grid>
-                                {props.user.rol!='Cliente' && <Grid item xs={12} md={1} sx={{textAlign:'end '}}>
+                                {props.user.rol!='Cliente' && ticket.ticket.t_estado!='CERRADO' && <Grid item xs={12} md={1} sx={{textAlign:'end '}}>
                                     <Button color="inherit" onClick={toggleUpdate}><EditIcon/></Button>
                                 </Grid>}
                             </Grid>
