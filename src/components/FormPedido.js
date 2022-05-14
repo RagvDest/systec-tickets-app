@@ -63,13 +63,14 @@ const FormPedido = (props) => {
         if(!validar())
             console.log("Error validacion");
         else{
-            if(props.mode=='c')
+            if(props.mode=='c'){
                 dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
-            else if(props.mode=='u')
-                console.log("dispatch actualizar");
+            }
+            else if(props.mode=='u'){
                 await dispatch(updatePed(idPedido,
                     fechaInicial,fechaFinal,
                     orden,estado));
+            }
             props.closePedido();
         }
     }

@@ -9,6 +9,7 @@ import { selectPedidoOne } from '../features/pedidoSlice';
 import { selectResult, selectTicketOne, selectTickets, ticketSelect } from '../features/ticketSlice';
 import { getAvances, searchTickets } from '../features/actions/ticketActions';
 import TicketInfo from '../components/Ticket/TicketInfo';
+import { selectNuevaNotifi} from '../features/appSlice';
 
 
 
@@ -25,9 +26,14 @@ const PedidoContainer = (props) => {
 
   const pedSelect = useSelector(selectPedidoOne);
   const ticketSelected = useSelector(selectTicketOne);
+  const notifi = useSelector(selectNuevaNotifi);
 
   const tickets = useSelector(selectTickets);
   const dispatch = useDispatch();
+
+  useEffect(async()=>{
+      props.socket.emit('nuevaNotifi',notifi);
+  },[notifi])
 
   useEffect(async()=>{
     dispatch(searchTickets(pedSelect.pedido._id))

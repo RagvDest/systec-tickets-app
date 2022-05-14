@@ -32,6 +32,7 @@ const RightsContainer = styled.div`
     justify-content: right;
     align-items: center;
     padding: 15px;
+    color:#FFF;
 `
 
 const Footer = () => {
@@ -49,7 +50,7 @@ const Footer = () => {
               </Box>
           </RedesContainer>
           <RightsContainer>
-            <Typography variant="caption" component="span" color="white" fontSize={10} sx={{opacity:0.6}}>
+            <Typography variant="caption" component="span" fontSize={10} sx={{opacity:0.6}}>
                 © SYSTEC 2021.TODOS LOS DERECHOS RESERVADOS
             </Typography>
           </RightsContainer>

@@ -6,6 +6,7 @@ import { addUsuario, getUsuarios } from '../features/searchUsersSlice';
 import Home from '../pages/Home';
 import {connect, useSelector} from 'react-redux';
 import LogIn from '../pages/LogIn';
+import PasswordModal from './Login/PasswordModal';
 
 
 
@@ -16,7 +17,6 @@ const mapStateToProps = state => {
 };
 
 function RequireAuth({ children, redirectTo, user }) {
-    debugger;
     let isAuthenticated = user!=null;
     return isAuthenticated ? children[0] : children[1];
 }
@@ -24,10 +24,6 @@ function RequireAuth({ children, redirectTo, user }) {
 const Main = (props) =>{
     let navigate = useNavigate();
 
-    useEffect(()=>{
-        if(props.user===null)
-            navigate(`login`);
-    },[]);
       return(
       <div>
           <TransitionGroup>
@@ -40,6 +36,8 @@ const Main = (props) =>{
                                 </RequireAuth>
                             }/>
                             <Route path='login' element={<LogIn/>}/>
+                            <Route path='/generate-pass/:idUser/:hashPassword' element={<PasswordModal mode='c' />}/>
+                            <Route path='/recover-pass' element={<PasswordModal mode='u' />}/>
                         </Routes>
                     </CSSTransition>
             </TransitionGroup>

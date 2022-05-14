@@ -1,5 +1,6 @@
 import { Box, Card, CardContent, Divider, FormControl, Input, InputLabel, Link, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import {Link as LinkRoute} from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -98,7 +99,7 @@ const LoginModal = (props) => {
                             <LoginIcon fontSize="large" sx={{color:'white'}}/>
                         </Login>
                         <Typography variant="caption">
-                            <Link href="#" color="inherit">Olvidé mi contraseña</Link>
+                            <LinkRoute to="/recover-pass" color="inherit">Olvidé mi contraseña</LinkRoute>
                         </Typography>
                     </Box>
                     <Divider/>

@@ -57,7 +57,8 @@ class Usuarios extends React.Component{
   };
 
   handleNotificacion = () =>{
-    this.props.socket.emit('notificacion','61e902d8996cc57b8dca918d');
+    debugger;
+    this.props.socket.emit('notificacion','61ee40368094d681eb1f6fdc');
   }
 
   render(){
@@ -80,7 +81,7 @@ class Usuarios extends React.Component{
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario addUser={this.props.addUsuario} resetForm={this.props.resetForm} mode='c'/></Dialog>
+                ><FormUsuario addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
                 <ListaContainer items={this.props.users} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>

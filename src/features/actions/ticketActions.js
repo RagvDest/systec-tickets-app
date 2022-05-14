@@ -1,4 +1,5 @@
 import {baseUrl} from "../../shared/baseUrl";
+import { emitNotifi } from "../appSlice";
 import { createPedido, getPedidos } from "../pedidoSlice";
 import { createTicket, errorTicket, getHistorial, getTickets, ticketSelect, updateTicketSlice } from "../ticketSlice";
 import { updatePed } from "./pedidoActions";
@@ -37,9 +38,7 @@ export const crearAvance = (json) => (dispatch) =>{
         }).then(response => response.json())
         .then( async response => {
             await dispatch(getHistorial(response));
-            if(json.estado!='CERRAR'){
-                await dispatch(updatePed())
-            }
+            await dispatch(emitNotifi({notifi:response.notificacion}))
         })
         .catch(error=>{console.log('Crear Avance',error.message)});
 }
@@ -122,8 +121,15 @@ export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (di
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(createTicket(response.ticketCreado)))
-        .catch(async error=>{await dispatch(errorTicket("Ticket no existe o está activo"))});
+        .then(async response => {
+            await dispatch(createTicket(response.ticketCreado));
+            await dispatch(emitNotifi({notifi:response.notificacion}))
+        })
+        .catch(async error=>{
+            debugger;
+            await dispatch(errorTicket(error.message));
+
+        });
 }
 
 
@@ -159,7 +165,10 @@ export const updateTicket = (id_ticket,detalle,total,abono,tipoEquipo) => (dispa
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(updateTicketSlice(response.ticket)))
+        .then(async response => {
+            await dispatch(updateTicketSlice(response.ticket))
+            await dispatch(emitNotifi({notifi:response.notificacion}))
+        })
         .catch(error=>{console.log('Crear Ticket',error.message)});
 }
 
@@ -194,6 +203,9 @@ export const addComentario = (id_estado, comentario, usuario, id_user) => (dispa
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(getHistorial(response)))
+        .then(async response => {
+            await dispatch(getHistorial(response));
+            await dispatch(emitNotifi({notifi:response.notificacion}))
+            })
         .catch(error=>{console.log('Add Comentario',error.message)});
 }

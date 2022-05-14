@@ -19,7 +19,6 @@ import { styled } from "@mui/material/styles";
 
 export default styled(Box)(({ theme, ownerState }) => {
   const { palette, functions, borders, boxShadows } = theme;
-  debugger;
   const { variant, bgColor, color, opacity, borderRadius, shadow, coloredShadow } = ownerState;
 
   const { gradients, grey, white } = palette;
@@ -81,7 +80,6 @@ export default styled(Box)(({ theme, ownerState }) => {
   let backgroundValue = bgColor;
 
   if (variant === "gradient") {
-    debugger
     backgroundValue = validGradients.find((el) => el === bgColor)
       ? linearGradient(gradients[bgColor].main, gradients[bgColor].state)
       : '#ffffff';

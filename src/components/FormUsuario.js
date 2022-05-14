@@ -36,6 +36,7 @@ debugger;
         }else{
             this.props.addUser(values);
             this.props.resetForm();
+            this.props.closeModal();
         }
             
     }
@@ -54,7 +55,7 @@ debugger;
                                                                     model='.rol'
                                                                     id="demo-simple-select"
                                                 >
-                                                    <option value={'61e7dc21aed590273949963d'}>EMPLEADO</option>
+                                                    <option value={'61e7dc21aed590273949963d'} selected>EMPLEADO</option>
                                                     <option value={'61e7dc27aed590273949963f'}>CLIENTE</option>
                                                 </Control.select>
                 </React.Fragment>

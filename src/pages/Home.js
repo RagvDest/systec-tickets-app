@@ -11,6 +11,7 @@ import io from 'socket.io-client';
 import { selectUser } from '../features/userSlice';
 import { Alert, AlertTitle, Snackbar } from '@mui/material';
 import Dashboard from './Dashboard';
+import PasswordModal from '../components/Login/PasswordModal';
 
 const Home = (props) => {
   const dispatch = useDispatch();
@@ -27,16 +28,16 @@ const Home = (props) => {
     return () => {
       newSocket.close();
     }
-  },[setSocket])
+  },[setSocket]);
   
   return (
     <React.Fragment>
       <Routes>
-        <Route path="*" element={<SideBar user={props.user==null ? 1 : 0} socket={socket}/>}>
-          <Route path="users" element={<Usuarios user={props.user} />}/>
+        <Route path="*" element={<SideBar user={props.user==null ? 1 : 0} socket={socket} setSocket={setSocket}/>}>
+          <Route path="users" element={<Usuarios user={props.user}  socket={socket}/>}/>
           <Route path="pedidos" element={<Pedidos user={props.user}/>}/>
-          <Route path="pedido-info/:idPedido" element={<PedidoContainer user={props.user}/>}/>
-          <Route index element={<Dashboard/>}/>
+          <Route path="pedido-info/:idPedido" element={<PedidoContainer user={props.user} socket={socket} setSocket={setSocket}/>}/>
+          <Route index element={<Dashboard user={props.user}/>}/>
         </Route>
       </Routes>
     </React.Fragment>

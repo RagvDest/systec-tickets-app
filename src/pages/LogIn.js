@@ -12,6 +12,7 @@ import { textAlign } from '@mui/system';
 import { Alert, AlertTitle, Box, Grid, Snackbar } from '@mui/material';
 import {Routes, Route} from "react-router-dom";
 import { selectApp, setTrigger } from '../features/appSlice';
+import PasswordModal from '../components/Login/PasswordModal';
 
 
 const Container = styled.div`

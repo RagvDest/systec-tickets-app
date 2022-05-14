@@ -6,13 +6,19 @@ import ComplexStatisticsCard from '../3rdCode/Cards/StatisticsCards/ComplexStati
 import { DoneAll } from '@mui/icons-material';
 import ResumenCard from '../components/Resumen/ResumenCard';
 import { useDispatch } from 'react-redux';
-import { searchNotifis } from '../features/actions/appActions';
+import { searchNotifis, searchTrabajosPendientes } from '../features/actions/appActions';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const dispatch = useDispatch();
 
   useEffect(async ()=>{
     await dispatch(searchNotifis());
+  },[])
+
+  useEffect(async () =>{
+    debugger;
+    if(props.user.rol != 'Cliente')
+      await dispatch(searchTrabajosPendientes());
   },[])
 
   const PanelesComponent = () =>{
@@ -26,7 +32,7 @@ const Dashboard = () => {
               title="Pedidos Activos"
               count={12}
               percentage={{
-                color: "success",
+                color: "info",
                 amount: "+55%",
                 label: "than lask week",
               }}
@@ -48,10 +54,7 @@ const Dashboard = () => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={6}/>
-        <Grid item xs={6}>
-          <ResumenCard/>
-        </Grid>
+        <Grid item xs={0} md={6}/>
       </React.Fragment>
     )
   };
@@ -62,8 +65,8 @@ const Dashboard = () => {
       <Grid item container xs={12} spacing={3}>
         <PanelesComponent/>
       </Grid>
-      <Grid item container xs={12} spacing={3}>
-        
+      <Grid item container sx={{mt:3}} xs={12} spacing={3}>
+        <ResumenCard user ={props.user} md={props.user.rol != 'Cliente' ? 6:12}/>
       </Grid>
     </Grid>
   )

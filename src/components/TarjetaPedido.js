@@ -16,7 +16,6 @@ const IconContainer = styled.div`
 `
 
 const TarjetaPedido = (props) => {
-    debugger;
     let fcRegistro = new Date(props.info.pedido.ped_fc_registro);
     let fcFin = new Date(props.info.pedido.ped_fc_fin);
     

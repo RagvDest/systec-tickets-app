@@ -41,7 +41,6 @@ const FormAvance = (props) => {
     }
 
     const onSubmit = async (e) =>{
-        debugger;
         if(!validar()){
             setOpen(false);
             setTipoAlert("error");
@@ -60,7 +59,6 @@ const FormAvance = (props) => {
       };
 
     const validar = () => {
-        debugger;
         let mensaje=[];
         let valido = true;
         if(estado == ""){
@@ -119,7 +117,6 @@ const FormAvance = (props) => {
                                 inputProps={{ 'aria-label': 'Without label',readOnly:props.mode=='c' ? false:true }}
                                 >
                                     {estadosTickets.map((it)=>{
-                                        debugger;
                                         if(props.ticket.t_estado!='CERRADO'){
                                             if(props.mode==='q' && it.est_nombre===estado)
                                                 return (<MenuItem value={it.est_nombre} selected>{it.est_nombre}</MenuItem>)

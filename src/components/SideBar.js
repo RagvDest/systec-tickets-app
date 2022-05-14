@@ -40,6 +40,8 @@ import { clearPedidoState } from '../features/pedidoSlice';
 import { clearTicketState } from '../features/ticketSlice';
 import { clearUser } from '../features/userSlice';
 import { clearUsers } from '../features/searchUsersSlice';
+import { searchNotifis } from '../features/actions/appActions';
+import { selectApp, selectMensaje, setTrigger } from '../features/appSlice';
 
 const drawerWidth = 240;
 
@@ -130,6 +132,7 @@ const RedesContainer = styled1.div`
 const RightsContainer = styled1.div`
   display:flex;
   margin:auto;
+  color:#FFF;
 `
 
 const RedContainer = styled1.div`
@@ -156,18 +159,15 @@ function SideBar(props) {
    const [mensaje,setMensaje] = React.useState([]);
    const [tipoAlert,setTipoAlert] = React.useState("info");
 
-  const toast = useSelector(selectToast);
 
   const userLogin = useSelector(selectUser);
 
 
 
+  const appItems = useSelector(selectApp);
   const dispatch = useDispatch();
   
-  React.useEffect(()=>{
-    console.log(pag);
-  },[pag]);
-
+ 
  /* React.useEffect(()=>{
     debugger;
     setMensaje(currentMensaje => currentMensaje.concat(toast));
@@ -176,10 +176,29 @@ function SideBar(props) {
   },[toast])*/
 
   React.useEffect(async ()=>{
-    const getNotificationFromServer= (data) =>{
+    debugger;
+    if(appItems.trigger) await handleToast();
+  },[appItems.trigger===true])
+
+  const handleToast = () =>{
+    setOpenToast(false);
+    setMensaje(currentMensaje => []);
+    setMensaje(currentMensaje => currentMensaje.concat(appItems.mensaje));
+    setTipoAlert(appItems.tipoMensaje);
+    setOpenToast(true);
+    dispatch(setTrigger(false));
+  }
+
+  React.useEffect(async ()=>{
+    const getNotificationFromServer= async (data) =>{
+      debugger;
+      setOpenToast(false);
+      setMensaje(currentMensaje => []);
       setMensaje(currentMensaje => currentMensaje.concat(data));
       setOpenToast(true);
       setTipoAlert("info");
+
+      await dispatch(searchNotifis());
     }
 
     props.socket.on('getNotificationFromServer', getNotificationFromServer)
@@ -244,7 +263,16 @@ function SideBar(props) {
             </LinkRoute>
           </React.Fragment>
       );
-      else return null;
+      else return(
+        <LinkRoute to="/">
+          <ListItem button key={'Resumen'} sx={{p:3}}>
+              <ListItemIcon>
+                <DashboardIcon sx={{color:'white'}}/>
+              </ListItemIcon>
+              <ListItemText >RESUMEN</ListItemText>
+            </ListItem>
+        </LinkRoute>
+      );
   }
 
   return (
@@ -329,7 +357,7 @@ function SideBar(props) {
               </RedContainer>
           </RedesContainer>
           <RightsContainer>
-            <Typography variant="caption" component="span" color="white" fontSize={10} sx={{opacity:0.6, whiteSpace:'normal', p:1, textAlign:'center'}}>
+            <Typography variant="caption" component="span" fontSize={10} sx={{opacity:0.6, whiteSpace:'normal', p:1, textAlign:'center'}}>
                     {open ? '© SYSTEC 2022.TODOS LOS DERECHOS RESERVADOS' : '© SYSTEC 2022'}
             </Typography>
           </RightsContainer>

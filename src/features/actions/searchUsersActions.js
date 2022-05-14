@@ -1,4 +1,5 @@
 import {baseUrl} from "../../shared/baseUrl";
+import { setMensaje } from "../appSlice";
 import { setToast } from "../pagSlice";
 import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
 
@@ -68,7 +69,10 @@ export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispat
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(addUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .then(async response => {
+            await dispatch(addUsuario({username:response.usuario,persona:response.persona,rol:response.rol.r_rol}))
+            await dispatch(setMensaje({mensaje:'Usuario creado. Email de confirmación enviado',tipo:'success'}));
+        })
         .catch(error=>{console.log('Crear Usuario',error.message)});
 }
 export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch) =>{

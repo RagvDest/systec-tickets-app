@@ -1,5 +1,5 @@
 import {baseUrl} from "../../shared/baseUrl";
-import { setMensaje } from "../appSlice";
+import { setMensaje, setRedirect } from "../appSlice";
 import { getPedidos } from "../pedidoSlice";
 import { logCli, login, logout } from "../userSlice";
 
@@ -31,7 +31,7 @@ export const logicLogin = ({username,password}) => (dispatch) =>{
         })
         .then(response => response.json())
         .then(response => dispatch(login({username:response.usuario,rol:response.rol,persona:response.persona})))
-        .catch(error=>{console.log('Log In',error.message)});
+        .catch(error=>{debugger;console.log('Log In',error.message)});
 };
 
 export const logicLogCli = (identificacion,orden) => (dispatch) =>{
@@ -100,3 +100,32 @@ export const logicLogout = () => (dispatch) =>{
         .then(response => dispatch(logout()))
         .catch(error=>{console.log('Log Out',error.message)});
 };
+
+export const logicPass = (body) => (dispatch) =>{
+    return fetch(baseUrl+'users/pass',{
+        method:'POST',
+        body:JSON.stringify(body),
+        headers:{
+            'Content-Type':'application/json'
+        },
+        credentials:'include'})
+        .then(response=>{
+            if(response.ok)
+                return response;
+            else{
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(async response => {
+            await dispatch(setMensaje({mensaje:response.mensaje,tipo:'success'}));
+            await dispatch(setRedirect('/login'));
+        })
+        .catch(error=>{console.log('generate-pass',error.message)});
+}

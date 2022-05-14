@@ -1,6 +1,9 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { setToast } from "../pagSlice";
 import { createPedido, getPedidos, pedidoSelect } from "../pedidoSlice";
+import { emitNotifi } from "../appSlice";
+import { searchTickets } from "./ticketActions";
+
 
 
 export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch) => {
@@ -67,7 +70,7 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         .then(response => dispatch(createPedido(response.pedidoCreado)))
         .catch(error=>{dispatch(setToast(error))});
 }
-export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado) => (dispatch) =>{
+export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dispatch) =>{
     console.log(pedido_id,fechaIni,fechaFin);
     const body = {
         pedido:{
@@ -100,14 +103,38 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado) => (dispatch
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => {
-            debugger;
-            dispatch(pedidoSelect({pedido:response.pedido,updated:true}));
-
+        .then( async response => {
+            await dispatch(pedidoSelect({pedido:response.pedido,updated:true}));
+            await dispatch(searchTickets(pedido_id));
+            if(edit==null)
+                await dispatch(emitNotifi({notifi:response.notificacion}))
         })
         .catch(error=>{console.log('Actualizar Pedido(Cambiar estado general)',error.message)});
 }
 export const changeEstado = (pedido_id,estado) => (dispatch) =>{
     console.log(pedido_id,estado);
     dispatch();
+}
+
+export const getPedInfo = (idPedido) => (dispatch) =>{
+    return fetch(baseUrl+'pedido/info/'+idPedido,{
+        method:'GET',
+        credentials:'include'
+        })
+        .then(response=>{
+            if(response.ok){
+                return response;
+            }
+            else{
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        }).then(response => response.json())
+        .then(response =>{dispatch(pedidoSelect(response))})
+        .catch(error=>{dispatch(setToast(error))});
 }
