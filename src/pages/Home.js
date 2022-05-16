@@ -24,7 +24,6 @@ const Home = (props) => {
   useEffect(async () => {
     const newSocket = io(`http://${window.location.hostname}:3000`);
     await setSocket(newSocket);
-   console.log(props);
     return () => {
       newSocket.close();
     }

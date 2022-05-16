@@ -5,6 +5,7 @@ import searchUsersReducer from '../features/searchUsersSlice';
 import pedidoReducer from '../features/pedidoSlice';
 import pagReducer from '../features/pagSlice';
 import appReducer from '../features/appSlice';
+import dashReducer from '../features/dashboardSlice';
 import ticketReducer from '../features/ticketSlice';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
@@ -25,6 +26,7 @@ const applicationReducer = combineReducers({
     pag:pagReducer,
     app:appReducer,
     ticket:ticketReducer,
+    dash:dashReducer,
     ...createForms({
         userInfo:InitialUserInfo
     })

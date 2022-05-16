@@ -201,11 +201,11 @@ function SideBar(props) {
       await dispatch(searchNotifis());
     }
 
-    props.socket.on('getNotificationFromServer', getNotificationFromServer)
-    debugger;
-    props.socket.emit('connected',userLogin.username['_id']);
-
-
+    if(props.socket!=null){
+      props.socket.on('getNotificationFromServer', getNotificationFromServer)
+      props.socket.emit('connected',userLogin.username['_id']);
+    }
+    
     return () => props.socket.off('getNotificationFromServer',getNotificationFromServer);
 
   },[props.socket]);
