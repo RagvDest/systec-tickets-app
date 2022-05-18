@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistedStore, store } from './app/store';
 import {Loading} from './components/LoadingComponent';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import Main from './components/Main';
 import { ThemeProvider } from '@mui/material';
 import theme from "./assets/theme";
@@ -18,11 +18,11 @@ function App() {
       <React.Fragment>
           <Provider store={store}>
             <PersistGate loading={<Loading/>} persistor={persistedStore}>
-                <BrowserRouter>
+                <HashRouter>
                 <ThemeProvider theme={theme}>
                   <Main/>
                   </ThemeProvider>
-                </BrowserRouter>
+                </HashRouter>
             </PersistGate>
 
           </Provider>
