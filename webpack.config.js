@@ -4,7 +4,8 @@ module.exports = {
         filename: 'app.bundle.js'
     },
     plugins:[
-        new HtmlWebpackPlugin()
+        new HtmlWebpackPlugin(),
+        new Dotenv()
     ],
     module: {
         rules: [
