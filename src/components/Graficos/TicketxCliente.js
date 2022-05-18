@@ -22,7 +22,11 @@ ChartJS.register(
     Legend
 );
 
-const options = {
+
+const TicketXCliente = (props) => {
+
+
+  const options = {
     responsive: true,
     plugins: {
       legend: {
@@ -31,23 +35,21 @@ const options = {
     },
   };
 
-const labels = ['Juan Gabriel', 'Freddy Gutierrez', 'Marcelo Toño', 'Agusto Mindo', 'María'];
+  const labels = props.txClientes.map((it)=>{return it.cliente});
 
-const data = {
+  const data = {
     labels,
     datasets: [
       {
         label: '# de tickets',
         data: labels.map((it,index) => {
-          let arr = [0,10,50,30,100];
+          let arr = props.txClientes.map((ot)=>{return ot.num});
           return arr[index];
         }),
         backgroundColor: 'rgba(21, 171, 38, 0.5)',
       }
     ],
   };
-
-const TicketXCliente = () => {
 
   return (
     <React.Fragment>

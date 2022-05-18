@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
 
@@ -15,6 +16,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+serviceWorkerRegistration.unregister();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

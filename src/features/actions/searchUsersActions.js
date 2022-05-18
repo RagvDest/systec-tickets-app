@@ -109,6 +109,6 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona})))
         .catch(error=>{console.log('Actualizar Usuario',error.message)});
 }

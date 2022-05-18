@@ -36,7 +36,7 @@ const GraficosContainer = (props) => {
     <React.Fragment>
       <Grid item container xs={12} sm={12} md={6}>
         <Grid item xs={12}  sx={{textAlign:'center'}}>
-          <TicketXCliente/>
+          <TicketXCliente txClientes={props.datos.txClientes}/>
         </Grid>
       </Grid>
 
