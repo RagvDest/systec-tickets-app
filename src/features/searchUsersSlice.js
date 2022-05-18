@@ -16,13 +16,12 @@ export const searchUsersSlice = createSlice({
         updateUsuario:(state,action)=>{
             debugger;
             console.log('Usuario_id: '+action.payload.usuario._id +'- Actualizado');
+        },
+        clearUsers:(state)=>{
+            state.users = [];
         }
     }
 });
-
-export const {getUsuarios, addUsuario, updateUsuario} = searchUsersSlice.actions;
-
-
+export const {getUsuarios, addUsuario, updateUsuario, clearUsers} = searchUsersSlice.actions;
 export const selectUsers = (state) => state.searchUser.users;
-
 export default searchUsersSlice.reducer;

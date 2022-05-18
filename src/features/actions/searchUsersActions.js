@@ -1,4 +1,6 @@
 import {baseUrl} from "../../shared/baseUrl";
+import { setMensaje } from "../appSlice";
+import { setToast } from "../pagSlice";
 import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
 
 export const searchUsers = (filtro,input) =>(dispatch) => {
@@ -28,8 +30,8 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
             throw errmess;
         }).then(response => response.json())
         .then(response =>{dispatch(getUsuarios(response.results))})
+        .catch(error=>{dispatch(setToast(error.message))});
 }
-
 export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch) =>{
     debugger;
     const body = {
@@ -67,12 +69,13 @@ export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispat
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(addUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .then(async response => {
+            await dispatch(addUsuario({username:response.usuario,persona:response.persona,rol:response.rol.r_rol}))
+            await dispatch(setMensaje({mensaje:'Usuario creado. Email de confirmación enviado',tipo:'success'}));
+        })
         .catch(error=>{console.log('Crear Usuario',error.message)});
 }
-
 export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch) =>{
-    debugger;
     const body = {
         usuario:{
             u_usuario:username,
@@ -84,7 +87,6 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             p_apellidos:apellidos
         }
     };
-    console.log(body);
     return fetch(baseUrl+'users/update/'+id,{
         method:'PATCH',
         body:JSON.stringify(body),
@@ -107,6 +109,6 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona,rol:response.rol.r_rol})))
+        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona})))
         .catch(error=>{console.log('Actualizar Usuario',error.message)});
 }

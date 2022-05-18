@@ -1,12 +1,13 @@
 import { Box, Card, CardContent, Divider, FormControl, Input, InputLabel, Link, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import {Link as LinkRoute} from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux';
 import { logicLogin } from '../features/actions/userActions';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     position: absolute;
@@ -62,14 +63,16 @@ const LoginModal = (props) => {
         setPassword(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); 
         console.log(usuario)
-        dispatch(logicLogin({
+        await dispatch(logicLogin({
             username:usuario,
             password:password,
             loggedIn:true
         }));
+        debugger;
+        navigate(`/`);
     }
 
     const card = (
@@ -96,7 +99,7 @@ const LoginModal = (props) => {
                             <LoginIcon fontSize="large" sx={{color:'white'}}/>
                         </Login>
                         <Typography variant="caption">
-                            <Link href="#" color="inherit">Olvidé mi contraseña</Link>
+                            <LinkRoute to="/recover-pass" color="inherit">Olvidé mi contraseña</LinkRoute>
                         </Typography>
                     </Box>
                     <Divider/>

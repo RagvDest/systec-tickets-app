@@ -7,7 +7,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button, Dialog, Grid, Link, Typography } from '@mui/material';
+import { Alert, AlertTitle, Button, Dialog, Grid, Link, Snackbar, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -27,12 +27,21 @@ import LaptopIcon from '@mui/icons-material/Laptop';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ButtonProfile from './ButtonProfile';
 import Panel from './Panel';
-import {Link as LinkRoute} from 'react-router-dom';
+import {Link as LinkRoute, Outlet} from 'react-router-dom';
 import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
 import Pedidos from '../pages/Pedidos';
+import { selectPag, selectToast, setPagina } from '../features/pagSlice';
+import PedidoContainer from '../pages/PedidoContainer';
+import { selectUser } from '../features/userSlice';
+import { clearPedidoState } from '../features/pedidoSlice';
+import { clearTicketState } from '../features/ticketSlice';
+import { clearUser } from '../features/userSlice';
+import { clearUsers } from '../features/searchUsersSlice';
+import { searchNotifis } from '../features/actions/appActions';
+import { selectApp, selectMensaje, setTrigger } from '../features/appSlice';
 
 const drawerWidth = 240;
 
@@ -123,6 +132,7 @@ const RedesContainer = styled1.div`
 const RightsContainer = styled1.div`
   display:flex;
   margin:auto;
+  color:#FFF;
 `
 
 const RedContainer = styled1.div`
@@ -142,12 +152,68 @@ function SideBar(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
-  const [pag,setPag] = React.useState("");
+  const pag = useSelector(selectPag);
+
+   // Para SnackBar
+   const [openToast,setOpenToast] = React.useState(false);
+   const [mensaje,setMensaje] = React.useState([]);
+   const [tipoAlert,setTipoAlert] = React.useState("info");
+
+
+  const userLogin = useSelector(selectUser);
+
+
+
+  const appItems = useSelector(selectApp);
   const dispatch = useDispatch();
   
-  React.useEffect(()=>{
-    debugger
-  },[pag]);
+ 
+ /* React.useEffect(()=>{
+    debugger;
+    setMensaje(currentMensaje => currentMensaje.concat(toast));
+    setOpenToast(true);
+    setTipoAlert("error");
+  },[toast])*/
+
+  React.useEffect(async ()=>{
+    debugger;
+    if(appItems.trigger) await handleToast();
+  },[appItems.trigger===true])
+
+  const handleToast = () =>{
+    setOpenToast(false);
+    setMensaje(currentMensaje => []);
+    setMensaje(currentMensaje => currentMensaje.concat(appItems.mensaje));
+    setTipoAlert(appItems.tipoMensaje);
+    setOpenToast(true);
+    dispatch(setTrigger(false));
+  }
+
+  React.useEffect(async ()=>{
+    const getNotificationFromServer= async (data) =>{
+      debugger;
+      setOpenToast(false);
+      setMensaje(currentMensaje => []);
+      setMensaje(currentMensaje => currentMensaje.concat(data));
+      setOpenToast(true);
+      setTipoAlert("info");
+
+      await dispatch(searchNotifis());
+    }
+
+    if(props.socket!=null){
+      props.socket.on('getNotificationFromServer', getNotificationFromServer)
+      props.socket.emit('connected',userLogin.username['_id']);
+    }
+    
+    return () => props.socket.off('getNotificationFromServer',getNotificationFromServer);
+
+  },[props.socket]);
+
+  const handleClose = () =>{
+    setMensaje([]);
+    setOpenToast(false);
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -164,43 +230,50 @@ function SideBar(props) {
 
   const logOut = () =>{
     dispatch(logicLogout())
+    dispatch(clearPedidoState());
+    dispatch(clearTicketState());
+    dispatch(clearUsers());
+    dispatch(clearUser());
+    dispatch(setPagina('ped'));
   }
 
   const handleChangePag = (e) =>{
-    setPag(e);
-  }
+    dispatch(setPagina(e));
+  } 
 
- 
-
-  /*
-  const Lista = () => {
-    const text = ['RESUMEN','USUARIOS','PEDIDOS','MANUAL'];
-    
-    const lista = text.map(
-      (item) =>{
-        return (
-          <ListItem button key={item,index} sx={{p:3}}>
+  const Lista = () =>{
+    if(['Administrador','Empleado'].includes(userLogin.rol))
+      return(
+          <React.Fragment>
+            <LinkRoute to="/">
+          <ListItem button key={'Resumen'} sx={{p:3}}>
               <ListItemIcon>
-                {() => {
-                  switch (item){
-                    case "RESUMEN": return <DashboardIcon sx={{color:'white'}}/>;
-                    case "USUARIOS": return  <PersonIcon sx={{color:'white'}}/>;
-                    case "PEDIDOS": return  <LaptopIcon sx={{color:'white'}}/>;
-                    case "MANUAL": return  <LibraryBooksIcon sx={{color:'white'}}/>
-                  }
-                } 
-              }
+                <DashboardIcon sx={{color:'white'}}/>
               </ListItemIcon>
-              <ListItemText >{item}</ListItemText>
-          </ListItem>
-        );
-      }
-    );
-
-    return (
-      {lista}
-    )
-  }*/
+              <ListItemText >RESUMEN</ListItemText>
+            </ListItem>
+            </LinkRoute>
+            <LinkRoute to="users">
+            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
+                <ListItemIcon>
+                  <PersonIcon sx={{color:'white'}}/>
+                </ListItemIcon>
+                  <ListItemText >USUARIOS</ListItemText>
+            </ListItem>
+            </LinkRoute>
+          </React.Fragment>
+      );
+      else return(
+        <LinkRoute to="/">
+          <ListItem button key={'Resumen'} sx={{p:3}}>
+              <ListItemIcon>
+                <DashboardIcon sx={{color:'white'}}/>
+              </ListItemIcon>
+              <ListItemText >RESUMEN</ListItemText>
+            </ListItem>
+        </LinkRoute>
+      );
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -229,14 +302,16 @@ function SideBar(props) {
                         }}
                         alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
                     />
-                    <Typography   variant="h4" component="h1" sx={{ flexGrow: 1}}>
-                        <Systec>SYSTEC</Systec>
-                    </Typography>
+                    <LinkRoute to='/' className="anchor-no-line">
+                      <Typography variant="h4" component="h1" sx={{ flexGrow: 1}}>
+                          <Systec>SYSTEC</Systec>
+                      </Typography>
+                    </LinkRoute>
             </Grid>
             <Grid item xs={2} md={1} sx={{margin:'auto'}}>
                <Box>
-                        <ButtonProfile user={props.user} togglePerfil={togglePerfil} logOut={logOut}/>
-                    </Box>
+                      <ButtonProfile user={userLogin} togglePerfil={togglePerfil} logOut={logOut}/>
+                </Box>
             </Grid>
           </Grid>
             
@@ -252,24 +327,15 @@ function SideBar(props) {
         </DrawerHeader>
         <Divider />
         <List sx={{backgroundColor:"#254E58",color:'white'}}>
-            <ListItem button key={'Resumen'} sx={{p:3}}>
-              <ListItemIcon>
-                <DashboardIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >RESUMEN</ListItemText>
-            </ListItem>
-            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
-                <ListItemIcon>
-                  <PersonIcon sx={{color:'white'}}/>
-                </ListItemIcon>
-                  <ListItemText >USUARIOS</ListItemText>
-            </ListItem>
-            <ListItem button onClick={()=>{handleChangePag('ped')}} key={'Pedidos'} sx={{p:3}}>
+            <Lista/>
+            <LinkRoute to="pedidos">
+            <ListItem button sx={{p:3}}>
               <ListItemIcon>
                 <LaptopIcon sx={{color:'white'}}/>
               </ListItemIcon>
               <ListItemText >PEDIDOS</ListItemText>
             </ListItem>
+            </LinkRoute>
             <ListItem button key={'Manual'} sx={{p:3}}>
               <ListItemIcon>
                 <LibraryBooksIcon sx={{color:'white'}}/>
@@ -291,14 +357,14 @@ function SideBar(props) {
               </RedContainer>
           </RedesContainer>
           <RightsContainer>
-            <Typography variant="caption" component="span" color="white" fontSize={10} sx={{opacity:0.6, whiteSpace:'normal', p:1, textAlign:'center'}}>
+            <Typography variant="caption" component="span" fontSize={10} sx={{opacity:0.6, whiteSpace:'normal', p:1, textAlign:'center'}}>
                     {open ? '© SYSTEC 2022.TODOS LOS DERECHOS RESERVADOS' : '© SYSTEC 2022'}
             </Typography>
           </RightsContainer>
         </FooterContainer>
       </Drawer>
-      {pag==='us' ? <Usuarios/> : null }
-      {pag==='ped' ? <Pedidos/> : null}
+
+      <Outlet/>
       
       <Dialog
                   open={openPerfil}
@@ -307,7 +373,23 @@ function SideBar(props) {
                   PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil user={props.user}/></Dialog>
+                ><Perfil user={userLogin}/></Dialog>
+    
+    
+    
+    <Snackbar open={openToast} 
+          autoHideDuration={6000} 
+          onClose={handleClose}
+          anchorOrigin={{vertical: "top",
+          horizontal: "right"}}>
+      <Alert onClose={handleClose} severity={tipoAlert} sx={{ width: '100%' }}>
+      {mensaje.map((item,index)=>{
+          return(
+              <AlertTitle key={index}>{item}</AlertTitle>
+          )
+      })}            
+      </Alert>
+    </Snackbar>                
     </Box>
   );
 }

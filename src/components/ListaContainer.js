@@ -1,8 +1,13 @@
 import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setPagina } from '../features/pagSlice';
+import { pedidoSelect } from '../features/pedidoSlice';
 import Perfil from './Perfil';
 import TarjetaPedido from './TarjetaPedido';
+import TarjetaTicket from './TarjetaTicket';
 import TarjetaUsuario from './TarjetaUsuario';
 
 
@@ -10,11 +15,23 @@ const ListaContainer = (props) => {
 
   const [openPerfil, setOpenPerfil] = React.useState(false);
   const [userSelected, setUserSelected] = React.useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
     
-  const togglePerfil = (value) => {
+  const togglePerfil = (value, modo) => {
     debugger;
     setUserSelected(props.items[value]);
-    setOpenPerfil(!openPerfil);
+    if(props.mode==='n')
+      setOpenPerfil(!openPerfil);
+    else if(modo==='pedq'){
+      debugger;
+      dispatch(pedidoSelect(value));
+      //dispatch(setPagina('pedinfo'));
+      navigate(`/pedido-info/${value.pedido['_id']}`)
+    }
+    else{
+        props.selectUser(props.items[value]);
+    }
     console.log(props.items[value]);
   };
 
@@ -22,12 +39,13 @@ const ListaContainer = (props) => {
     setOpenPerfil(false);
   }
 
-  const Tarjetas = (item,index) =>{
-    debugger;
+  const Tarjetas = (items,mode) =>{
     if(props.tipo==='us')
-      return(<TarjetaUsuario info={item.item} key_user={index} togglePerfil={togglePerfil}/>);
+      return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode}/>);
     else if(props.tipo==='ped')
-      return(<TarjetaPedido/>)
+      return(<TarjetaPedido info={items.items} togglePerfil={togglePerfil} mode="ped"/>)
+    else if(props.tipo==='ti')
+      return(<TarjetaTicket info={items.items} toggleTicket={props.handleTicket} key={items.index}/>)
   }
 
   
@@ -36,13 +54,12 @@ const ListaContainer = (props) => {
           <Divider/>
           <Box className='rectangle-radius' sx={{maxHeight:'200vh', overflow:'auto', m:'2%', p:2}}>
             <Grid container className='rectangle-radius' sx={{px:3, py:2}} spacing={3}>
+              {console.log(props)}
                 {props.items.map(
                     (item, index) =>{
-                      console.log(index);
                         return (
                         <Grid item xs={12} key={index}>
-                            <Tarjetas item={item} index={index}/>
-                            
+                            <Tarjetas items={item} index={index} mode={props.mode}/>
                         </Grid>
                         )
                     }

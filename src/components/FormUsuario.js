@@ -1,9 +1,7 @@
 import { Alert, Button, Card, CardActions, CardContent, CardHeader, DialogTitle, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import { Control, Form, Errors} from 'react-redux-form';
-import { addUser } from '../features/actions/searchUsersActions';
 
 
 //validations
@@ -38,6 +36,7 @@ debugger;
         }else{
             this.props.addUser(values);
             this.props.resetForm();
+            this.props.closeModal();
         }
             
     }
@@ -56,7 +55,7 @@ debugger;
                                                                     model='.rol'
                                                                     id="demo-simple-select"
                                                 >
-                                                    <option value={'61e7dc21aed590273949963d'}>EMPLEADO</option>
+                                                    <option value={'61e7dc21aed590273949963d'} selected>EMPLEADO</option>
                                                     <option value={'61e7dc27aed590273949963f'}>CLIENTE</option>
                                                 </Control.select>
                 </React.Fragment>
@@ -88,7 +87,14 @@ debugger;
                                                 model=".username"
                                                 show="touched"
                                                 messages={{
-                                                    required:'Requerido. ',
+                                                    required:'Requerido. '
+                                                }}
+                                            />
+                                            <Errors 
+                                                className="text-danger"
+                                                model=".username"
+                                                show="touched"
+                                                messages={{
                                                     minLength: 'Debe ser mayor a 3 caracteres',
                                                     maxLength: 'Debe ser menor de 9 caracteres'
                                                 }}
@@ -140,14 +146,21 @@ debugger;
                                                             id='cedula' name="cedula" 
                                                             validators={{required,isNumber}}
                                                             model='.cedula'
-                                                            readOnly
+                                                            readOnly={this.props.mode==='u'}
                                                             defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_cedula : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".cedula"
                                                 show="touched"
                                                 messages={{
-                                                    required:'Requerido.  ',
+                                                    required:'Requerido.  '
+                                                }}
+                                            />
+                                            <Errors 
+                                                className="text-danger"
+                                                model=".cedula"
+                                                show="touched"
+                                                messages={{
                                                     isNumber:'Solo números'
                                                 }}
                                             />

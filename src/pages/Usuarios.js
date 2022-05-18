@@ -6,9 +6,10 @@ import {styled} from '@mui/material/styles';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { searchUsers, addUser } from '../features/actions/searchUsersActions';
 import FormUsuario from '../components/FormUsuario';
+import {styled as styled1} from '@mui/material/styles';
 import { actions } from 'react-redux-form';
 
-const DrawerHeader = styled('div')(({ theme }) => ({
+const DrawerHeader = styled1('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
@@ -29,6 +30,7 @@ const mapDispatchToProps = (dispatch) =>({
   getUsers:()=>{dispatch(searchUsers("",""))},
   resetForm:() => { dispatch(actions.reset('userInfo'))}
 })
+
 
 class Usuarios extends React.Component{
 
@@ -54,6 +56,11 @@ class Usuarios extends React.Component{
     })
   };
 
+  handleNotificacion = () =>{
+    debugger;
+    this.props.socket.emit('notificacion','61ee40368094d681eb1f6fdc');
+  }
+
   render(){
 
     
@@ -62,7 +69,8 @@ class Usuarios extends React.Component{
         <React.Fragment > 
           <Grid container>
               <Grid item xs={12}>
-                <BuscarUsuario/>
+                <BuscarUsuario mode={this.props.mode}/>
+                <Button onClick={this.handleNotificacion}>Notificacion</Button>
               </Grid>
               <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
                 <Button variant='contained' onClick={this.toggleModal}>Nuevo</Button>
@@ -73,10 +81,10 @@ class Usuarios extends React.Component{
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario addUser={this.props.addUsuario} resetForm={this.props.resetForm} mode='c'/></Dialog>
+                ><FormUsuario addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
-                <ListaContainer items={this.props.users} tipo='us' />
+                <ListaContainer items={this.props.users} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
               </Grid>
           </Grid>
         </React.Fragment>

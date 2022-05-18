@@ -1,5 +1,7 @@
 import {baseUrl} from "../../shared/baseUrl";
-import { login, logout } from "../userSlice";
+import { setMensaje, setRedirect } from "../appSlice";
+import { getPedidos } from "../pedidoSlice";
+import { logCli, login, logout } from "../userSlice";
 
 export const logicLogin = ({username,password}) => (dispatch) =>{
     const loginData ={
@@ -29,8 +31,53 @@ export const logicLogin = ({username,password}) => (dispatch) =>{
         })
         .then(response => response.json())
         .then(response => dispatch(login({username:response.usuario,rol:response.rol,persona:response.persona})))
-        .catch(error=>{console.log('Log In',error.message)});
+        .catch(error=>{debugger;console.log('Log In',error.message)});
 };
+
+export const logicLogCli = (identificacion,orden) => (dispatch) =>{
+    debugger;
+    const loginData = {
+        identificacion:identificacion,
+        orden:orden
+    };
+    return fetch(baseUrl+'users/log-cli',{
+        method:'POST',
+        body:JSON.stringify(loginData),
+        headers:{
+            'Content-Type':'application/json'
+        },
+        credentials:'include'})
+        .then(response=>{
+            debugger;
+            if(response.ok)
+                return response;
+            else{
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(async response => {
+            debugger;
+            if(response.mensaje==null){
+                if(response.pedidos.length<1){
+                    dispatch(setMensaje({mensaje:'Orden no existe o está inactiva.',tipo:'error'}));
+                }else{
+                    dispatch(logCli({user:response.user}))
+                    //dispatch(getPedidos(response.pedidos));
+                }
+            }else{
+                dispatch(setMensaje({mensaje:response.mensaje, tipo:'error'}));
+            }
+        })
+        .catch(error=>{console.log('Log In Cli',error.message)});
+
+}
 
 export const logicLogout = () => (dispatch) =>{
     return fetch(baseUrl+'users/logout',{
@@ -53,3 +100,32 @@ export const logicLogout = () => (dispatch) =>{
         .then(response => dispatch(logout()))
         .catch(error=>{console.log('Log Out',error.message)});
 };
+
+export const logicPass = (body) => (dispatch) =>{
+    return fetch(baseUrl+'users/pass',{
+        method:'POST',
+        body:JSON.stringify(body),
+        headers:{
+            'Content-Type':'application/json'
+        },
+        credentials:'include'})
+        .then(response=>{
+            if(response.ok)
+                return response;
+            else{
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(async response => {
+            await dispatch(setMensaje({mensaje:response.mensaje,tipo:'success'}));
+            await dispatch(setRedirect('/login'));
+        })
+        .catch(error=>{console.log('generate-pass',error.message)});
+}
