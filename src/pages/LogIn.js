@@ -34,6 +34,7 @@ const Image = styled.img`
 `
 
 const LogIn = () => {
+    
 
   return (
       <Container>
@@ -43,11 +44,11 @@ const LogIn = () => {
                 <Header sx={{zIndex:1}}/>
                 <Routes>
                     <Route path='*' element={<ChooseLogin/>}/>
-                    <Route path='/login-cli' element={<LoginCliente handleToast={handleToast}/>}/>
-                    <Route path='/login-emp' element={<LoginModal handleToast={handleToast}/>}/>
+                    <Route path='/login-cli' element={<LoginCliente/>}/>
+                    <Route path='/login-emp' element={<LoginModal/>}/>
                 </Routes>
               <Footer/>
-
+         
       </Container>    
   );
 };
