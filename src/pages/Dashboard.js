@@ -81,15 +81,15 @@ const Dashboard = (props) => {
   
   return (
     <Grid container sx={{mt:12,mx:3}}> 
-      <Grid item container xs={12} spacing={3}>
+      {props.user.rol === 'Empleado' && <Grid item container xs={12} spacing={3}>
         <PanelesComponent/>
-      </Grid>
+      </Grid>}
       <Grid item container sx={{mt:3}} xs={12} spacing={3}>
         <ResumenCard user ={props.user} md={props.user.rol != 'Cliente' ? 6:12}/>
       </Grid>
-      <Grid item container sx={{mt:3}} xs={12} spacing={3}>
+      {props.user.rol==='Empleado' && <Grid item container sx={{mt:3}} xs={12} spacing={3}>
         <GraficosContainer datos={datos}/>
-      </Grid>
+      </Grid>}
     </Grid>
   )
 }
