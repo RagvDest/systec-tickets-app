@@ -1,10 +1,20 @@
 import { baseUrl } from "../../shared/baseUrl";
 import { setToast } from "../pagSlice";
 import {getNotifis, getTPendiente} from "../appSlice";
+import getStorage from "redux-persist/lib/storage/getStorage";
 
-export const searchNotifis = () =>(dispatch) => {
+
+let access_token = "";
+
+
+export const searchNotifis = () =>(dispatch, getState) => {
+    const state = getState();
+    access_token = state.user.access_token;
         return fetch(baseUrl+'noti/all',{
         method:'GET',
+        headers:{
+            'Authorization':'Bearer '+access_token
+        },
         credentials:'include'
         })
         .then(response=>{
@@ -25,11 +35,14 @@ export const searchNotifis = () =>(dispatch) => {
         .catch(error=>{dispatch(setToast(error))});
 }
 
-export const searchTrabajosPendientes = () =>(dispatch) => {
-    debugger;
+export const searchTrabajosPendientes = () =>(dispatch, getState) => {
+    const state = getState();
+    access_token = state.user.access_token;
     return fetch(baseUrl+'pedido/tpendiente',{
     method:'GET',
-    credentials:'include'
+    headers:{
+        'Authorization':'Bearer '+access_token
+    }
     })
     .then(response=>{
         if(response.ok){

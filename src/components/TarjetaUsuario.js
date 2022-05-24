@@ -50,7 +50,8 @@ const TarjetaUsuario = (props) => {
                                 <Grid item xs sx={{display:'flex'}}>
                                     <LocalPhoneIcon className='icon-center-vertically' fontSize='medium'/>
                                     <Typography   variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto'}}>
-                                        09852314562
+                                        {
+                                         props.info.persona.p_tel == undefined ? 'No aplica' : props.info.persona.p_tel}
                                     </Typography>
                                 </Grid>
                         </Grid>

@@ -1,24 +1,26 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { setToast } from "../pagSlice";
 import { createPedido, getPedidos, pedidoSelect } from "../pedidoSlice";
-import { emitNotifi } from "../appSlice";
+import { emitNotifi, setMensaje } from "../appSlice";
 import { searchTickets } from "./ticketActions";
+let access_token = "";
 
-
-
-export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch) => {
+export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch, getState) => {
     let query='';
     let body = {
         usuario:user
     }
-    debugger;
+    const state = getState();
+    access_token = state.user.access_token;
+    
     if(input!=='')
         query = '?input='+input+'&orden='+orden+'&filtro='+filtro+'&estado='+estado;
     return fetch(baseUrl+'pedido/all'+query,{
         method:'POST',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+access_token
         },
         credentials:'include'})
         .then(response=>{
@@ -37,7 +39,9 @@ export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch) => 
         }).then(response => response.json())
         .then(response =>{dispatch(getPedidos(response.results))})
 }
-export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
+export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
     const body = {
         pedido:{
             ped_fc_registro:fechaIni,
@@ -49,7 +53,8 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         method:'POST',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -70,8 +75,9 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch) =>{
         .then(response => dispatch(createPedido(response.pedidoCreado)))
         .catch(error=>{dispatch(setToast(error))});
 }
-export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dispatch) =>{
-    console.log(pedido_id,fechaIni,fechaFin);
+export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
     const body = {
         pedido:{
             ped_fc_registro:fechaIni,
@@ -85,7 +91,8 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dis
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization': 'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -106,6 +113,7 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dis
         .then( async response => {
             await dispatch(pedidoSelect({pedido:response.pedido,updated:true}));
             await dispatch(searchTickets(pedido_id));
+            await dispatch(setToast('Actualizado'));
             if(edit==null)
                 await dispatch(emitNotifi({notifi:response.notificacion}))
         })
@@ -116,10 +124,15 @@ export const changeEstado = (pedido_id,estado) => (dispatch) =>{
     dispatch();
 }
 
-export const getPedInfo = (idPedido) => (dispatch) =>{
+export const getPedInfo = (idPedido) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
     return fetch(baseUrl+'pedido/info/'+idPedido,{
         method:'GET',
-        credentials:'include'
+        credentials:'include',
+        headers:{
+            'Authorization': 'Bearer '+access_token
+        }
         })
         .then(response=>{
             if(response.ok){

@@ -21,11 +21,21 @@ export const dashSlice = createSlice({
                 nUsers:action.payload.nUsers,
                 totalVentas:action.payload.totalVentas
             };
+        },
+        clearDash:(state)=>{
+            return {...state,
+                txClientes:[],
+                txEstados:[],
+                txEquipos:[],
+                txActivos:"",
+                nUsers:"",
+                totalVentas:""
+            }
         }
     }
 });
 
-export const {getDatos} = dashSlice.actions;
+export const {getDatos, clearDash} = dashSlice.actions;
 
 export const selectDash = (state) => state.dash;
 

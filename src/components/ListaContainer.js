@@ -74,7 +74,7 @@ const ListaContainer = (props) => {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
-                  <Perfil user={userSelected}/>
+                  <Perfil user={userSelected} closePerfil={closePerfil}/>
           </Dialog>
         </React.Fragment>
   );

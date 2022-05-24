@@ -13,6 +13,7 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z09._]+\.[A-Z]{2,4}$/i.test(val)
 
 
 class FormUsuario extends React.Component{
+
     constructor(props) {
         super(props);
 
@@ -33,6 +34,8 @@ debugger;
         debugger;
         if(this.props.mode==='u'){
             this.props.updateUser(values);
+            this.props.closeForm();
+
         }else{
             this.props.addUser(values);
             this.props.resetForm();

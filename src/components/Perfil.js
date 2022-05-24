@@ -48,6 +48,10 @@ const Perfil = (props) => {
     const toggleUpdate = () =>{
         setOpenModal(!openModal);
     }
+    const closeForm = () =>{
+        setOpenModal(false);
+        window.location.reload(true);
+    }
     
   return (
         <React.Fragment>
@@ -93,7 +97,7 @@ const Perfil = (props) => {
                                                     <TableCell component="th" scope="row">
                                                         Celular
                                                     </TableCell>
-                                                    <TableCell align="right">0983542165</TableCell>
+                                                    <TableCell align="right">{props.user.persona.p_tel == undefined ? 'No Aplica' : props.user.persona.p_tel}</TableCell>
                                                 </TableRow>
                                             </TableBody>
                                         </Table>
@@ -118,7 +122,9 @@ const Perfil = (props) => {
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario resetForm={props.resetForm} mode='u' updateUser={props.updateUsuario} userSelected={props.user}/></Dialog>
+                ><FormUsuario   resetForm={props.resetForm} mode='u' 
+                                updateUser={props.updateUsuario} userSelected={props.user}
+                                closeForm={closeForm} /></Dialog>
         </React.Fragment>
   );
 };
