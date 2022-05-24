@@ -1,10 +1,16 @@
 import { baseUrl } from "../../shared/baseUrl";
 import { setToast } from "../pagSlice";
 import {getDatos} from "../dashboardSlice";
+let access_token = '';
 
-export const searchDatos = () =>(dispatch) => {
+export const searchDatos = () =>(dispatch, getState) => {
+    const state = getState();
+    access_token = state.user.access_token;
         return fetch(baseUrl+'dashboard',{
         method:'GET',
+        headers:{
+            'Authorization':'Bearer '+access_token
+        },
         credentials:'include'
         })
         .then(response=>{

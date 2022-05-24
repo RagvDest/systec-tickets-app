@@ -41,7 +41,8 @@ import { clearTicketState } from '../features/ticketSlice';
 import { clearUser } from '../features/userSlice';
 import { clearUsers } from '../features/searchUsersSlice';
 import { searchNotifis } from '../features/actions/appActions';
-import { selectApp, selectMensaje, setTrigger } from '../features/appSlice';
+import { clearApp, selectApp, selectMensaje, setTrigger } from '../features/appSlice';
+import { clearDash } from '../features/dashboardSlice';
 
 const drawerWidth = 240;
 
@@ -228,13 +229,18 @@ function SideBar(props) {
     setOpenPerfil(!openPerfil);
   };
 
+  const closePerfil = () =>{
+    setOpenPerfil(false);
+  }
+
   const logOut = () =>{
     dispatch(logicLogout())
     dispatch(clearPedidoState());
     dispatch(clearTicketState());
     dispatch(clearUsers());
     dispatch(clearUser());
-    dispatch(setPagina('ped'));
+    dispatch(clearApp());
+    dispatch(clearDash());
   }
 
   const handleChangePag = (e) =>{
@@ -368,12 +374,12 @@ function SideBar(props) {
       
       <Dialog
                   open={openPerfil}
-                  onClose={togglePerfil}
+                  onClose={closePerfil}
                   fullWidth
                   PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil user={userLogin}/></Dialog>
+                ><Perfil user={userLogin} closeModal={closePerfil} /></Dialog>
     
     
     

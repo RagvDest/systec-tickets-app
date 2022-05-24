@@ -46,7 +46,7 @@ const FormPedido = (props) => {
     const handleCustomerSearch = (values) =>{
         debugger;
         textUsuario = document.getElementById("nombres");
-        setIdUsuario(values.username._id);
+        setIdUsuario(values.usuario._id);
        // textUsuario.innerText=values.persona.p_nombres+" "+values.persona.p_apellidos;
        setTextUser(values.persona.p_nombres+" "+values.persona.p_apellidos);
         textUsuario.style.color="black";

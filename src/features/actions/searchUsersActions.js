@@ -2,8 +2,12 @@ import {baseUrl} from "../../shared/baseUrl";
 import { setMensaje } from "../appSlice";
 import { setToast } from "../pagSlice";
 import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
+let access_token = '';
 
-export const searchUsers = (filtro,input) =>(dispatch) => {
+export const searchUsers = (filtro,input) =>(dispatch, getState) => {
+    const state = getState();
+    access_token = state.user.access_token;
+
     const op = filtro === 'Username' || filtro === 'Correo' ? 'u' : 'p';
     console.log('Filtro: '+filtro);
     console.log('Input: '+input);
@@ -14,6 +18,9 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
         query = '?input='+input+'&op='+op+'&filtro='+filtro;
     return fetch(baseUrl+'users/all'+query,{
         method:'GET',
+        headers:{
+            'Authorization':'Bearer '+access_token
+        },
         credentials:'include'})
         .then(response=>{
             if(response.ok){
@@ -32,8 +39,10 @@ export const searchUsers = (filtro,input) =>(dispatch) => {
         .then(response =>{dispatch(getUsuarios(response.results))})
         .catch(error=>{dispatch(setToast(error.message))});
 }
-export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch) =>{
-    debugger;
+export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     const body = {
         usuario:{
             u_usuario:username,
@@ -51,7 +60,8 @@ export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispat
         method:'POST',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -75,7 +85,10 @@ export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispat
         })
         .catch(error=>{console.log('Crear Usuario',error.message)});
 }
-export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch) =>{
+export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     const body = {
         usuario:{
             u_usuario:username,
@@ -91,7 +104,8 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -109,6 +123,12 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(updateUsuario({usuario:response.usuario,persona:response.persona})))
-        .catch(error=>{console.log('Actualizar Usuario',error.message)});
+        .then(response => {
+            dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
+            
+        })
+        .catch(error=>{
+            dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
+            console.log('Actualizar Usuario',error.message)}
+            );
 }

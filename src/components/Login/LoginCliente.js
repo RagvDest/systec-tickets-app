@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import LoginIcon from '@mui/icons-material/Login';
 import { useDispatch } from 'react-redux';
 import { logicLogCli } from '../../features/actions/userActions';
+import { useNavigate } from 'react-router';
 
 
 const Image = styled.img`
@@ -40,12 +41,14 @@ const Login = styled.button`
 const LoginCliente = (props) => {
   const [identificacion,setIdentificacion] = useState("");
   const [orden,setOrden] = useState("");
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) =>{
     debugger;
     e.preventDefault();
     await dispatch(logicLogCli(identificacion,orden));
+    navigate(`/`);
   };
   const onChangeOrden = (e) =>{
     setOrden(e.target.value);
