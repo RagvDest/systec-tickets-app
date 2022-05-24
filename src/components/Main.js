@@ -1,12 +1,14 @@
 
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate} from 'react-router';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { addUsuario, getUsuarios } from '../features/searchUsersSlice';
+import { Alert, AlertTitle, Box, Grid, Snackbar } from '@mui/material';
 import Home from '../pages/Home';
-import {connect, useSelector} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import LogIn from '../pages/LogIn';
 import PasswordModal from './Login/PasswordModal';
+import { selectApp, setTrigger } from '../features/appSlice';
 
 
 
@@ -23,6 +25,32 @@ function RequireAuth({ children, redirectTo, user }) {
 }
 
 const Main = (props) =>{
+    const [mensaje,setMensaje] = useState("");
+    const [tipoAlert,setTipoAlert] = useState("info");
+    const [openToast,setOpenToast] = useState(false);
+    const dispatch = useDispatch();
+
+    const appItems = useSelector(selectApp);
+
+    useEffect(async ()=>{
+        debugger;
+        if(appItems.trigger) await handleToast();
+    },[appItems.trigger===true])
+
+    const handleToast = () =>{
+        setOpenToast(false);
+        setMensaje(appItems.mensaje);
+        setTipoAlert(appItems.tipoMensaje);
+        setOpenToast(true);
+        dispatch(setTrigger(false));
+    }
+
+
+
+    const handleClose = () =>{
+        setMensaje();
+        setOpenToast(false);
+      }
 
       return(
       <div>
@@ -43,6 +71,15 @@ const Main = (props) =>{
                         </Routes>
                     </CSSTransition>
             </TransitionGroup>
+            <Snackbar open={openToast} 
+                    autoHideDuration={6000} 
+                    onClose={handleClose}
+                    anchorOrigin={{vertical: "top",
+                    horizontal: "right"}}>
+                <Alert onClose={handleClose} severity={tipoAlert} sx={{ width: '100%' }}>
+                        <AlertTitle>{mensaje}</AlertTitle>
+                </Alert>
+            </Snackbar>   
       </div>
       )
 }

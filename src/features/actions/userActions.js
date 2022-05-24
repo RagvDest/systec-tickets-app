@@ -73,7 +73,10 @@ export const logicLogCli = (identificacion,orden) => (dispatch) =>{
 
 }
 
-export const logicLogout = () => (dispatch) =>{
+export const logicLogout = () => (dispatch,getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     return fetch(baseUrl+'users/logout',{
         method:'GET',
         headers:{
@@ -99,6 +102,7 @@ export const logicLogout = () => (dispatch) =>{
 };
 
 export const logicPass = (body) => (dispatch) =>{
+    
     return fetch(baseUrl+'users/pass',{
         method:'POST',
         body:JSON.stringify(body),
@@ -122,6 +126,35 @@ export const logicPass = (body) => (dispatch) =>{
         .then(response => response.json())
         .then(async response => {
             await dispatch(setMensaje({mensaje:response.mensaje,tipo:'success'}));
+            await dispatch(setRedirect('/login'));
+        })
+        .catch(error=>{console.log('generate-pass',error.message)});
+}
+
+export const logicRecoverPass = (body) => (dispatch) =>{
+    return fetch(baseUrl+'users/recover-pass',{
+        method:'POST',
+        body:JSON.stringify(body),
+        headers:{
+            'Content-Type':'application/json'
+        },
+        credentials:'include'})
+        .then(response=>{
+            if(response.ok)
+                return response;
+            else{
+                let error = new Error('Error '+response.status+': '+response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            let errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(async response => {
+            await dispatch(setMensaje({mensaje:response.mensaje,tipo:'info'}));
             await dispatch(setRedirect('/login'));
         })
         .catch(error=>{console.log('generate-pass',error.message)});

@@ -34,34 +34,6 @@ const Image = styled.img`
 `
 
 const LogIn = () => {
-    const [pag, setPag] = useState("login");
-    const [mensaje,setMensaje] = useState("");
-    const [tipoAlert,setTipoAlert] = useState("info");
-    const [openToast,setOpenToast] = useState(false);
-    const pagSelected = useSelector(selectPag);
-    const dispatch = useDispatch();
-
-    const appItems = useSelector(selectApp);
-
-    useEffect(async ()=>{
-        debugger;
-        if(appItems.trigger) await handleToast();
-    },[appItems.trigger===true])
-
-    const handleToast = () =>{
-        setOpenToast(false);
-        setMensaje(appItems.mensaje);
-        setTipoAlert(appItems.tipoMensaje);
-        setOpenToast(true);
-        dispatch(setTrigger(false));
-    }
-
-
-
-    const handleClose = () =>{
-        setMensaje();
-        setOpenToast(false);
-      }
 
   return (
       <Container>
@@ -75,16 +47,7 @@ const LogIn = () => {
                     <Route path='/login-emp' element={<LoginModal handleToast={handleToast}/>}/>
                 </Routes>
               <Footer/>
-         
-              <Snackbar open={openToast} 
-                    autoHideDuration={6000} 
-                    onClose={handleClose}
-                    anchorOrigin={{vertical: "top",
-                    horizontal: "right"}}>
-                <Alert onClose={handleClose} severity={tipoAlert} sx={{ width: '100%' }}>
-                        <AlertTitle>{mensaje}</AlertTitle>
-                </Alert>
-            </Snackbar>   
+
       </Container>    
   );
 };
