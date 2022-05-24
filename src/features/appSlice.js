@@ -34,14 +34,25 @@ export const appSlice = createSlice({
         },
         setRedirect:(state,action) =>{
             return {...state,redirect:action.payload};
+        },
+        clearApp:(state)=>{
+            return {...state,
+                mensaje:"",
+                tipoMensaje:"info",
+                trigger:false,
+                notifis:[],
+                tPendiente:[],
+                nuevaNotifi:{},
+                redirect:""
+            }
         }
     }
 });
 
-export const {  setMensaje, setClear,
+export const {  setMensaje, clear,
                 setTrigger, getNotifis,
                 getTPendiente, emitNotifi,
-                setRedirect} = appSlice.actions;
+                setRedirect, clearApp} = appSlice.actions;
 
 export const selectApp = (state) => state.app;
 export const selectNotifis = (state) => state.app.notifis;

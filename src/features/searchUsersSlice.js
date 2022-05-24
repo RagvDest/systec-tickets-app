@@ -8,7 +8,6 @@ export const searchUsersSlice = createSlice({
     reducers:{
         getUsuarios:(state, action)=>{
             state.users = action.payload;
-            console.log(state.users);
         },
         addUsuario:(state,action)=>{
             state.users.push(action.payload);

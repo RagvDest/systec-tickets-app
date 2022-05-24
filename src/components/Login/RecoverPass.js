@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import HelpIcon from '@mui/icons-material/Help';
 import EmailIcon from '@mui/icons-material/Email';
+import { logicRecoverPass } from '../../features/actions/userActions';
 
 const RecoverPass = (props) => {
   const [email,setEmail] = useState("");
@@ -17,9 +18,9 @@ const RecoverPass = (props) => {
     e.preventDefault();
     if(emailValidation(email)){
         let json = {
-            email:email
+            mail:email
         }
-        console.log(json);
+        dispatch(logicRecoverPass(json));
     }else{
       alert("Email no válido");
     }

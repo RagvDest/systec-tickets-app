@@ -3,8 +3,12 @@ import { emitNotifi } from "../appSlice";
 import { createPedido, getPedidos } from "../pedidoSlice";
 import { createTicket, errorTicket, getHistorial, getTickets, ticketSelect, updateTicketSlice } from "../ticketSlice";
 import { updatePed } from "./pedidoActions";
+let access_token = '';
 
-export const crearAvance = (json) => (dispatch) =>{
+export const crearAvance = (json) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     let body = {
         estado:{
             e_nombre:json.estado,
@@ -18,7 +22,8 @@ export const crearAvance = (json) => (dispatch) =>{
         method:'POST',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -43,11 +48,16 @@ export const crearAvance = (json) => (dispatch) =>{
         .catch(error=>{console.log('Crear Avance',error.message)});
 }
 
-export const getAvances = (id_ticket) => (dispatch) =>{
-    debugger;
+export const getAvances = (id_ticket) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     return fetch(baseUrl+'estado/all/'+id_ticket,{
         method:'GET',
-        credentials:'include'})
+        credentials:'include',
+        headers:{
+            'Authorization':'Bearer '+access_token
+        }})
     .then(response => {
         if(response.ok){
             return response;
@@ -67,10 +77,16 @@ export const getAvances = (id_ticket) => (dispatch) =>{
     .catch(error=>{console.log('Get Historial',error.message)});
 }
 
-export const searchTickets = (idPedido) =>(dispatch) => {
+export const searchTickets = (idPedido) =>(dispatch, getState) => {
+    const state = getState();
+    access_token = state.user.access_token;
+
     return fetch(baseUrl+'ticket/all/'+idPedido,{
         method:'GET',
-        credentials:'include'})
+        credentials:'include',
+        headers:{
+            'Authorization':'Bearer '+access_token
+        }})
         .then(response=>{
             if(response.ok){
                 return response;
@@ -87,8 +103,10 @@ export const searchTickets = (idPedido) =>(dispatch) => {
         }).then(response => response.json())
         .then(response =>{dispatch(getTickets(response.results))})
 }
-export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (dispatch) =>{
-    debugger;
+export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+    
     const body = {
         ticket:{
             t_detalle:detalle,
@@ -103,7 +121,8 @@ export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (di
         method:'POST',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -133,8 +152,10 @@ export const addTicket = (id_pedido,detalle,total,abono,tipoEquipo,check) => (di
 }
 
 
-export const updateTicket = (id_ticket,detalle,total,abono,tipoEquipo) => (dispatch) =>{
-    debugger;
+export const updateTicket = (id_ticket,detalle,total,abono,tipoEquipo) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     const body = {
         ticket:{
             t_detalle:detalle,
@@ -147,7 +168,8 @@ export const updateTicket = (id_ticket,detalle,total,abono,tipoEquipo) => (dispa
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {
@@ -172,8 +194,10 @@ export const updateTicket = (id_ticket,detalle,total,abono,tipoEquipo) => (dispa
         .catch(error=>{console.log('Crear Ticket',error.message)});
 }
 
-export const addComentario = (id_estado, comentario, usuario, id_user) => (dispatch) =>{
-    debugger;
+export const addComentario = (id_estado, comentario, usuario, id_user) => (dispatch, getState) =>{
+    const state = getState();
+    access_token = state.user.access_token;
+
     const body = {
         comentario:{
             c_detalle:comentario,
@@ -185,7 +209,8 @@ export const addComentario = (id_estado, comentario, usuario, id_user) => (dispa
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
-            'Content-Type':'application/json'
+            'Content-Type':'application/json',
+            'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
         .then(response => {

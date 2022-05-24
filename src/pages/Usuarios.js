@@ -47,7 +47,6 @@ class Usuarios extends React.Component{
 
     this.toggleModal = this.toggleModal.bind(this);
     this.props.getUsers();
-
   }
 
   toggleModal(){
