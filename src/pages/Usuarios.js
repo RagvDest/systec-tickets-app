@@ -54,11 +54,10 @@ class Usuarios extends React.Component{
     
 
     return (
-        <Container > 
-          <Grid container>
+        <React.Fragment> 
+          <Grid container sx={{mt:{xs:12,md:6}}}>
               <Grid item xs={12}>
                 <BuscarUsuario mode={this.props.mode}/>
-                <Button onClick={this.handleNotificacion}>Notificacion</Button>
               </Grid>
               <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
                 <Button variant='contained' onClick={this.toggleModal}>Nuevo</Button>
@@ -75,7 +74,7 @@ class Usuarios extends React.Component{
                 <ListaContainer items={this.props.users} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
               </Grid>
           </Grid>
-        </Container>
+        </React.Fragment>
     );
   };
 }

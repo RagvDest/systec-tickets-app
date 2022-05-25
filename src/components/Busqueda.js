@@ -47,10 +47,9 @@ const Busqueda = () => {
     }
   return (
     <Box component="main" sx={{ flexGrow: 1, pt:5,px:5}}>
-    <DrawerHeader />
     <Container>
         <Grid container spacing={4}>
-            <Grid item xs={5} md={3} sx={{m:'auto'}}>
+            <Grid item xs={5} md={2} sx={{m:'auto'}}>
                 <ButtonGroup variant="contained" aria-label="" sx={{width:'100%'}}>
                     <Autocomplete
                     disablePortal

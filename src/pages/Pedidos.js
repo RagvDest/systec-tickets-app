@@ -29,7 +29,7 @@ const closePedido = () =>{
 
     return (
       <React.Fragment > 
-      <Grid container sx={{mt:{xs:5,md:0}}}>
+      <Grid container sx={{mt:{xs:12,md:7}}}>
           <Grid item xs={12} >
             <Busqueda/>
           </Grid>

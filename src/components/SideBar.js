@@ -23,7 +23,7 @@ import { clearTicketState } from '../features/ticketSlice';
 import { clearUser } from '../features/userSlice';
 import { clearUsers } from '../features/searchUsersSlice';
 import { searchNotifis } from '../features/actions/appActions';
-import { clearApp, selectApp, setTrigger } from '../features/appSlice';
+import { clearApp, selectApp,  setTrigger } from '../features/appSlice';
 import { clearDash } from '../features/dashboardSlice';
 
 const drawerWidth = 240;
@@ -181,12 +181,14 @@ function SideBar(props) {
         <React.Fragment>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md:'flex' } }}>
               {pagesEmpl.map((page,index) => (
+                <LinkRoute to={page.link} className="anchor-no-line">
                 <Button
                   key={index}
-                  sx={{  my: 2, color: 'white', display: 'block'}}
+                  sx={{  my: 2, color: '#fff', display: 'block'}}
                   >
-                  <LinkRoute to={page.link} className="anchor-no-line">{page.name}</LinkRoute>
+                  {page.name}
                 </Button>
+                </LinkRoute>
               ))}
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md:'none' } }}>
@@ -213,13 +215,14 @@ function SideBar(props) {
       <React.Fragment>
         <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
                 {pagesCli.map((page,index) => (
+                  <LinkRoute to={page.link} className="anchor-no-line">
                   <Button
                     key={index}
-                    className="button-app"
-                    sx={{  my: 2, mx:'auto', color: 'white', display: 'block'}}
-                  >
-                    <LinkRoute to={page.link} className="anchor-no-line">{page.name}</LinkRoute>
+                    sx={{  my: 2, color: '#fff', display: 'block'}}
+                    >
+                    {page.name}
                   </Button>
+                  </LinkRoute>
                 ))}
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md:'none' } }}>

@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, ButtonGroup, ClickAwayListener, Grid, InputAdornment, MenuItem, MenuList, OutlinedInput, Paper, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box,  ButtonGroup,  Grid, InputAdornment,  OutlinedInput, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {styled as styled1} from '@mui/material/styles';
@@ -6,15 +6,6 @@ import {styled as styled1} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux';
 import { searchUsers } from '../features/actions/searchUsersActions';
-
-const DrawerHeader = styled1('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  }));
 
 const Container = styled.div`
     flex-direction: column;
@@ -45,11 +36,10 @@ const BuscarUsuario = (props) => {
 
   return (
     <Box component="main" sx={{ flexGrow: 1, pt: 6,px:6}}>
-        {props.mode==="q" ? null : <DrawerHeader />}
         <Container>
-            <Grid container spacing={1}>
-                <Grid item xs={12} md={4} sx={{m:'auto'}}>
-                    <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mx:3, width:'100%'}}>
+            <Grid container spacing={4}>
+                <Grid item xs={5} md={2} sx={{m:'auto'}}>
+                    <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{width:'100%'}}>
                         <Autocomplete
                         disablePortal
                         disableClearable
@@ -62,7 +52,7 @@ const BuscarUsuario = (props) => {
                         />
                     </ButtonGroup>
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={7} md={6}>
                     <OutlinedInput
                     id="outlined-adornment-weight"
                     placeholder="Buscar . . ."
@@ -70,6 +60,7 @@ const BuscarUsuario = (props) => {
                     onKeyDown={handleSearch}
                     endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>} sx={{mx:3, width:'100%', size:'small'}}/>
                 </Grid>
+                <Grid item xs={0} md={1}></Grid>
             </Grid>
         </Container>
       </Box>
