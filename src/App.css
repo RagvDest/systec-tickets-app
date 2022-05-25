@@ -4,6 +4,14 @@
 
 .anchor-no-line{
   text-decoration: unset;
+  color:white;
+}
+.button-app{
+  margin: auto;
+}
+.anchor-no-line:hover{
+  text-decoration: unset;
+  color:white;
 }
 
 .rectangle-radius{

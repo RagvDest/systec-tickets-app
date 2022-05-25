@@ -1,11 +1,9 @@
-import { Alert, AlertTitle, Button, Card, CardActions, CardContent, CardHeader, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Alert, AlertTitle, Button, Card, CardActions, CardContent, CardHeader, Grid, MenuItem, Select, Snackbar, Typography } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { equipos, round10 } from '../app/utils';
 import TextField from '@mui/material/TextField';
 import { addTicket, updateTicket } from '../features/actions/ticketActions';
-import { selectResult } from '../features/ticketSlice';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -48,9 +46,9 @@ const FormTicket = (props) => {
             setTotal(props.ticket.ticket.t_total);
             setAbono(props.ticket.ticket.t_abono);
             //Saldo
-            let saldoX = (props.ticket.ticket.t_total=='' ? 0: props.ticket.ticket.t_total) - (props.ticket.ticket.t_abono=='' ? 0:props.ticket.ticket.t_abono);
+            let saldoX = (props.ticket.ticket.t_total==='' ? 0: props.ticket.ticket.t_total) - (props.ticket.ticket.t_abono==='' ? 0:props.ticket.ticket.t_abono);
             setSaldo(round10('round',saldoX,-2));
-        }else if(props.mode=='c'){
+        }else if(props.mode==='c'){
             setNombres(props.p_nombres);
         }
     },[])
@@ -69,7 +67,7 @@ const FormTicket = (props) => {
     const changeTotal = (e) =>{
         debugger;
         let totalX;
-        if(e.target.value==''){
+        if(e.target.value===''){
             totalX='';
         }else
             totalX = parseFloat(e.target.value);
@@ -79,7 +77,7 @@ const FormTicket = (props) => {
     }
     const changeAbono = (e) =>{
         let abonoX;
-        if(e.target.value==''){
+        if(e.target.value===''){
             abonoX='';
         }else
             abonoX = parseFloat(e.target.value);
@@ -89,7 +87,7 @@ const FormTicket = (props) => {
     }
     const calcularSaldo = (total,abono) => {
         debugger;
-        let saldoX = (total=='' ? 0: total) - (abono=='' ? 0:abono);
+        let saldoX = (total==='' ? 0: total) - (abono==='' ? 0:abono);
         if(saldoX<0){
             saldoHelperText.innerHTML='Valor no debe ser negativo';
             saldoHelperText.style.color='red';
@@ -120,7 +118,7 @@ const FormTicket = (props) => {
     const validar = () =>{
         debugger;
         let valido=true, msj=[];
-        if(detalle.length==""){
+        if(detalle.length===""){
             msj.push("Detalle no debe estar vacío");
             valido=false;
         }
@@ -136,7 +134,7 @@ const FormTicket = (props) => {
             msj.push("Saldo no debe ser negativo.");
             valido=false;
         }
-        if(equipo==""){
+        if(equipo===""){
             msj.push("Elija el tipo de equipo");
             valido=false;
         }
@@ -173,7 +171,9 @@ const FormTicket = (props) => {
             </Alert>
         </Snackbar>
           <Card sx={{overflow:'auto'}}>
-                <CardHeader title={props.mode==='u' ? 'Ticket: '+props.ticket.ticket.t_num: 'Ticket: ###-###-###'} sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
+                <CardHeader 
+                        title={props.mode==='u' ? 'Ticket: '+props.ticket.ticket.t_num: 'Ticket: ###-###-###'} 
+                        sx={{fontSize:6, p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
                 <CardContent sx={{p:3}}>
                     <Grid container spacing={3}>
                         <Grid item container xs={12} sx={{}}>

@@ -1,47 +1,29 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import styled1 from 'styled-components';
 import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Alert, AlertTitle, Button, Dialog, Grid, Link, Snackbar, Typography } from '@mui/material';
-import Divider from '@mui/material/Divider';
+import { Alert, AlertTitle, Button, Container, Dialog, Grid, Snackbar, Tooltip, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import EmailIcon from '@mui/icons-material/Email';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import LaptopIcon from '@mui/icons-material/Laptop';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ButtonProfile from './ButtonProfile';
-import Panel from './Panel';
 import {Link as LinkRoute, Outlet} from 'react-router-dom';
-import Usuarios from '../pages/Usuarios';
 import Perfil from './Perfil';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
-import Pedidos from '../pages/Pedidos';
-import { selectPag, selectToast, setPagina } from '../features/pagSlice';
-import PedidoContainer from '../pages/PedidoContainer';
 import { selectUser } from '../features/userSlice';
 import { clearPedidoState } from '../features/pedidoSlice';
 import { clearTicketState } from '../features/ticketSlice';
 import { clearUser } from '../features/userSlice';
 import { clearUsers } from '../features/searchUsersSlice';
 import { searchNotifis } from '../features/actions/appActions';
-import { clearApp, selectApp, selectMensaje, setTrigger } from '../features/appSlice';
+import { clearApp, selectApp,  setTrigger } from '../features/appSlice';
 import { clearDash } from '../features/dashboardSlice';
 
 const drawerWidth = 240;
@@ -50,36 +32,6 @@ const Systec = styled1.div`
     color:white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 `
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(9)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -99,48 +51,6 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  }),
-);
-
-const FooterContainer = styled1.div`
-  background-color:#254E58;
-  height:100%;
-  display:flex;
-  flex-direction: column;
-  position:relative;
-`
-
-const RedesContainer = styled1.div`
-    color:white;
-    flex-wrap: wrap;
-    text-align: left;
-    margin:auto;
-`
-const RightsContainer = styled1.div`
-  display:flex;
-  margin:auto;
-  color:#FFF;
-`
-
-const RedContainer = styled1.div`
-  margin: 15px;
-  text-align:center;
-  
-`
 
 const mapStateToProps = state => {
   return {
@@ -150,10 +60,7 @@ const mapStateToProps = state => {
 
 
 function SideBar(props) {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const [openPerfil, setOpenPerfil] = React.useState(false);
-  const pag = useSelector(selectPag);
 
    // Para SnackBar
    const [openToast,setOpenToast] = React.useState(false);
@@ -177,7 +84,6 @@ function SideBar(props) {
   },[toast])*/
 
   React.useEffect(async ()=>{
-    debugger;
     if(appItems.trigger) await handleToast();
   },[appItems.trigger===true])
 
@@ -216,14 +122,6 @@ function SideBar(props) {
     setOpenToast(false);
   }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   const togglePerfil = () => {
     debugger;
     setOpenPerfil(!openPerfil);
@@ -243,132 +141,153 @@ function SideBar(props) {
     dispatch(clearDash());
   }
 
-  const handleChangePag = (e) =>{
-    dispatch(setPagina(e));
-  } 
-
-  const Lista = () =>{
+ 
+  // AppBar
+  const Pages = () =>{
+    const pagesEmpl = [
+      {
+        link:'/',
+        name:'Resumen'
+      },
+      {
+        link:'users',
+        name:'Usuarios'
+      },
+      {
+        link:'pedidos',
+        name:'Pedidos'
+      },
+      {
+        link:'#',
+        name:'Manual'
+      }
+    ];
+    const pagesCli = [
+      {
+        link:'/',
+        name:'Resumen'
+      },
+      {
+        link:'pedidos',
+        name:'Pedidos'
+      },
+      {
+        link:'#',
+        name:'Manual'
+      }
+    ]
     if(['Administrador','Empleado'].includes(userLogin.rol))
       return(
-          <React.Fragment>
-            <LinkRoute to="/">
-          <ListItem button key={'Resumen'} sx={{p:3}}>
-              <ListItemIcon>
-                <DashboardIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >RESUMEN</ListItemText>
-            </ListItem>
-            </LinkRoute>
-            <LinkRoute to="users">
-            <ListItem button onClick={()=>{handleChangePag('us')}} key={'Usuarios'} sx={{p:3}}>
-                <ListItemIcon>
-                  <PersonIcon sx={{color:'white'}}/>
-                </ListItemIcon>
-                  <ListItemText >USUARIOS</ListItemText>
-            </ListItem>
-            </LinkRoute>
-          </React.Fragment>
-      );
-      else return(
-        <LinkRoute to="/">
-          <ListItem button key={'Resumen'} sx={{p:3}}>
-              <ListItemIcon>
-                <DashboardIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >RESUMEN</ListItemText>
-            </ListItem>
-        </LinkRoute>
-      );
+        <React.Fragment>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md:'flex' } }}>
+              {pagesEmpl.map((page,index) => (
+                <LinkRoute to={page.link} className="anchor-no-line">
+                <Button
+                  key={index}
+                  sx={{  my: 2, color: '#fff', display: 'block'}}
+                  >
+                  {page.name}
+                </Button>
+                </LinkRoute>
+              ))}
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md:'none' } }}>
+              {pagesEmpl.map((page,index) => (
+                <Tooltip title={page.name}>
+                  <IconButton
+                    key={index}
+                    sx={{mb:1,mx:'auto', color: 'white', display: 'block' }}
+                  >
+                    <LinkRoute to={page.link} className="anchor-no-line">
+                      {page.name === 'Resumen' && <DashboardIcon  sx={{color:'white'}}/>}
+                      {page.name === 'Usuarios' && <PersonIcon sx={{color:'white'}}/>}
+                      {page.name === 'Pedidos' && <LaptopIcon  sx={{color:'white'}}/>}
+                      {page.name === 'Manual' && <LibraryBooksIcon  sx={{color:'white'}}/>}
+                    </LinkRoute>
+                  </IconButton>
+                </Tooltip>
+              ))}
+          </Box>
+        </React.Fragment>
+        
+      )
+    else return(
+      <React.Fragment>
+        <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
+                {pagesCli.map((page,index) => (
+                  <LinkRoute to={page.link} className="anchor-no-line">
+                  <Button
+                    key={index}
+                    sx={{  my: 2, color: '#fff', display: 'block'}}
+                    >
+                    {page.name}
+                  </Button>
+                  </LinkRoute>
+                ))}
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md:'none' } }}>
+              {pagesEmpl.map((page,index) => (
+                <Tooltip title={page.name}>
+                  <IconButton
+                    key={index}
+                    sx={{  my: 2, mx:'auto', color: 'white', display: 'block'}}
+                  >
+                    <LinkRoute to={page.link} className="anchor-no-line">
+                      {page.name === 'Resumen' && <DashboardIcon  sx={{color:'white'}}/>}
+                      {page.name === 'Pedidos' && <LaptopIcon   sx={{color:'white'}}/>}
+                      {page.name === 'Manual' && <LibraryBooksIcon   sx={{color:'white'}}/>}
+                    </LinkRoute>
+                  </IconButton>
+                </Tooltip>
+              ))}
+          </Box>
+        </React.Fragment>
+    )
   }
 
+  
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', my:2 }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{backgroundColor:'#254E58'}}>
-        <Toolbar>
-          <Grid container>
-            <Grid item xs={2} md={1} sx={{margin:'auto'}}>
-              <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  sx={{
-                  marginRight: '36px',
-                  ...(open && { display: 'none' }),
-                  }}>
-                  <MenuIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={8} md={10} sx={{display:'flex',margin:'auto'}}>
-              <Box component="img" sx={{
-                            height: 50,
-                            width: 50,
-                            mx:3
+      <AppBar sx={{backgroundColor:'#254E58'}}>
+      <Toolbar>
+        <Container maxWidth="x0.9" sx={{mt:2}}>
+            <Grid container>
+              <Grid item  xs={9} md={3} lg={2} sx={{display:'flex',my:'auto'}}>
+                <LinkRoute to='/' className="anchor-no-line">
+                  <Box sx={{display:'flex',alignContent: 'center'}}>
+                  <Box  component="img" 
+                        sx={{
+                          height: 50,
+                          width: 50,
+                          mx:1,
+                          flexGrow:1
                         }}
                         alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
-                    />
-                    <LinkRoute to='/' className="anchor-no-line">
-                      <Typography variant="h4" component="h1" sx={{ flexGrow: 1}}>
-                          <Systec>SYSTEC</Systec>
-                      </Typography>
-                    </LinkRoute>
-            </Grid>
-            <Grid item xs={2} md={1} sx={{margin:'auto'}}>
-               <Box>
-                      <ButtonProfile user={userLogin} togglePerfil={togglePerfil} logOut={logOut}/>
+                  />
+                  
+                    <Typography variant="h4" component="h1" sx={{ ml:2, my:'auto'}}>
+                        <Systec>SYSTEC</Systec>
+                    </Typography>
+                  
+                  </Box>
+                </LinkRoute>
+              </Grid>
+              <Grid item md={6} lg={7} sx={{margin:'auto', display:{xs:'none',md:'flex'}}}>
+                <Pages/>
+              </Grid>
+              <Grid item xs={3} md={2} sx={{margin:'auto'}}>
+                <Box sx={{textAlign:'end'}}>
+                    <ButtonProfile user={userLogin} togglePerfil={togglePerfil} logOut={logOut}/>
                 </Box>
+              </Grid>
+              <Grid item xs={12} md={0} sx={{margin:'auto',display:{xs:'flex',md:'none'}}}>
+                  <Pages/>
+              </Grid>
             </Grid>
-          </Grid>
-            
-                    
-                   
+        </Container>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader sx={{backgroundColor:"#254E58"}}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon sx={{color:'white'}}/> : <ChevronLeftIcon  sx={{color:'white'}}/>}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List sx={{backgroundColor:"#254E58",color:'white'}}>
-            <Lista/>
-            <LinkRoute to="pedidos">
-            <ListItem button sx={{p:3}}>
-              <ListItemIcon>
-                <LaptopIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >PEDIDOS</ListItemText>
-            </ListItem>
-            </LinkRoute>
-            <ListItem button key={'Manual'} sx={{p:3}}>
-              <ListItemIcon>
-                <LibraryBooksIcon sx={{color:'white'}}/>
-              </ListItemIcon>
-              <ListItemText >MANUAL</ListItemText>
-            </ListItem>
-        </List>
-        <Divider />
-        <FooterContainer>
-        <RedesContainer>
-              <RedContainer>
-                  <Link href="#" color="inherit"><FacebookIcon sx={{fontSize:'medium'}}/></Link>
-              </RedContainer>
-              <RedContainer >
-                <Link href="#" color="inherit"><TwitterIcon sx={{fontSize:'medium'}}/></Link>
-              </RedContainer>
-              <RedContainer >
-                <Link href="#" color="inherit"><EmailIcon sx={{fontSize:'medium'}}/></Link>
-              </RedContainer>
-          </RedesContainer>
-          <RightsContainer>
-            <Typography variant="caption" component="span" fontSize={10} sx={{opacity:0.6, whiteSpace:'normal', p:1, textAlign:'center'}}>
-                    {open ? '© SYSTEC 2022.TODOS LOS DERECHOS RESERVADOS' : '© SYSTEC 2022'}
-            </Typography>
-          </RightsContainer>
-        </FooterContainer>
-      </Drawer>
 
       <Outlet/>
       
@@ -376,7 +295,6 @@ function SideBar(props) {
                   open={openPerfil}
                   onClose={closePerfil}
                   fullWidth
-                  PaperProps={{sx:{height:'100%',maxWidth:'70vw'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 ><Perfil user={userLogin} closeModal={closePerfil} /></Dialog>

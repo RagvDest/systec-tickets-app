@@ -27,7 +27,7 @@ const Dashboard = (props) => {
 
   useEffect(async () =>{
     debugger;
-    if(props.user.rol != 'Cliente')
+    if(props.user.rol !== 'Cliente')
       await dispatch(searchTrabajosPendientes());
   },[])
 
@@ -80,12 +80,12 @@ const Dashboard = (props) => {
 
   
   return (
-    <Grid container sx={{mt:12,mx:3}}> 
+    <Grid container sx={{mt:{xs:20,md:12},px:3}}> 
       {props.user.rol === 'Empleado' && <Grid item container xs={12} spacing={3}>
         <PanelesComponent/>
       </Grid>}
-      <Grid item container sx={{mt:3}} xs={12} spacing={3}>
-        <ResumenCard user ={props.user} md={props.user.rol != 'Cliente' ? 6:12}/>
+      <Grid item container sx={{mt:3}} xs={12} spacing={5}>
+        <ResumenCard user ={props.user} md={props.user.rol !== 'Cliente' ? 6:12}/>
       </Grid>
       {props.user.rol==='Empleado' && <Grid item container sx={{mt:3}} xs={12} spacing={3}>
         <GraficosContainer datos={datos}/>
