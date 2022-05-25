@@ -1,9 +1,8 @@
 import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setPagina } from '../features/pagSlice';
 import { pedidoSelect } from '../features/pedidoSlice';
 import Perfil from './Perfil';
 import TarjetaPedido from './TarjetaPedido';
@@ -52,7 +51,7 @@ const ListaContainer = (props) => {
   return (
       <React.Fragment>
           <Divider/>
-          <Box className='rectangle-radius' sx={{maxHeight:'200vh', overflow:'auto', m:'2%', p:2}}>
+          <Box className='rectangle-radius' sx={{maxHeight:'200vh', overflow:'auto', m:'2%', p:0}}>
             <Grid container className='rectangle-radius' sx={{px:3, py:2}} spacing={3}>
               {console.log(props)}
                 {props.items.map(

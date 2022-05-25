@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, AlertTitle, Button, Dialog, Grid, Snackbar } from '@mui/material';
 import PedidoInfo from '../components/PedidoInfo';
-import { Box } from '@mui/system';
 import ListaContainer from '../components/ListaContainer';
 import FormTicket from '../components/FormTicket';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,13 +52,6 @@ const PedidoContainer = (props) => {
     }
   }
 
-  const notifiValidar = (notifi) =>{
-    debugger;
-    setMensaje(notifi);
-    setTipoAlert('error');
-    setOpen(true);
-  }
-
   const toggleModal = (e,result,mensajes,tipo) =>{
     debugger;
     setOpenModal(!openModal);
@@ -89,7 +81,7 @@ const PedidoContainer = (props) => {
   };
 
   return (
-            <Grid container>
+            <Grid container sx={{mt:{xs:6,md:0}}}>
               <Snackbar open={open} 
                     autoHideDuration={6000} 
                     onClose={handleClose}
@@ -106,7 +98,7 @@ const PedidoContainer = (props) => {
                 <Grid item xs={12}>
                     <PedidoInfo pedidoSelect={pedSelect} user={props.user}/>
                 </Grid>
-                {props.user.rol!='Cliente' && pedSelect.pedido.ped_estado!='CERRADO' && <Grid item xs={12} sx={{textAlign:'center',py:3}}>
+                {props.user.rol!=='Cliente' && pedSelect.pedido.ped_estado!=='CERRADO' && <Grid item xs={12} sx={{textAlign:'center',py:3}}>
                     <Button variant='contained' onClick={toggleModal}>Nuevo Ticket</Button>
                     <Dialog
                       open={openModal}

@@ -1,12 +1,12 @@
-import { Button, Card, CardContent, Dialog, Divider, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
-import { borderRight, Box } from '@mui/system';
+import { Button, Card, CardContent, Dialog, Divider, Grid, TextField, Typography } from '@mui/material';
+import {  Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 
-import {round10,historial} from '../../app/utils';
+import {round10} from '../../app/utils';
 import FormTicket from '../FormTicket';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTicketOne, selectHistorial, changeEstadoSelected } from '../../features/ticketSlice';
+import { selectTicketOne, changeEstadoSelected } from '../../features/ticketSlice';
 import FormAvance from '../Avance/FormAvance';
 import Historial from '../Avance/Historial';
 
@@ -50,10 +50,10 @@ const TicketInfo = (props) => {
                     <CardContent sx={{p:0.5}}>
                         <Grid container direction="column">
                             <Grid item container sx={{px:3.5,pt:2}}>
-                                <Grid item xs={12} md={11}>
-                                    <Typography sx={{fontSize:'1.75rem'}} variant='h6' component='span'><i>Ticket: {ticket.ticket.t_num}</i></Typography>
+                                <Grid item xs={10} md={11}>
+                                    <Typography sx={{fontSize:{xs:'1.3rem',md:'1.75rem'}}} variant='h6' component='span'><i>Ticket: {ticket.ticket.t_num}</i></Typography>
                                 </Grid>
-                                {props.user.rol!='Cliente' && ticket.ticket.t_estado!='CERRADO' && <Grid item xs={12} md={1} sx={{textAlign:'end '}}>
+                                {props.user.rol!=='Cliente' && ticket.ticket.t_estado!=='CERRADO' && <Grid item xs={2} md={1} sx={{textAlign:'end '}}>
                                     <Button color="inherit" onClick={toggleUpdate}><EditIcon/></Button>
                                 </Grid>}
                             </Grid>
@@ -86,7 +86,7 @@ const TicketInfo = (props) => {
                                     <Grid item xs={12}>
                                         <Historial idTicket={ticket} openAvance={toggleAvance}/>
                                     </Grid>
-                                    {props.user.rol!='Cliente' && <Grid item xs={12} sx={{textAlign:'end',px:3}}>
+                                    {props.user.rol!=='Cliente' && <Grid item xs={12} sx={{textAlign:'end',px:3}}>
                                         <Button variant='contained' onClick={()=>toggleAvance('c')}>Nuevo</Button>
                                     </Grid>}
                                     <Grid item xs={12}>

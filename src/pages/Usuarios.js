@@ -1,22 +1,11 @@
-import { Button, Dialog, Divider, Grid, Modal } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Button, Container, Dialog, Grid} from '@mui/material';
+import React from 'react';
 import BuscarUsuario from '../components/BuscarUsuario';
 import ListaContainer from '../components/ListaContainer';
-import {styled} from '@mui/material/styles';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { searchUsers, addUser } from '../features/actions/searchUsersActions';
 import FormUsuario from '../components/FormUsuario';
-import {styled as styled1} from '@mui/material/styles';
 import { actions } from 'react-redux-form';
-
-const DrawerHeader = styled1('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
 const mapStateToProps = state => {
   return {
@@ -65,7 +54,7 @@ class Usuarios extends React.Component{
     
 
     return (
-        <React.Fragment > 
+        <Container > 
           <Grid container>
               <Grid item xs={12}>
                 <BuscarUsuario mode={this.props.mode}/>
@@ -86,7 +75,7 @@ class Usuarios extends React.Component{
                 <ListaContainer items={this.props.users} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
               </Grid>
           </Grid>
-        </React.Fragment>
+        </Container>
     );
   };
 }
