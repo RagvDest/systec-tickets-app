@@ -32,9 +32,11 @@ const Main = (props) =>{
 
     const appItems = useSelector(selectApp);
 
-    useEffect(async ()=>{
-        debugger;
-        if(appItems.trigger) await handleToast();
+    useEffect(()=>{
+        async function fetchData(){
+            if(appItems.trigger) await handleToast();
+        }
+        fetchData();
     },[appItems.trigger===true])
 
     const handleToast = () =>{

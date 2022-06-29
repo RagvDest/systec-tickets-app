@@ -16,19 +16,26 @@ const Dashboard = (props) => {
   const dispatch = useDispatch();
   const datos = useSelector(selectDash);
 
-  useEffect(async ()=>{
-    await dispatch(searchNotifis());
+  useEffect(()=>{
+    async function fetchData(){
+      await dispatch(searchNotifis());
+    }
+    fetchData();
   },[]);
 
-  useEffect(async ()=>{
-    // Get Datos para el dashBoard
-    await dispatch(searchDatos());
+  useEffect(()=>{
+    async function fetchData(){
+      await dispatch(searchDatos());
+    }
+    fetchData();
   },[])
 
-  useEffect(async () =>{
-    debugger;
-    if(props.user.rol !== 'Cliente')
-      await dispatch(searchTrabajosPendientes());
+  useEffect(() =>{
+    async function searchAsync(){
+      if(props.user.rol !== 'Cliente')
+        await dispatch(searchTrabajosPendientes());
+    };
+    searchAsync();
   },[])
 
   const PanelesComponent = () =>{
@@ -64,13 +71,8 @@ const Dashboard = (props) => {
             <ComplexStatisticsCard
               icon={<AttachMoneyIcon fontSize="medium" color="inherit"/>}
               title="Ventas mensuales"
-              count={datos.totalVentas}
+              count={`$ ${datos.totalVentas}`}
               color="success"
-              percentage={{
-                color: "success",
-                amount: "+3%",
-                label: "than last month",
-              }}
             />
           </MDBox>
         </Grid>
@@ -81,13 +83,13 @@ const Dashboard = (props) => {
   
   return (
     <Grid container sx={{mt:{xs:20,md:12},px:3}}> 
-      {props.user.rol === 'Empleado' && <Grid item container xs={12} spacing={3}>
+      {props.user.rol === 'Administrador' && <Grid item container xs={12} spacing={3}>
         <PanelesComponent/>
       </Grid>}
       <Grid item container sx={{mt:3}} xs={12} spacing={5}>
         <ResumenCard user ={props.user} md={props.user.rol !== 'Cliente' ? 6:12}/>
       </Grid>
-      {props.user.rol==='Empleado' && <Grid item container sx={{mt:3}} xs={12} spacing={3}>
+      {props.user.rol==='Administrador' && <Grid item container sx={{mt:3}} xs={12} spacing={3}>
         <GraficosContainer datos={datos}/>
       </Grid>}
     </Grid>

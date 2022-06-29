@@ -38,9 +38,9 @@ const ListaContainer = (props) => {
     setOpenPerfil(false);
   }
 
-  const Tarjetas = (items,mode) =>{
+  const Tarjetas = (items,mode,index) =>{
     if(props.tipo==='us')
-      return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode}/>);
+      return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode} />);
     else if(props.tipo==='ped')
       return(<TarjetaPedido info={items.items} togglePerfil={togglePerfil} mode="ped"/>)
     else if(props.tipo==='ti')
@@ -58,7 +58,7 @@ const ListaContainer = (props) => {
                     (item, index) =>{
                         return (
                         <Grid item xs={12} key={index}>
-                            <Tarjetas items={item} index={index} mode={props.mode}/>
+                            <Tarjetas items={item} mode={props.mode} index={index}/>
                         </Grid>
                         )
                     }

@@ -35,10 +35,10 @@ const BuscarUsuario = (props) => {
     }
 
   return (
-    <Box component="main" sx={{ flexGrow: 1, pt: 6,px:6}}>
+    <Box component="main" sx={{px:8}}>
         <Container>
             <Grid container spacing={4}>
-                <Grid item xs={5} md={2} sx={{m:'auto'}}>
+                <Grid item xs={5} md={2} sx={{mx:'auto',width:'100%'}} style={{paddingLeft:0, maxWidth:'100%'}}>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{width:'100%'}}>
                         <Autocomplete
                         disablePortal

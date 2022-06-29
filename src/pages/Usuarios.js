@@ -15,7 +15,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) =>({
-  addUsuario:(usuario)=> dispatch(addUser(usuario)),
+  addUsuario:(usuario,rol)=> dispatch(addUser(usuario,rol)),
   getUsers:()=>{dispatch(searchUsers("",""))},
   resetForm:() => { dispatch(actions.reset('userInfo'))}
 })
@@ -55,8 +55,8 @@ class Usuarios extends React.Component{
 
     return (
         <React.Fragment> 
-          <Grid container sx={{mt:{xs:12,md:6}}}>
-              <Grid item xs={12}>
+          <Grid container sx={{ flexGrow: 1, pt: this.props.mode==='q' ? 0:16,px:0}}>
+              <Grid item xs={12} sx={{ flexGrow: 1}}>
                 <BuscarUsuario mode={this.props.mode}/>
               </Grid>
               <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
@@ -71,7 +71,7 @@ class Usuarios extends React.Component{
                 ><FormUsuario addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
-                <ListaContainer items={this.props.users} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
+                <ListaContainer items={this.props.users} modeP={this.props.modeP} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
               </Grid>
           </Grid>
         </React.Fragment>

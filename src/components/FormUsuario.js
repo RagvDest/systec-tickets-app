@@ -1,4 +1,4 @@
-import { Alert, Button, Card, CardActions, CardContent, CardHeader, DialogTitle, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Autocomplete, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, DialogTitle, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Control, Form, Errors} from 'react-redux-form';
@@ -12,6 +12,11 @@ const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z09._]+\.[A-Z]{2,4}$/i.test(val);
 
 
+const filtros = [
+    {label:'EMPLEADO',value:'61e7dc21aed590273949963d', id:0},
+    {label:'CLIENTE',value:'61e7dc27aed590273949963f', id:1}
+]
+
 class FormUsuario extends React.Component{
 
     constructor(props) {
@@ -19,48 +24,62 @@ class FormUsuario extends React.Component{
 
         this.state = {
             open:false,
-            mensaje:''
+            mensaje:'',
+            rol:'CLIENTE'
         }
 debugger;
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+
     };
 
     handleClose = (e) =>{
         this.toast ={open:false,mensaje:''};
     }
+
+    handleSelect = (e) =>{
+        let value = e.target.value;
+        if(!e) return;
+        
+        console.log(value);
+        this.setState({
+            rol:value
+        });
+        console.log(this.state);
+    }
     
     handleSubmit = (values) =>{
         debugger;
+        let rol = document.getElementById('combo-box').value;
         if(this.props.mode==='u'){
             this.props.updateUser(values);
             this.props.closeForm();
 
         }else{
-            this.props.addUser(values);
+            this.props.addUser(values,rol);
             this.props.resetForm();
             this.props.closeModal();
         }
             
     }
 
+    
     render(){
         const RolInput = (props) =>{
-            if(props.mode==='u'){
-                return(<React.Fragment/>);
+            if(this.props.mode==='u'){
+                    return(<React.Fragment/>);
             }else{
             return (
-                
-                <React.Fragment>
-                <InputLabel sx={{py:1}} htmlFor='demo-simple-select'>Rol*</InputLabel>
-                                                <Control.select     className='form-control'
-                                                                    sx={{width:'100%'}}
-                                                                    model='.rol'
-                                                                    id="demo-simple-select"
-                                                >
-                                                    <option value={'61e7dc21aed590273949963d'} selected>EMPLEADO</option>
-                                                    <option value={'61e7dc27aed590273949963f'}>CLIENTE</option>
-                                                </Control.select>
+                <React.Fragment sx={{m:'auto'}}>
+                <Autocomplete
+                    disablePortal
+                    disableClearable
+                    id="combo-box"
+                    options={filtros}
+                    sx={{ width: '100%' }}
+                    renderInput={(params) => <TextField {...params} label="Rol" />}
+                />
                 </React.Fragment>
             )
             }
@@ -191,7 +210,9 @@ debugger;
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6}>
+                                            <Box sx={{pt:3}}>
                                                 <RolInput mode={this.props.mode}/>
+                                            </Box>
                                         </Grid>
                                         <Grid item xs={0} md={0}>
                                                 <Control.text hidden
@@ -221,8 +242,6 @@ debugger;
                     >
                         <Alert severity="error">{this.state.mensaje}</Alert>
                     </Snackbar>
-                
-
             </React.Fragment>
         )
     }

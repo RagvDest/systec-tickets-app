@@ -44,7 +44,7 @@ const TarjetaPedido = (props) => {
                     <GridEstado/>
                     <Grid xs={0} md={1} sx={{borderLeft:'1px solid black'}}/>
                     <Grid item container xs={12} md={8} sx={{textAlign:'left'}} spacing={1}>
-                        <Grid item container direction='column' xs={12} md={6} sx={{textAlign:'left',alignContent:'center'}}>
+                        <Grid item container direction='column' xs={12} md={6} sx={{textAlign:'left'}}>
                                 <Grid item xs sx={{display:'flex'}}>
                                     <StarOutlineIcon className='icon-center-vertically' fontSize='medium'/>
                                     <Typography   variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto'}}>

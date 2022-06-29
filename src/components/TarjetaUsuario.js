@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Dialog, Grid, Typography } from '@mui/material';
+import { Badge, Button, Card, CardActions, CardContent, CardHeader, Dialog, Grid, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
@@ -13,18 +13,21 @@ const IconContainer = styled.div`
 
 
 const TarjetaUsuario = (props) => {
+    
   return (
-      <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
+    <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
+        <Badge sx={{width:'80%'}} badgeContent={props.info.username.rol_id.r_rol} color="primary">
         <Card sx={{width:'100%'}} >
             <CardContent >
                 <Grid container>
-                    <Grid item xs={12} md={3} sx={{textAlign:'center', marginBlock:'auto'}} >
+                    {console.log(props)}
+                    <Grid item xs={12} sx={{textAlign:'center', marginBlock:'auto'}} >
                         <AccountCircleIcon fontSize='large'/>
                         <Typography   variant="body1" component="h1" sx={{ flexGrow: 1, mx:2}}>
                             {props.info.username.u_usuario}
                         </Typography>
                     </Grid>
-                    <Grid item container xs={12} md={9} sx={{textAlign:'left'}} spacing={1}>
+                    <Grid item container xs={12}  sx={{textAlign:'left'}} spacing={1}>
                         <Grid item xs={12} md={6} container direction="column"  spacing={2} sx={{}}>
                                 <Grid item xs sx={{display:'flex'}}>
                                     <StarOutlineIcon className='icon-center-vertically' fontSize='medium'/>
@@ -60,7 +63,9 @@ const TarjetaUsuario = (props) => {
                 </Grid>
             </CardContent>
         </Card>
+        </Badge>
         </Button>
+    
   );
 };
 

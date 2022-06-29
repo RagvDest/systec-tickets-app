@@ -72,7 +72,10 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => dispatch(createPedido(response.pedidoCreado)))
+        .then(async (response) => {
+            await dispatch(createPedido(response.pedidoCreado));
+            await dispatch(setMensaje({mensaje:'Pedido guardado!',tipo:'success'}))
+        })
         .catch(error=>{dispatch(setToast(error))});
 }
 export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dispatch, getState) =>{
@@ -113,11 +116,11 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dis
         .then( async response => {
             await dispatch(pedidoSelect({pedido:response.pedido,updated:true}));
             await dispatch(searchTickets(pedido_id));
-            await dispatch(setToast('Actualizado'));
+            await dispatch(setMensaje({mensaje:'Pedido guardado!',tipo:'success'}))
             if(edit==null)
                 await dispatch(emitNotifi({notifi:response.notificacion}))
         })
-        .catch(error=>{console.log('Actualizar Pedido(Cambiar estado general)',error.message)});
+        .catch(error=>{dispatch(setMensaje({mensaje:error.message,tipo:'error'}))});
 }
 export const changeEstado = (pedido_id,estado) => (dispatch) =>{
     console.log(pedido_id,estado);
