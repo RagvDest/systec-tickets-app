@@ -74,6 +74,14 @@ const FormAvance = (props) => {
         return valido;
     }
 
+    const ComentariosContainer = () =>{
+        if(tecnico==='Sistema')
+            return (<React.Fragment/>);
+        if(props.mode=='q')
+            return (<Comentarios/>)
+        return (<React.Fragment/>)
+    }
+
 
   return (
         <React.Fragment >
@@ -153,8 +161,7 @@ const FormAvance = (props) => {
                                 />
                         </Grid>
                     </Grid>
-                    {props.mode=='q' ? 
-                    <Comentarios /> : null}
+                    <ComentariosContainer/>
                 </Grid>
             </CardContent>
             <CardActions sx={{
