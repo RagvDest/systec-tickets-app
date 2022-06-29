@@ -1,4 +1,4 @@
-import { Card, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Badge, Card, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import MDBox from "../../3rdCode/components/MDBox";
 import MDTypography from "../../3rdCode/components/MDTypography"
@@ -85,7 +85,7 @@ const ResumenCard = (props) => {
     }else if(params.column.id === 'nmT'){
       value = params.row.ped_nro_tickets;
     }else if(params.column.id === 'act'){
-      value = <IconButton aria-label="delete">
+      value = <IconButton aria-label="watch" onClick={() => goToPedido(params.row['_id'])}>
       <SearchIcon />
     </IconButton>
     }
@@ -98,13 +98,25 @@ const ResumenCard = (props) => {
         value= checkValueNotifi(params);
       else if(params.tipo=="pendientes")
         value = checkValuePendientes(params);
-      
+      debugger;
+      if(params.tipo=="notifi" && params.column.id=='act' && params.row.n_new){
+        return (
+            <TableCell key={params.column.id} 
+                        align={params.column.align} 
+                        sx={{paddingY:"0.3em"}}>
+                <Badge badgeContent='Nuevo!' color="primary">
+                  {value}
+                  </Badge>
+              </TableCell>
+         
+        )
+      }
       return(
-              <TableCell key={params.column.id} 
+                <TableCell key={params.column.id} 
                         align={params.column.align} 
                         sx={{paddingY:"0.3em"}}>
                   {value}
-              </TableCell>
+                </TableCell>
       )
   }
 

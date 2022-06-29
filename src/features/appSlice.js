@@ -25,11 +25,9 @@ export const appSlice = createSlice({
             return {...state,notifis:action.payload};
         },
         getTPendiente:(state,action) => {
-            debugger;           
             return {...state,tPendiente:action.payload};
         },
         emitNotifi:(state,action)=>{
-            debugger;
             return {...state,nuevaNotifi:action.payload.notifi};
         },
         setRedirect:(state,action) =>{

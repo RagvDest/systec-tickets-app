@@ -7,6 +7,7 @@ let access_token = '';
 export const searchUsers = (filtro,input) =>(dispatch, getState) => {
     const state = getState();
     access_token = state.user.access_token;
+    let rol = state.user.user.rol;
 
     const op = filtro === 'Username' || filtro === 'Correo' ? 'u' : 'p';
     console.log('Filtro: '+filtro);
@@ -36,22 +37,23 @@ export const searchUsers = (filtro,input) =>(dispatch, getState) => {
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response =>{dispatch(getUsuarios(response.results))})
+        .then(response =>{dispatch(getUsuarios({results:response.results,rol:rol}))})
         .catch(error=>{dispatch(setToast(error.message))});
 }
-export const addUser = ({username,nombres,apellidos,cedula,mail,rol}) => (dispatch, getState) =>{
+export const addUser = (json,rol) => (dispatch, getState) =>{
     const state = getState();
+    debugger;
     access_token = state.user.access_token;
 
     const body = {
         usuario:{
-            u_usuario:username,
-            u_mail:mail
+            u_usuario:json.username,
+            u_mail:json.mail
         },
         persona:{
-            p_nombres:nombres,
-            p_cedula:cedula,
-            p_apellidos:apellidos
+            p_nombres:json.nombres,
+            p_cedula:json.cedula,
+            p_apellidos:json.apellidos
         },
         rol:rol
     };

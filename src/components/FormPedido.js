@@ -46,7 +46,7 @@ const FormPedido = (props) => {
     const handleCustomerSearch = (values) =>{
         debugger;
         textUsuario = document.getElementById("nombres");
-        setIdUsuario(values.usuario._id);
+        setIdUsuario(values.username._id);
        // textUsuario.innerText=values.persona.p_nombres+" "+values.persona.p_apellidos;
        setTextUser(values.persona.p_nombres+" "+values.persona.p_apellidos);
         textUsuario.style.color="black";
@@ -94,7 +94,6 @@ const FormPedido = (props) => {
     const Inputs4Create = () =>{
         return(
             <React.Fragment>
-                
                         <Grid item xs={12} md={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker 
@@ -176,7 +175,7 @@ const FormPedido = (props) => {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 ><DialogTitle>Buscar Cliente</DialogTitle>
-                <DialogContent><Usuarios mode='q' selectUser={handleCustomerSearch} /></DialogContent></Dialog>
+                <DialogContent><Usuarios mode='q' modeP='s' selectUser={handleCustomerSearch} /></DialogContent></Dialog>
         </React.Fragment>
   );
 };

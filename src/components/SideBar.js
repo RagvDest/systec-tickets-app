@@ -83,8 +83,11 @@ function SideBar(props) {
     setTipoAlert("error");
   },[toast])*/
 
-  React.useEffect(async ()=>{
-    if(appItems.trigger) await handleToast();
+  React.useEffect(()=>{
+    async function fetchData(){
+      if(appItems.trigger) await handleToast();
+    }
+    fetchData();
   },[appItems.trigger===true])
 
   const handleToast = () =>{
@@ -213,7 +216,7 @@ function SideBar(props) {
       )
     else return(
       <React.Fragment>
-        <Box sx={{ flexGrow: 1, display: { xs: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md:'flex' } }}>
                 {pagesCli.map((page,index) => (
                   <LinkRoute to={page.link} className="anchor-no-line">
                   <Button
@@ -226,11 +229,11 @@ function SideBar(props) {
                 ))}
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md:'none' } }}>
-              {pagesEmpl.map((page,index) => (
+              {pagesCli.map((page,index) => (
                 <Tooltip title={page.name}>
                   <IconButton
                     key={index}
-                    sx={{  my: 2, mx:'auto', color: 'white', display: 'block'}}
+                    sx={{mb:1,mx:'auto', color: 'white', display: 'block' }}
                   >
                     <LinkRoute to={page.link} className="anchor-no-line">
                       {page.name === 'Resumen' && <DashboardIcon  sx={{color:'white'}}/>}
