@@ -43,6 +43,20 @@ const TicketInfo = (props) => {
             setOpenAvance(!openAvance);
     }
 
+    const BotonNuevo = () =>{
+        debugger;
+        if(props.estado_pedido==='CERRADO')
+            return (<React.Fragment/>);
+        if(props.user.rol==='Empleado'){
+            return(
+                <Grid item xs={12} sx={{textAlign:'end',px:3}}>
+                    <Button variant='contained' onClick={()=>toggleAvance('c')}>Nuevo</Button>
+                </Grid>
+            )
+        }
+        return (<React.Fragment/>);
+    }
+
   return (
     <React.Fragment>
             <Box className="">
@@ -86,9 +100,7 @@ const TicketInfo = (props) => {
                                     <Grid item xs={12}>
                                         <Historial idTicket={ticket} openAvance={toggleAvance}/>
                                     </Grid>
-                                    {props.user.rol!=='Cliente' && <Grid item xs={12} sx={{textAlign:'end',px:3}}>
-                                        <Button variant='contained' onClick={()=>toggleAvance('c')}>Nuevo</Button>
-                                    </Grid>}
+                                    <BotonNuevo/>
                                     <Grid item xs={12}>
                                     <Divider/>
                                     </Grid>

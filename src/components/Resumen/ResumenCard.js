@@ -111,6 +111,19 @@ const ResumenCard = (props) => {
          
         )
       }
+
+      if(params.tipo=="notifi" && params.column.id=='tipo' && params.row.n_new){
+        return (
+            <TableCell key={params.column.id} 
+                        align={params.column.align} 
+                        sx={{paddingY:"0.3em"}}>
+                <Badge badgeContent='Ojo!' color="error">
+                  {value}
+                  </Badge>
+              </TableCell>
+         
+        )
+      }
       return(
                 <TableCell key={params.column.id} 
                         align={params.column.align} 

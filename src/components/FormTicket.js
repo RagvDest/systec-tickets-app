@@ -88,12 +88,7 @@ const FormTicket = (props) => {
     const calcularSaldo = (total,abono) => {
         debugger;
         let saldoX = (total==='' ? 0: total) - (abono==='' ? 0:abono);
-        if(saldoX<0){
-            saldoHelperText.innerHTML='Valor no debe ser negativo';
-            saldoHelperText.style.color='red';
-        }else{
-            saldoHelperText.innerHTML='';
-        }
+        saldoHelperText.innerHTML='';
         setSaldo(round10('round',saldoX,-2));
         
     }
@@ -118,7 +113,7 @@ const FormTicket = (props) => {
     const validar = () =>{
         debugger;
         let valido=true, msj=[];
-        if(detalle.length===""){
+        if(detalle===""){
             msj.push("Detalle no debe estar vacío");
             valido=false;
         }
@@ -128,10 +123,6 @@ const FormTicket = (props) => {
         }
         if(abono<0){
             msj.push("Abono no debe ser negativo.");
-            valido=false;
-        }
-        if(saldo<0){
-            msj.push("Saldo no debe ser negativo.");
             valido=false;
         }
         if(equipo===""){

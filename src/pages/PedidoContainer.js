@@ -124,6 +124,7 @@ const PedidoContainer = (props) => {
                     <TicketInfo 
                       ticket={ticketSelected} 
                       user={props.user}
+                      estado_pedido={pedSelect.pedido.ped_estado}
                       />
                   </Dialog>
               </Grid>
