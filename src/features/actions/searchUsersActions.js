@@ -66,13 +66,13 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
             'Authorization':'Bearer '+access_token
         },
         credentials:'include'})
-        .then(response => {
+        .then( async response => {
             if(response.ok){
                 return response;
             }
             else {
-                let error = new Error('Error '+response.status+': '+response.statusText);
-                console.log(response);
+                let errorMess = await response.text();
+                let error = new Error(errorMess);
                 error.response = response;
                 throw error;
             }
@@ -85,7 +85,10 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
             await dispatch(addUsuario({username:response.usuario,persona:response.persona,rol:response.rol.r_rol}))
             await dispatch(setMensaje({mensaje:'Usuario creado. Email de confirmación enviado',tipo:'success'}));
         })
-        .catch(error=>{console.log('Crear Usuario',error.message)});
+        .catch(async error=>{
+            console.log(error);
+            await dispatch(setMensaje({mensaje:error.message,tipo:'error'}))
+        });
 }
 export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch, getState) =>{
     const state = getState();
