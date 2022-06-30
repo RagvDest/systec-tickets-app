@@ -112,7 +112,7 @@ const ResumenCard = (props) => {
         )
       }
 
-      if(params.tipo=="notifi" && params.column.id=='tipo' && params.row.n_new){
+      if(params.tipo=="notifi" && params.column.id=='tipo' && params.row.tipo==='Recordatorio' && params.row.n_new){
         return (
             <TableCell key={params.column.id} 
                         align={params.column.align} 
