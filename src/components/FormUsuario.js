@@ -51,12 +51,12 @@ debugger;
     
     handleSubmit = (values) =>{
         debugger;
-        let rol = document.getElementById('combo-box').value;
         if(this.props.mode==='u'){
             this.props.updateUser(values);
             this.props.closeForm();
 
         }else{
+            let rol = document.getElementById('combo-box').value;
             this.props.addUser(values,rol);
             this.props.resetForm();
             this.props.closeModal();
