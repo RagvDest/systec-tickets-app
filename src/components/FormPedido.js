@@ -1,11 +1,13 @@
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { validateTime } from '@mui/lab/internal/pickers/time-utils';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPed, updatePed } from '../features/actions/pedidoActions';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Usuarios from '../pages/Usuarios';
+import Recordatorio from './Recordatorio/Recordatorio';
 
 const FormPedido = (props) => {
     const [open,setOpen] = useState(false);
@@ -15,6 +17,8 @@ const FormPedido = (props) => {
     const [orden,setOrden] = useState("");
     const [idUsuario,setIdUsuario] = useState("");
     const [idPedido,setPedidoId] = useState("");
+    const [openRecordatorioModal,setOpenRecordatorioModal] = useState(false);
+
     const dispatch = useDispatch();
     const [textUser,setTextUser] = useState("");
     let textUsuario;
@@ -91,6 +95,10 @@ const FormPedido = (props) => {
         return valido;
     }
 
+    const toggleRecordatorioModal = () =>{
+        setOpenRecordatorioModal(!openRecordatorioModal);
+    }
+
     const Inputs4Create = () =>{
         return(
             <React.Fragment>
@@ -113,7 +121,15 @@ const FormPedido = (props) => {
   return (
         <React.Fragment>
             <Card sx={{overflow:'auto'}}>
-                <CardHeader title={props.mode==='u' ? 'Actualizar Pedido' : 'Crear Pedido'} sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
+                <CardHeader 
+                    title={props.mode==='u' ? 'Actualizar Pedido' : 'Crear Pedido'}
+                    sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}
+                    action={props.mode=='u' &&
+                        <IconButton>
+                            <AccessAlarmIcon onClick={toggleRecordatorioModal} color='primary'/>
+                        </IconButton>
+                    }
+                    />
                 <CardContent>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sx={{}}>
@@ -176,6 +192,17 @@ const FormPedido = (props) => {
                   aria-describedby="modal-modal-description"
                 ><DialogTitle>Buscar Cliente</DialogTitle>
                 <DialogContent><Usuarios mode='q' modeP='s' selectUser={handleCustomerSearch} /></DialogContent></Dialog>
+
+            <Dialog
+                  open={openRecordatorioModal}
+                  onClose={toggleRecordatorioModal}
+                  fullWidth
+                  PaperProps={{sx:{}}}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                ><DialogTitle>Recordatorio Personalizado</DialogTitle>
+                <DialogContent><Recordatorio /></DialogContent>
+            </Dialog>
         </React.Fragment>
   );
 };

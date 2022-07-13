@@ -225,7 +225,7 @@ debugger;
                         
                     </CardContent>
                     <CardActions sx={{justifyContent:'right',px:4, pb:3}}>
-                        <Button size="middle" variant='contained' type='submit'>
+                        <Button size="middle" variant='contained' type=''>
                             Guardar
                         </Button>
                     </CardActions>

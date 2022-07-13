@@ -130,7 +130,6 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
         }).then(response => response.json())
         .then(response => {
             dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
-            
         })
         .catch(error=>{
             dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
