@@ -21,6 +21,9 @@ export const userSlice = createSlice({
             debugger;
             return {...state,user:action.payload.user,access_token:action.payload.access_token}
         },
+        updateCli:(state,action)=>{
+            return {...state,user:action.payload.usuario};
+        }
 
     }
 });
