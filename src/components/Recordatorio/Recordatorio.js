@@ -44,7 +44,7 @@ const Recordatorio = (props) => {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
                         label="Seleccionar"
-                        inputFormat="dd/MM/yyyy"
+                        inputFormat="dd/MM/yyyy hh:mm a"
                         renderInput={(params) => <TextField {...params} />}
                         value={fecha}
                         minDate={new Date(dateAux)}
