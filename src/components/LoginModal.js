@@ -96,21 +96,13 @@ const LoginModal = (props) => {
                     </Box>
                     <Box sx={{flexDirection:'column', display:'flex', alignItems:'center', mb:4}}>
                         <Login>
-                            <LoginIcon fontSize="large" sx={{color:'white'}}/>
+                            <LoginIcon fontSize="large" color="white"/>
                         </Login>
                         <Typography variant="caption">
                             <LinkRoute to="/recover-pass" color="inherit">Olvidé mi contraseña</LinkRoute>
                         </Typography>
                     </Box>
                     <Divider/>
-                </Box>
-                <Box sx={{mt:3, mb:2, display:'flex', float:'right'}}>
-                    <LoginCode >
-                        <Typography variant="caption" component="span" sx={{color:'white', fontSize:10}}>
-                        <ArrowForwardIosIcon fontSize='string'/>
-                            Tengo un código de registro
-                        </Typography>
-                    </LoginCode>
                 </Box>
             </CardContent>
         </React.Fragment>

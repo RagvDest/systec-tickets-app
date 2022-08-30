@@ -10,6 +10,7 @@ import ImageBg from '../../static/img/loginbg.png';
 import Footer from '../Footer';
 import InputsPass from './InputsPass';
 import RecoverPass from './RecoverPass';
+import Header from '../Header';
 
 const Container = styled.div`
         position: absolute;
@@ -42,6 +43,8 @@ const Container = styled.div`
 const PasswordModal = (props) => {
 
   return (
+    <React.Fragment>
+    <Header sx={{zIndex:1}}/>
     <ContainerD>
           <ImgContainer>
                 <Image src={ImageBg}/>
@@ -56,6 +59,7 @@ const PasswordModal = (props) => {
                 </Container>
               <Footer/>
     </ContainerD>
+    </React.Fragment>
   )
 }
 
