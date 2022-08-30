@@ -38,7 +38,7 @@ const BuscarUsuario = (props) => {
     <Box component="main" sx={{px:8}}>
         <Container>
             <Grid container spacing={4}>
-                <Grid item xs={5} md={2} sx={{mx:'auto',width:'100%'}} style={{paddingLeft:0, maxWidth:'100%'}}>
+                <Grid item xs={5} md={props.mode==='q' ? 6:2} sx={{mx:'auto',width:'100%'}} style={{paddingLeft:0, maxWidth:'100%'}}>
                     <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{width:'100%'}}>
                         <Autocomplete
                         disablePortal
@@ -60,7 +60,7 @@ const BuscarUsuario = (props) => {
                     onKeyDown={handleSearch}
                     endAdornment={<InputAdornment position="end"><SearchIcon/></InputAdornment>} sx={{mx:3, width:'100%', size:'small'}}/>
                 </Grid>
-                <Grid item xs={0} md={1}></Grid>
+                <Grid item xs={0} md={1} sx={{ display: { xs:'none', md: props.mode==='q' ? 'none' : 'block' } }}/>
             </Grid>
         </Container>
       </Box>

@@ -22,12 +22,13 @@ export const userSlice = createSlice({
             return {...state,user:action.payload.user,access_token:action.payload.access_token}
         },
         updateCli:(state,action)=>{
-            return {...state,user:action.payload.usuario};
+            debugger;
+            return {...state,user:{...state.user, username:action.payload.usuario, persona: action.payload.persona}};
         }
 
     }
 });
-export const {login, logout,clearUser,logCli} = userSlice.actions;
+export const {login, logout,clearUser,logCli,updateCli} = userSlice.actions;
 export const selectUser = (state) => state.user.user;
 export const selectToken = (state) => state.user.access_token;
 export default userSlice.reducer;

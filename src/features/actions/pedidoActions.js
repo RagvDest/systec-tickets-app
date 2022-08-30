@@ -78,7 +78,7 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
         })
         .catch(error=>{dispatch(setToast(error))});
 }
-export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dispatch, getState) =>{
+export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit,fcNoti) => (dispatch, getState) =>{
     const state = getState();
     access_token = state.user.access_token;
     const body = {
@@ -86,7 +86,8 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit) => (dis
             ped_fc_registro:fechaIni,
             ped_fc_fin:fechaFin,
             ped_nro_orden:orden,
-            ped_estado:estado
+            ped_estado:estado,
+            ped_fc_noti:fcNoti
         }
     };
     console.log(body);

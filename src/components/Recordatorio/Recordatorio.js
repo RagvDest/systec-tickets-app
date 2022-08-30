@@ -1,15 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import { Box } from '@mui/system';
+import { useDispatch } from 'react-redux';
+import { updatePed } from '../../features/actions/pedidoActions';
 
 
-const Recordatorio = () => {
-    const [fecha,setFecha] = useState(new Date());
+const Recordatorio = (props) => {
+    const date = new Date()
+    const dateAux = new Date().setDate(date.getDate()+1);
+
+    const [fecha,setFecha] = useState(new Date(dateAux));
+    const [open,setOpen] = useState(false);
+    const dispatch = useDispatch();
+
     
-    const handleSubmit = () =>{
+    
+    const handleSubmit = async () =>{
         alert('Confirmar fecha: '+fecha);
+        await dispatch(
+            updatePed(
+                props.pedido['_id'],
+                props.pedido.ped_fc_registro,
+                props.pedido.ped_fc_fin,
+                props.pedido.ped_nro_orden,
+                props.pedido.ped_estado,
+                null,
+                fecha
+                ));
+
     }
 
   return (
@@ -24,8 +44,10 @@ const Recordatorio = () => {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DateTimePicker
                         label="Seleccionar"
+                        inputFormat="dd/MM/yyyy"
                         renderInput={(params) => <TextField {...params} />}
                         value={fecha}
+                        minDate={new Date(dateAux)}
                         onChange={(newValue) => {
                             setFecha(newValue);
                         }}
@@ -35,9 +57,9 @@ const Recordatorio = () => {
             <Grid item xs={12} sx={{textAlign:'right'}}>
                 <Button variant='outlined' onClick={handleSubmit}>Confirmar</Button>
             </Grid>
-
             </Grid>
         </Grid>
+
     </React.Fragment>
   )
 }

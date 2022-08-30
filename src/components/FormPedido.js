@@ -201,7 +201,7 @@ const FormPedido = (props) => {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 ><DialogTitle>Recordatorio Personalizado</DialogTitle>
-                <DialogContent><Recordatorio /></DialogContent>
+                <DialogContent><Recordatorio pedido={props.ped.pedido} /></DialogContent>
             </Dialog>
         </React.Fragment>
   );

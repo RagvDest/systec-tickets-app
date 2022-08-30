@@ -19,6 +19,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { logicLogout } from '../features/actions/userActions';
 import { selectUser } from '../features/userSlice';
 import { clearPedidoState } from '../features/pedidoSlice';
+import HelpIcon from '@mui/icons-material/Help';
 import { clearTicketState } from '../features/ticketSlice';
 import { clearUser } from '../features/userSlice';
 import { clearUsers } from '../features/searchUsersSlice';
@@ -204,8 +205,8 @@ function SideBar(props) {
                     <LinkRoute to={page.link} className="anchor-no-line">
                       {page.name === 'Resumen' && <DashboardIcon  sx={{color:'white'}}/>}
                       {page.name === 'Usuarios' && <PersonIcon sx={{color:'white'}}/>}
-                      {page.name === 'Pedidos' && <LaptopIcon  sx={{color:'white'}}/>}
-                      {page.name === 'Manual' && <LibraryBooksIcon  sx={{color:'white'}}/>}
+                      {page.name === 'Pedidos' && <LibraryBooksIcon  sx={{color:'white'}}/>}
+                      {page.name === 'Manual' && <HelpIcon  sx={{color:'white'}}/>}
                     </LinkRoute>
                   </IconButton>
                 </Tooltip>
@@ -266,7 +267,7 @@ function SideBar(props) {
                           mx:1,
                           flexGrow:1
                         }}
-                        alt="Logo" src="https://images.vexels.com/media/users/3/157564/isolated/preview/d7d05c7c1070e49a5385019c254901a6-icono-de-portatil-simple.png"
+                        alt="Logo" src="/logo.png"
                   />
                   
                     <Typography variant="h4" component="h1" sx={{ ml:2, my:'auto'}}>
@@ -300,7 +301,7 @@ function SideBar(props) {
                   fullWidth
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><Perfil user={userLogin} closeModal={closePerfil} /></Dialog>
+                ><Perfil user={userLogin} modo={false} closeModal={closePerfil} /></Dialog>
     
     
     

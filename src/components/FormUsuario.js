@@ -1,4 +1,4 @@
-import { Alert, Autocomplete, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, DialogTitle, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Autocomplete, Button, ButtonGroup, Card, CardActions, CardContent, CardHeader, Checkbox, DialogTitle, Divider, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { Control, Form, Errors} from 'react-redux-form';
@@ -25,14 +25,22 @@ class FormUsuario extends React.Component{
         this.state = {
             open:false,
             mensaje:'',
-            rol:'CLIENTE'
+            rol:'CLIENTE',
+            activo:true
         }
 debugger;
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
 
     };
+
+    handleCheck = (e) => {
+        this.setState({
+            activo:e.target.checked
+        });
+    }
 
     handleClose = (e) =>{
         this.toast ={open:false,mensaje:''};
@@ -49,15 +57,16 @@ debugger;
         console.log(this.state);
     }
     
-    handleSubmit = (values) =>{
+    handleSubmit = async (values,e) =>{
         debugger;
+        e.preventDefault();
         if(this.props.mode==='u'){
-            this.props.updateUser(values);
-            this.props.closeForm();
+            await this.props.updateUser(values,this.state.activo);
+            await this.props.closeForm();
 
         }else{
-            let rol = document.getElementById('combo-box').value;
-            this.props.addUser(values,rol);
+            let rol = document.getElementById('combo-box') != null ? document.getElementById('combo-box').value : 'CLIENTE';
+            await this.props.addUser(values,rol);
             this.props.resetForm();
             this.props.closeModal();
         }
@@ -89,7 +98,7 @@ debugger;
             <React.Fragment>
                 <Box className="">
                 <Card>
-                <Form model='userInfo' onSubmit={(values) => {this.handleSubmit(values)}}>
+                <Form model='userInfo' onSubmit={(values,e) => {this.handleSubmit(values,e)}}>
                     <CardHeader title={this.props.mode==='u' ? 'Actualizar Usuario' : 'Crear Usuario'} sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
                     <CardContent>
                             <Grid container direction="column" spacing={2} sx={{px:3,py:1}}>
@@ -209,10 +218,28 @@ debugger;
                                                 }}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} md={6}>
+                                        
+                                        {this.props.modo && 
+                                        <Grid item xs={6} lg={3}>
                                             <Box sx={{pt:3}}>
                                                 <RolInput mode={this.props.mode}/>
                                             </Box>
+                                        </Grid>}
+                                        <Grid item xs={6} lg={3}>
+                                            {this.props.modo && this.props.mode==='u' && 
+                                            <Box sx={{pt:3}}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox 
+                                                        defaultChecked 
+                                                        checked={this.activo}
+                                                        onChange={this.handleCheck}
+                                                        inputProps={{ 'aria-label': 'controlled' }}
+                                                        color="success" />
+                                                }
+                                                label="Activo"
+                                                />
+                                            </Box>}
                                         </Grid>
                                         <Grid item xs={0} md={0}>
                                                 <Control.text hidden
