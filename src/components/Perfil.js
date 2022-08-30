@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Dialog, Divider, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Button, Card, CardContent, Checkbox, Dialog, Divider, Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,7 +15,7 @@ const mapStateToProps = state => {
   };
 
 const mapDispatchToProps = (dispatch) =>({
-    updateUsuario:(usuario)=> dispatch(updateUser(usuario)),
+    updateUsuario:async (usuario,activo)=> await dispatch(updateUser(usuario,activo)),
     resetForm:() => { dispatch(actions.reset('userInfo'))}
 })
 
@@ -43,6 +43,7 @@ const PedidosLista = (props) => {
 
 const Perfil = (props) => {
     const [openModal,setOpenModal] = useState(false);
+    const [modo, setModo] = useState(false);
 
 
     const toggleUpdate = () =>{
@@ -52,6 +53,14 @@ const Perfil = (props) => {
         setOpenModal(false);
         window.location.reload(true);
     }
+
+    useEffect(()=>{
+        if(!props.modo)
+            setModo(false);
+        else
+            setModo(true)
+
+    },[])
     
   return (
         <React.Fragment>
@@ -122,7 +131,7 @@ const Perfil = (props) => {
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario   resetForm={props.resetForm} mode='u' 
+                ><FormUsuario   resetForm={props.resetForm} mode='u' modo={modo}
                                 updateUser={props.updateUsuario} userSelected={props.user}
                                 closeForm={closeForm} /></Dialog>
         </React.Fragment>

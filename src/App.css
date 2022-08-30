@@ -6,6 +6,9 @@
   text-decoration: unset;
   color:white;
 }
+.list-item{
+  padding-top:0px;
+}
 .button-app{
   margin: auto;
 }

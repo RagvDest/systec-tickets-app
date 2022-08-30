@@ -18,7 +18,7 @@ const TarjetaUsuario = (props) => {
     <Button sx={{width:'100%'}} onClick={()=>{props.togglePerfil(props.key_user)}} >
         <Badge sx={{width:'80%'}} badgeContent={props.info.username.rol_id.r_rol} color="primary">
         <Card sx={{width:'100%'}} >
-            <CardContent >
+            <CardContent sx={{pb:0.2}}>
                 <Grid container>
                     {console.log(props)}
                     <Grid item xs={12} sx={{textAlign:'center', marginBlock:'auto'}} >
@@ -28,7 +28,7 @@ const TarjetaUsuario = (props) => {
                         </Typography>
                     </Grid>
                     <Grid item container xs={12}  sx={{textAlign:'left'}} spacing={1}>
-                        <Grid item xs={12} md={6} container direction="column"  spacing={2} sx={{}}>
+                        <Grid item xs={12} md={6} container direction="column"  spacing={0} sx={{}}>
                                 <Grid item xs sx={{display:'flex'}}>
                                     <StarOutlineIcon className='icon-center-vertically' fontSize='medium'/>
                                     <Typography   variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto'}}>
@@ -43,7 +43,7 @@ const TarjetaUsuario = (props) => {
                                 </Grid>
                         </Grid>
                     <Grid item container xs={12} md={6} sx={{textAlign:'left'}}>
-                        <Grid item xs container direction="column" spacing={2} sx={{}}>
+                        <Grid item xs container direction="column" spacing={0} sx={{}}>
                                 <Grid item xs sx={{display:'flex'}}>
                                     <MailIcon className='icon-center-vertically' fontSize='medium' />
                                     <Typography variant="body1" component="span" sx={{ flexGrow: 1, mx:2, marginBlock:'auto', wordBreak:'break-word'}}>

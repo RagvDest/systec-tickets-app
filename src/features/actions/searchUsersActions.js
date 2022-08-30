@@ -2,6 +2,7 @@ import {baseUrl} from "../../shared/baseUrl";
 import { setMensaje } from "../appSlice";
 import { setToast } from "../pagSlice";
 import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
+import { updateCli } from "../userSlice";
 let access_token = '';
 
 export const searchUsers = (filtro,input) =>(dispatch, getState) => {
@@ -83,29 +84,33 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
         }).then(response => response.json())
         .then(async response => {
             await dispatch(addUsuario({username:response.usuario,persona:response.persona,rol:response.rol.r_rol}))
-            await dispatch(setMensaje({mensaje:'Usuario creado. Email de confirmación enviado',tipo:'success'}));
+            if(response.rol.r_rol==='EMPLEADO')
+                await dispatch(setMensaje({mensaje:'Usuario creado. Email de confirmación enviado',tipo:'success'}));
+            else
+                await dispatch(setMensaje({mensaje:'Cliente creado', tipo:'success'}));
         })
         .catch(async error=>{
             console.log(error);
             await dispatch(setMensaje({mensaje:error.message,tipo:'error'}))
         });
 }
-export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (dispatch, getState) =>{
+export const updateUser = (json,activo) => (dispatch, getState) =>{
     const state = getState();
     access_token = state.user.access_token;
 
     const body = {
         usuario:{
-            u_usuario:username,
-            u_mail:mail
+            u_usuario:json.username,
+            u_mail:json.mail,
+            u_activo:activo
         },
         persona:{
-            p_nombres:nombres,
-            p_cedula:cedula,
-            p_apellidos:apellidos
+            p_nombres:json.nombres,
+            p_cedula:json.cedula,
+            p_apellidos:json.apellidos
         }
     };
-    return fetch(baseUrl+'users/update/'+id,{
+    return fetch(baseUrl+'users/update/'+json.id,{
         method:'PATCH',
         body:JSON.stringify(body),
         headers:{
@@ -128,11 +133,15 @@ export const updateUser = ({username,nombres,apellidos,cedula,mail,id}) => (disp
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response => {
+        .then(async response => {
+            debugger;
+            if(response.usuario['_id'] === state.user.user.username['_id']){
+                await dispatch(updateCli(response));
+            }
             dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
         })
         .catch(error=>{
             dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
-            console.log('Actualizar Usuario',error.message)}
-            );
+        }
+        );
 }
