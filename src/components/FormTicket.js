@@ -71,6 +71,9 @@ const FormTicket = (props) => {
             totalX='';
         }else
             totalX = parseFloat(e.target.value);
+        if(totalX < 0){
+            totalX = total;
+        }
         totalX = validarDecimales(totalX);
         setTotal(totalX);
         calcularSaldo(totalX,abono);
@@ -81,6 +84,9 @@ const FormTicket = (props) => {
             abonoX='';
         }else
             abonoX = parseFloat(e.target.value);
+        if(abonoX < 0){
+            abonoX = abono;
+        }
         abonoX = validarDecimales(abonoX);
         setAbono(abonoX);
         calcularSaldo(total,abonoX);

@@ -70,7 +70,7 @@ const Perfil = (props) => {
                         <Grid container direction="column">
                             <Grid item container sx={{px:5,pt:4,pb:2, backgroundColor:'#DEF2F1'}}>
                                 <Grid item xs={12} md={11}>
-                                    <Typography variant='h2' component='h1'>
+                                    <Typography variant='h3' component='h1'>
                                         {props.user.username.u_usuario}
                                     </Typography>
                                     <Typography variant='caption' component='span'>

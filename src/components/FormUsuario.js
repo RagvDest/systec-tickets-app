@@ -61,7 +61,7 @@ debugger;
         debugger;
         e.preventDefault();
         if(this.props.mode==='u'){
-            await this.props.updateUser(values,this.state.activo);
+            await this.props.updateUser(values,this.state.activo,this.props.modo);
             await this.props.closeForm();
 
         }else{

@@ -94,7 +94,7 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
             await dispatch(setMensaje({mensaje:error.message,tipo:'error'}))
         });
 }
-export const updateUser = (json,activo) => (dispatch, getState) =>{
+export const updateUser = (json,activo,modo) => (dispatch, getState) =>{
     const state = getState();
     access_token = state.user.access_token;
 
@@ -136,6 +136,7 @@ export const updateUser = (json,activo) => (dispatch, getState) =>{
         .then(async response => {
             debugger;
             if(response.usuario['_id'] === state.user.user.username['_id']){
+                debugger;
                 await dispatch(updateCli(response));
             }
             dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));

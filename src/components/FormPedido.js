@@ -193,16 +193,18 @@ const FormPedido = (props) => {
                 ><DialogTitle>Buscar Cliente</DialogTitle>
                 <DialogContent><Usuarios mode='q' modeP='s' selectUser={handleCustomerSearch} /></DialogContent></Dialog>
 
+            {props.mode==='u' &&
             <Dialog
-                  open={openRecordatorioModal}
-                  onClose={toggleRecordatorioModal}
-                  fullWidth
-                  PaperProps={{sx:{}}}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                ><DialogTitle>Recordatorio Personalizado</DialogTitle>
-                <DialogContent><Recordatorio pedido={props.ped.pedido} /></DialogContent>
-            </Dialog>
+                open={openRecordatorioModal}
+                onClose={toggleRecordatorioModal}
+                fullWidth
+                PaperProps={{sx:{}}}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                    <DialogTitle>Recordatorio Personalizado</DialogTitle>
+                    <DialogContent><Recordatorio pedido={props.ped.pedido} /></DialogContent>
+            </Dialog>}
         </React.Fragment>
   );
 };
