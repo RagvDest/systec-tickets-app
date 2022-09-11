@@ -141,7 +141,8 @@ export const updateUser = (json,activo,modo) => (dispatch, getState) =>{
                 debugger;
                 await dispatch(updateCli(response));
             }
-            dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
+            await dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
+            
         })
         .catch(error=>{
             dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
