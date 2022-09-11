@@ -54,7 +54,8 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
         persona:{
             p_nombres:json.nombres,
             p_cedula:json.cedula,
-            p_apellidos:json.apellidos
+            p_apellidos:json.apellidos,
+            p_tel:json.telefono
         },
         rol:rol
     };
@@ -107,7 +108,8 @@ export const updateUser = (json,activo,modo) => (dispatch, getState) =>{
         persona:{
             p_nombres:json.nombres,
             p_cedula:json.cedula,
-            p_apellidos:json.apellidos
+            p_apellidos:json.apellidos,
+            p_tel:json.telefono
         }
     };
     return fetch(baseUrl+'users/update/'+json.id,{

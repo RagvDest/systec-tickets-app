@@ -218,6 +218,24 @@ debugger;
                                                 }}
                                             />
                                         </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <InputLabel sx={{py:1}} htmlFor='telefono'>Celular</InputLabel>
+                                            <Control.text   className='form-control'
+                                                            sx={{width:'100%'}} 
+                                                            id='telefono' name="telefono" 
+                                                            validators={{required,isNumber}}
+                                                            model='.telefono'
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_tel : ''} />
+                                            <Errors 
+                                                className="text-danger"
+                                                model=".mail"
+                                                show="touched"
+                                                messages={{
+                                                    required:'Requerido.  ',
+                                                    validEmail:'Correo inválido'
+                                                }}
+                                            />
+                                        </Grid>
                                         
                                         {this.props.modo && 
                                         <Grid item xs={6} lg={3}>
