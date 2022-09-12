@@ -1,9 +1,12 @@
 import { Dialog, Divider, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { searchUsers } from '../features/actions/searchUsersActions';
 import { pedidoSelect } from '../features/pedidoSlice';
+import { selectUser, userSelect } from '../features/searchUsersSlice';
 import Perfil from './Perfil';
 import TarjetaPedido from './TarjetaPedido';
 import TarjetaTicket from './TarjetaTicket';
@@ -13,15 +16,19 @@ import TarjetaUsuario from './TarjetaUsuario';
 const ListaContainer = (props) => {
 
   const [openPerfil, setOpenPerfil] = React.useState(false);
-  const [userSelected, setUserSelected] = React.useState({});
+  // const [userSelected, setUserSelected] = React.useState({});
+  
+  const userSelected = useSelector(selectUser)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
     
   const togglePerfil = (value, modo) => {
     debugger;
-    setUserSelected(props.items[value]);
-    if(props.mode==='n')
+    dispatch(userSelect(props.items[value]))
+    if(props.mode==='n'){
       setOpenPerfil(!openPerfil);
+    }
     else if(modo==='pedq'){
       debugger;
       dispatch(pedidoSelect(value));
@@ -36,6 +43,7 @@ const ListaContainer = (props) => {
 
   const closePerfil = () =>{
     setOpenPerfil(false);
+    dispatch(searchUsers("",""));
   }
 
   const Tarjetas = (items,mode,index) =>{

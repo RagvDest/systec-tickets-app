@@ -1,7 +1,7 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { setMensaje } from "../appSlice";
 import { setToast } from "../pagSlice";
-import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
+import { getUsuarios, addUsuario, updateUsuario, selectUser, userSelect } from "../searchUsersSlice";
 import { updateCli } from "../userSlice";
 let access_token = '';
 
@@ -140,11 +140,18 @@ export const updateUser = (json,activo,modo) => (dispatch, getState) =>{
             if(response.usuario['_id'] === state.user.user.username['_id']){
                 debugger;
                 await dispatch(updateCli(response));
+            }else{
+                let user = {
+                    username: response.usuario,
+                    persona: response.persona
+                }
+                await dispatch(userSelect(user));
             }
             await dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
             
         })
         .catch(error=>{
+            console.log(error);
             dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
         }
         );

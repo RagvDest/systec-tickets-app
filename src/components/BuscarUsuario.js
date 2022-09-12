@@ -43,6 +43,7 @@ const BuscarUsuario = (props) => {
                         <Autocomplete
                         disablePortal
                         disableClearable
+                        defaultValue={filtros[0]}
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         id="combo-box-demo"
                         options={filtros}

@@ -1,10 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+const initialStateX = {
+    userSelected:null,
+    users:[]
+}
+
 export const searchUsersSlice = createSlice({
     name:"users",
-    initialState:{
-        users:[]
-    },
+    initialState:initialStateX,
     reducers:{
         getUsuarios:(state, action)=>{
             let nUsers = action.payload.results;
@@ -23,11 +26,23 @@ export const searchUsersSlice = createSlice({
             debugger;
             console.log('Usuario_id: '+action.payload.usuario._id +'- Actualizado');
         },
+        userSelect:(state,action)=>{
+            debugger;
+            state.userSelected = action.payload;
+        },
         clearUsers:(state)=>{
             state.users = [];
+        },
+        clearUsersState:(state)=>{
+            return initialStateX;
         }
     }
 });
-export const {getUsuarios, addUsuario, updateUsuario, clearUsers} = searchUsersSlice.actions;
+export const {
+    getUsuarios, addUsuario,
+    updateUsuario, clearUsers,
+    userSelect, clearUsersState
+    } = searchUsersSlice.actions;
 export const selectUsers = (state) => state.searchUser.users;
+export const selectUser = (state) => state.searchUser.userSelected;
 export default searchUsersSlice.reducer;
