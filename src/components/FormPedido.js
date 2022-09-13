@@ -15,6 +15,8 @@ const FormPedido = (props) => {
     const [fechaFinal,setFechaFinal] = useState(null);
     const [estado,setEstado] = useState("ABIERTO");
     const [orden,setOrden] = useState("");
+    const [activarNoti, setActivarNoti] = useState(false);
+
     const [idUsuario,setIdUsuario] = useState("");
     const [idPedido,setPedidoId] = useState("");
     const [openRecordatorioModal,setOpenRecordatorioModal] = useState(false);
@@ -23,17 +25,28 @@ const FormPedido = (props) => {
     const [textUser,setTextUser] = useState("");
     let textUsuario;
 
-    useEffect(()=>{
+    useEffect(async ()=>{
+        debugger;
         if(props.mode==='u'){
             setOrden(props.ped.pedido.ped_nro_orden);
             setPedidoId(props.ped.pedido['_id']);
-            setEstado(props.ped.pedido.ped_estado);
+            await setEstado(props.ped.pedido.ped_estado);
             setFechaFinal(props.ped.pedido.ped_fc_fin);
             setFechaInicial(props.ped.pedido.ped_fc_registro);
             setTextUser(props.ped.p_nombres);
             setIdUsuario(props.ped.id_usuario);
+
+            if(props.ped.pedido.ped_estado==="CERRADO"){
+                setActivarNoti(false);
+            }else{
+                setActivarNoti(true);
+            }
         }
     },[])
+
+    useEffect(()=>{
+        
+    })
 
     const onFechaIniChange = (newValue) => {
         setFechaInicial(newValue);
@@ -124,7 +137,7 @@ const FormPedido = (props) => {
                 <CardHeader 
                     title={props.mode==='u' ? 'Actualizar Pedido' : 'Crear Pedido'}
                     sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}
-                    action={props.mode=='u' &&
+                    action={props.mode=='u' && activarNoti &&
                         <IconButton>
                             <AccessAlarmIcon onClick={toggleRecordatorioModal} color='primary'/>
                         </IconButton>
