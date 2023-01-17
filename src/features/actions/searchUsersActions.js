@@ -5,10 +5,13 @@ import { getUsuarios, addUsuario, updateUsuario, selectUser, userSelect } from "
 import { updateCli } from "../userSlice";
 let access_token = '';
 
-export const searchUsers = (filtro,input) =>(dispatch, getState) => {
+export const searchUsers = (filtro,input,modo) =>(dispatch, getState) => {
     const state = getState();
     access_token = state.user.access_token;
     let rol = state.user.user.rol;
+
+    if(modo==null)
+        modo="";
 
     const op = filtro === 'Username' || filtro === 'Correo' ? 'u' : 'p';
     console.log('Filtro: '+filtro);
@@ -17,8 +20,8 @@ export const searchUsers = (filtro,input) =>(dispatch, getState) => {
     
     let query='';
     if(input!=='')
-        query = '?input='+input+'&op='+op+'&filtro='+filtro;
-    return fetch(baseUrl+'users/all'+query,{
+        query = '&input='+input+'&op='+op+'&filtro='+filtro;
+    return fetch(baseUrl+'users/all'+'?mode='+modo+query,{
         method:'GET',
         headers:{
             'Authorization':'Bearer '+access_token

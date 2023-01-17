@@ -1,15 +1,19 @@
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { validateTime } from '@mui/lab/internal/pickers/time-utils';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPed, updatePed } from '../features/actions/pedidoActions';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Usuarios from '../pages/Usuarios';
 import Recordatorio from './Recordatorio/Recordatorio';
+import { green } from '@mui/material/colors';
 
 const FormPedido = (props) => {
+    const [loading, setLoading] = useState(false);
+
+
     const [open,setOpen] = useState(false);
     const [fechaInicial,setFechaInicial] = useState(new Date());
     const [fechaFinal,setFechaFinal] = useState(null);
@@ -81,7 +85,11 @@ const FormPedido = (props) => {
             console.log("Error validacion");
         else{
             if(props.mode=='c'){
-                dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+                if(!loading){
+                    setLoading(true);
+                    await dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+                    setLoading(false);
+                }
             }
             else if(props.mode=='u'){
                 await dispatch(updatePed(idPedido,
@@ -191,9 +199,27 @@ const FormPedido = (props) => {
                     </Grid>
                 </CardContent>
                 <CardActions sx={{justifyContent:'right',px:4, pb:3}}>
-                        <Button size="middle" variant='contained' type='button' onClick={onSubmit}>
+                        <Button 
+                        size="middle" 
+                        variant='contained' 
+                        type='button' 
+                        disabled={loading}
+                        onClick={onSubmit}>
                             Guardar
                         </Button>
+                        {loading && (
+                        <CircularProgress
+                            size={100}
+                            sx={{
+                            color: green[500],
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: '-34px',
+                            marginLeft: '-34px'
+                            }}
+                        />
+                        )}
                 </CardActions>
             </Card>
             <Dialog

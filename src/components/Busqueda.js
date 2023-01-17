@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Box, ButtonGroup, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import { searchPedidos } from '../features/actions/pedidoActions';
+import { setLoading } from '../features/appSlice';
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
     display: 'flex',
@@ -31,9 +32,11 @@ const Busqueda = () => {
         {label:'Cédula', id:1}
     ]
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         if(e.key === 'Enter'){
-           dispatch(searchPedidos(filtro,e.target.value,orden,estado));
+            await dispatch(setLoading({loading:true,block:false}));
+           await dispatch(searchPedidos(filtro,e.target.value,orden,estado));
+           await dispatch(setLoading({loading:false,block:false}));
         }
             
     }

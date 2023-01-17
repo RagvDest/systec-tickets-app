@@ -1,12 +1,15 @@
-import { Autocomplete, Box, Button, Card, CardActions, CardContent, CardHeader, Checkbox, Divider, FormControlLabel, Grid, Input, InputLabel, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, Card, CardActions, CardContent, CardHeader, Checkbox, CircularProgress, Divider, FormControlLabel, Grid, Input, InputLabel, TextField } from '@mui/material';
+import { green } from '@mui/material/colors';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isMail, isMinMax, isNull, isNumber } from '../../app/utils';
 import { addUser, updateUser } from '../../features/actions/searchUsersActions';
-import { setMensaje } from '../../features/appSlice';
+import { setLoading, setMensaje } from '../../features/appSlice';
 import { setToast } from '../../features/pagSlice';
+import { selectUser } from '../../features/userSlice';
+
 
 const filtros = [
     {label:'EMPLEADO',value:'61e7dc21aed590273949963d', id:0},
@@ -26,6 +29,7 @@ const FormUserV2 = (props) => {
             telefono:''
         }
     );
+
     const [errorText, setErrorText] = useState(
         {
             username:'',
@@ -39,11 +43,18 @@ const FormUserV2 = (props) => {
 
     const [activo, setActivo] = useState(true);
     const [rol, setRol] = useState('CLIENTE');
+    const [userLogged, setUserLogged] = useState({});
+
+    const usuarioLogeado = useSelector(selectUser);
 
     const dispatch = useDispatch();
 
+
     useEffect(()=>{
         debugger;
+        if(usuarioLogeado){
+            setUserLogged(usuarioLogeado);
+        }
         if(props.mode=='u'){
             let update = {
                 username:props.userSelected.username.u_usuario,
@@ -52,19 +63,20 @@ const FormUserV2 = (props) => {
                 apellidos:props.userSelected.persona.p_apellidos,
                 cedula:props.userSelected.persona.p_cedula,
                 telefono:props.userSelected.persona.p_tel == null ? '':props.userSelected.persona.p_tel,
-                id:props.userSelected.username._id
+                id:props.userSelected.username._id,
             };
             setJson(json =>({
                 ...json,
                 ...update
                 })
             );
+            setActivo(props.userSelected.username.u_activo);
         }
     },[]);
 
     const handleRol = (e) => {
         debugger;
-        setRol(e);
+        setRol(e.target.textContent);
     }
 
     const handleCheck = (e) =>{
@@ -164,22 +176,30 @@ const FormUserV2 = (props) => {
         if(validar())
             return;
         if(props.mode==='u'){
+            await dispatch(setLoading({loading:true,block:true}));
             await dispatch(updateUser(json,activo,props.modo));
+            await dispatch(setLoading({loading:false,block:false}));
             props.toggleUpdate();
         }else{
-            debugger;
             let rol = document.getElementById('combo-box') != null ? document.getElementById('combo-box').value : 'CLIENTE';
+
+            await dispatch(setLoading({loading:true,block:true}));
             await dispatch(addUser(json,rol));
+            await dispatch(setLoading({loading:false,block:false}));
+            props.closeModal();
         }    
     }
 
     
     const RolInput = (props) => {
-        if(props.mode==='u'){
+        debugger;
+        if(props.mode==='u' ||
+        userLogged.rol != 'Administrador'
+        ){
                 return(<React.Fragment/>);
         }else{
         return (
-            <React.Fragment sx={{m:'auto'}}>
+            <React.Fragment>
             <Autocomplete
                 disablePortal
                 disableClearable
@@ -201,13 +221,15 @@ const FormUserV2 = (props) => {
             <CardHeader title={props.mode==='u' ? 'Actualizar Usuario' : 'Crear Usuario'} sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}/>
             <CardContent>
                     <Grid container direction="column" spacing={2} sx={{px:3,py:1}}>
-                            <Grid item container spacing={3}>
+                            <Grid item container spacing={1}>
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='username'>Usuario</InputLabel>
                                     <TextField      className="form-control" 
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
                                                     id='username' value={json.username}
                                                     required
+                                                    variant='standard'
+                                                    size='small'
                                                     onChange={changeUsername}
                                                     helperText={errorText.username}
                                                     error={isMinMax(json.username,4,10)}
@@ -217,7 +239,9 @@ const FormUserV2 = (props) => {
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='nombres'>Nombres</InputLabel>
                                     <TextField      className="form-control" 
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
+                                                    size='small'
+                                                    variant='standard'
                                                     id='nombres' value={json.nombres}
                                                     onChange={changeNombres}
                                                     required />
@@ -225,8 +249,10 @@ const FormUserV2 = (props) => {
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='apellidos'>Apellidos</InputLabel>
                                     <TextField      className='form-control'
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
                                                     required
+                                                    size='small'
+                                                    variant='standard'
                                                     onChange={changeApellidos}
                                                     id='apellidos' value={json.apellidos} />
                                 </Grid>
@@ -236,12 +262,14 @@ const FormUserV2 = (props) => {
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='cedula'>Cedula</InputLabel>
                                     <TextField      className='form-control'
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
+                                                    size='small'
                                                     id='cedula' value={json.cedula}
                                                     onChange={changeCedula}
                                                     helperText={errorText.cedula}
                                                     error={isNumber(json.cedula)}
                                                     required
+                                                    variant='standard'
                                                     disabled={props.mode==='u'} />
                                 </Grid>
                                 <Grid item xs={0} md={6}/>
@@ -251,8 +279,10 @@ const FormUserV2 = (props) => {
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='mail'>Correo</InputLabel>
                                     <TextField      className='form-control'
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
                                                     id='mail' value={json.mail}
+                                                    size='small'
+                                                    variant='standard'
                                                     onChange={changeMail}
                                                     error={isMail(json.mail)}
                                                     helperText={errorText.mail}
@@ -261,8 +291,10 @@ const FormUserV2 = (props) => {
                                 <Grid item xs={12} md={6}>
                                     <InputLabel sx={{py:1}} htmlFor='telefono'>Celular</InputLabel>
                                     <TextField      className='form-control'
-                                                    sx={{width:'100%'}} 
+                                                    sx={{width:'90%'}} 
                                                     id='telefono' value={json.telefono} 
+                                                    size='small'
+                                                    variant='standard'
                                                     onChange={changeTelefono}
                                                     helperText={errorText.telefono}
                                                     error={isNumber(json.telefono)}
@@ -270,7 +302,7 @@ const FormUserV2 = (props) => {
                                 </Grid>
                                 
                                 {props.modo && 
-                                <Grid item xs={6} lg={3}>
+                                <Grid item xs={6} lg={6}>
                                     <Box sx={{pt:3}}>
                                         <RolInput mode={props.mode}/>
                                     </Box>
@@ -300,7 +332,11 @@ const FormUserV2 = (props) => {
                 
             </CardContent>
             <CardActions sx={{justifyContent:'right',px:4, pb:3}}>
-                <Button size="middle" variant='contained' onClick={handleSubmit}>
+                <Button 
+                size="middle" 
+                variant='contained' 
+                onClick={handleSubmit}
+                >
                     Guardar
                 </Button>
             </CardActions>

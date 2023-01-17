@@ -26,6 +26,7 @@ import { clearUsers } from '../features/searchUsersSlice';
 import { searchNotifis } from '../features/actions/appActions';
 import { clearApp, selectApp,  setTrigger } from '../features/appSlice';
 import { clearDash } from '../features/dashboardSlice';
+import { Loading } from './LoadingComponent';
 
 const drawerWidth = 240;
 
@@ -109,7 +110,6 @@ function SideBar(props) {
       setOpenToast(true);
       setTipoAlert("info");
 
-      await dispatch(searchNotifis());
     }
 
     if(props.socket!=null){
@@ -254,6 +254,7 @@ function SideBar(props) {
     <Box sx={{ display: 'flex', my:2 }}>
       <CssBaseline />
       <AppBar sx={{backgroundColor:'#254E58'}}>
+      <Loading />
       <Toolbar>
         <Container maxWidth="x0.9" sx={{mt:2}}>
             <Grid container>
