@@ -9,9 +9,9 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Usuarios from '../pages/Usuarios';
 import Recordatorio from './Recordatorio/Recordatorio';
 import { green } from '@mui/material/colors';
+import { setLoading } from '../features/appSlice';
 
 const FormPedido = (props) => {
-    const [loading, setLoading] = useState(false);
 
 
     const [open,setOpen] = useState(false);
@@ -79,23 +79,24 @@ const FormPedido = (props) => {
         setOpen(!open)
     }
 
-    const onSubmit = async () =>{
+    const onSubmit = async (e) =>{
         debugger;
+        e.preventDefault();
         if(!validar())
             console.log("Error validacion");
         else{
             if(props.mode=='c'){
-                if(!loading){
-                    setLoading(true);
-                    await dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
-                    setLoading(false);
-                }
+                await dispatch(setLoading({loading:true,block:true}));
+                await dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+                await dispatch(setLoading({loading:false,block:false}));
             }
             else if(props.mode=='u'){
+                await dispatch(setLoading({loading:true,block:true}));
                 await dispatch(updatePed(idPedido,
                     fechaInicial,fechaFinal,
                     orden,estado));
-            }
+                    await dispatch(setLoading({loading:false,block:false}));
+                }
             props.closePedido();
         }
     }
@@ -118,6 +119,11 @@ const FormPedido = (props) => {
 
     const toggleRecordatorioModal = () =>{
         setOpenRecordatorioModal(!openRecordatorioModal);
+    }
+
+    const handleClose = () =>{
+        setOpenRecordatorioModal(false);
+        props.closePedido();
     }
 
     const Inputs4Create = () =>{
@@ -146,8 +152,8 @@ const FormPedido = (props) => {
                     title={props.mode==='u' ? 'Actualizar Pedido' : 'Crear Pedido'}
                     sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}
                     action={props.mode=='u' && activarNoti &&
-                        <IconButton>
-                            <AccessAlarmIcon onClick={toggleRecordatorioModal} color='primary'/>
+                        <IconButton onClick={toggleRecordatorioModal}>
+                            <AccessAlarmIcon  color='primary'/>
                         </IconButton>
                     }
                     />
@@ -203,23 +209,9 @@ const FormPedido = (props) => {
                         size="middle" 
                         variant='contained' 
                         type='button' 
-                        disabled={loading}
                         onClick={onSubmit}>
                             Guardar
                         </Button>
-                        {loading && (
-                        <CircularProgress
-                            size={100}
-                            sx={{
-                            color: green[500],
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            marginTop: '-34px',
-                            marginLeft: '-34px'
-                            }}
-                        />
-                        )}
                 </CardActions>
             </Card>
             <Dialog
@@ -242,7 +234,7 @@ const FormPedido = (props) => {
                 aria-describedby="modal-modal-description"
                 >
                     <DialogTitle>Recordatorio Personalizado</DialogTitle>
-                    <DialogContent><Recordatorio pedido={props.ped.pedido} /></DialogContent>
+                    <DialogContent><Recordatorio pedido={props.ped.pedido} handleClose={handleClose}/></DialogContent>
             </Dialog>}
         </React.Fragment>
   );

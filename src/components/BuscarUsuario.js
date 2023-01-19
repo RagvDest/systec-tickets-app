@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const BuscarUsuario = (props) => {
     const dispatch = useDispatch();
-    const [filtro,setFiltro] = useState("");
+    const [filtro,setFiltro] = useState("Username");
   
     const filtros = [
         {label:'Username', id:0},
@@ -48,6 +48,7 @@ const BuscarUsuario = (props) => {
                         disableClearable
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         id="combo-box-demo"
+                        defaultValue={{label:'Username', id:0}}
                         options={filtros}
                         sx={{ width: '100%' }}
                         onSelect={handleSelect}

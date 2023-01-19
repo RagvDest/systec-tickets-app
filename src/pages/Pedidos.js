@@ -14,7 +14,8 @@ const Pedidos = (props) =>{
   const dispatch = useDispatch();
 
   useEffect(()=>{
-    dispatch(searchPedidos("","","","",props.user))
+    if(props.user.rol !== "Cliente")
+      dispatch(searchPedidos("","","","",props.user))
   },[]);
 
   const toggleModal = ()=>{

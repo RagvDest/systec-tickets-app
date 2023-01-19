@@ -15,10 +15,12 @@ const Recordatorio = (props) => {
     const [open,setOpen] = useState(false);
     const dispatch = useDispatch();
 
-    
+    useEffect(()=>{
+        if(props.pedido.ped_fc_noti!==null)
+            setFecha(new Date(props.pedido.ped_fc_noti))
+    },[])
     
     const handleSubmit = async () =>{
-        alert('Confirmar fecha: '+fecha);
         await dispatch(
             updatePed(
                 props.pedido['_id'],
@@ -29,6 +31,7 @@ const Recordatorio = (props) => {
                 null,
                 fecha
                 ));
+        props.handleClose();
 
     }
 

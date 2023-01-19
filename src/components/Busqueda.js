@@ -23,7 +23,7 @@ const Container = styled.div`
 
 const Busqueda = () => {
     const dispatch = useDispatch();
-    const [filtro,setFiltro] = useState("");
+    const [filtro,setFiltro] = useState("Nombres");
     const [orden,setOrden] = useState("desc");
     const [estado,setEstado] = useState("TODOS");
   
@@ -59,6 +59,7 @@ const Busqueda = () => {
                     disableClearable
                     isOptionEqualToValue={(option, value) => option.id === value.id}
                     id="combo-box-demo"
+                    defaultValue={{label:'Nombres', id:0}}
                     options={filtros}
                     sx={{ width: '100%' }}
                     onSelect={handleSelect}

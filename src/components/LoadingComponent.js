@@ -1,4 +1,5 @@
 import { Backdrop, CircularProgress } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -30,17 +31,19 @@ export const Loading = (props) =>{
         if(!loading.block){
             setOpenLocal(false);
             //await dispatch(setLoading({loading:false,block:false}));
-            dispatch(setLoading(false));
+            setLoading({loading:false,block:false});
         }
     };
 
     return(
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={openLocal}
-          onClick={handleClose}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <Box sx={{ display: 'flex'}}>
+            <Backdrop
+            sx={{ color: '#fff', zIndex:1400}}
+            open={openLocal}
+            onClick={handleClose}
+            >
+                <CircularProgress size={"5rem"} color="inherit" sx={{zIndex:1400}} />
+            </Backdrop>
+        </Box>
     );
 };

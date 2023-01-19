@@ -6,6 +6,7 @@ import Pedidos from './Pedidos';
 import Usuarios from './Usuarios';
 import io from 'socket.io-client';
 import Dashboard from './Dashboard';
+import MainHome from '../components/Body/MainHome';
 
 
 const Home = (props) => {
@@ -21,7 +22,7 @@ const Home = (props) => {
   
   return (
       <Routes>
-        <Route path="*" element={<SideBar user={props.user==null ? 1 : 0} socket={socket} setSocket={setSocket}/>}>
+        <Route path="*" element={<MainHome user={props.user==null ? 1 : 0} socket={socket} setSocket={setSocket}/>}>
           <Route path="users" element={<Usuarios user={props.user}  socket={socket}/>}/>
           <Route path="pedidos" element={<Pedidos user={props.user}/>}/>
           <Route path="pedido-info/:idPedido" element={<PedidoContainer user={props.user} socket={socket} setSocket={setSocket}/>}/>

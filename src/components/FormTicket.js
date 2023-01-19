@@ -7,6 +7,7 @@ import { addTicket, updateTicket } from '../features/actions/ticketActions';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { setLoading } from '../features/appSlice';
 
 
 const FormTicket = (props) => {
@@ -91,6 +92,20 @@ const FormTicket = (props) => {
         setAbono(abonoX);
         calcularSaldo(total,abonoX);
     }
+
+    const validarNumber = (e,t) =>{
+        let valorX;
+        if(e.target.value==='')
+            valorX=0;
+        else
+            valorX=parseFloat(e.target.value,10);
+        
+        if(t==='t')
+            setTotal(valorX);
+        else 
+            setAbono(valorX);
+    }
+
     const calcularSaldo = (total,abono) => {
         debugger;
         let saldoX = (total==='' ? 0: total) - (abono==='' ? 0:abono);
@@ -102,17 +117,19 @@ const FormTicket = (props) => {
         setDetalle(e.target.value);
     }
 
-    const onSubmit = (e) =>{
+    const onSubmit = async (e) =>{
         debugger;
         console.log("Aca");
         if(!validar())
             console.log("Error validacion");
         else{
+            await dispatch(setLoading({loading:true,block:true}));
             if(props.mode==='c')
-                dispatch(addTicket(props.idPed,detalle,total,abono,equipo,reabierto));
+                await dispatch(addTicket(props.idPed,detalle,total,abono,equipo,reabierto));
             else if(props.mode==='u'){
-                dispatch(updateTicket(props.ticket.ticket._id,detalle,total,abono,equipo));
+                await dispatch(updateTicket(props.ticket.ticket._id,detalle,total,abono,equipo));
             }
+            await dispatch(setLoading({loading:false,block:false}));
         }
     }
 
@@ -244,6 +261,7 @@ const FormTicket = (props) => {
                             }}
                             inputProps={{'step':0.01,sx:{p:1}}}
                             onChange={changeTotal}
+                            onBlur={(e)=> validarNumber(e,'t')}
                             />
                             </Grid>
                         </Grid>
@@ -264,6 +282,7 @@ const FormTicket = (props) => {
                             }}
                             inputProps={{'step':0.01,sx:{p:1}}}
                             onChange={changeAbono}
+                            onBlur={(e)=> validarNumber(e,'a')}
                             />
                             </Grid>
                             <Grid item xs={4} md={3} sx={{marginBlock:'auto'}}>
@@ -288,7 +307,12 @@ const FormTicket = (props) => {
                     </Grid>
                 </CardContent>
                 <CardActions sx={{justifyContent:'right',px:4, pb:3}}>
-                        <Button size="middle" variant='contained' type='button' onClick={onSubmit}>
+                        <Button 
+                        size="middle" 
+                        variant='contained' 
+                        type='button' 
+                        onClick={onSubmit}
+                        >
                             Guardar
                         </Button>
                 </CardActions>
