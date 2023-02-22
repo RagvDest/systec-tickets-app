@@ -20,7 +20,6 @@ const mapStateToProps = state => {
 };
 
 function RequireAuth({ children, redirectTo, user }) {
-    debugger;
     let isAuthenticated = user!=null;
     return isAuthenticated ? children[0] : children[1];
 }

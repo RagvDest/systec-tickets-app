@@ -1,4 +1,4 @@
-import { Dialog, Divider, Grid } from '@mui/material';
+import { Dialog, Divider, Grid, Pagination, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import TarjetaUsuario from './TarjetaUsuario';
 const ListaContainer = (props) => {
 
   const [openPerfil, setOpenPerfil] = React.useState(false);
+  const [page, setPage] = React.useState(1);
   // const [userSelected, setUserSelected] = React.useState({});
   
   const userSelected = useSelector(selectUser)
@@ -46,6 +47,12 @@ const ListaContainer = (props) => {
     dispatch(searchUsers("",""));
   }
 
+  const handleChange = (e,value) =>{
+    setPage(value);
+    if(props.tipo==='ped')
+        props.changePage(value);
+  }
+
   const Tarjetas = (items,mode,index) =>{
     if(props.tipo==='us')
       return(<TarjetaUsuario info={items.items} key_user={items.index} togglePerfil={togglePerfil} mode={mode} />);
@@ -55,7 +62,6 @@ const ListaContainer = (props) => {
       return(<TarjetaTicket info={items.items} toggleTicket={props.handleTicket} key={items.index}/>)
   }
 
-  
   return (
       <React.Fragment>
           <Divider/>
@@ -71,6 +77,11 @@ const ListaContainer = (props) => {
                         )
                     }
                 )}
+                {props.size>5 && <Grid item xs={12} className="list-item">
+                    <Stack spacing={2}>
+                      <Pagination count={Math.ceil(props.size/5)} page={page} onChange={handleChange} />
+                    </Stack>
+                </Grid>}
             </Grid>
           </Box>
           <Dialog

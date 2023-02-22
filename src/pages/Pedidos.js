@@ -5,27 +5,33 @@ import Busqueda from '../components/Busqueda';
 import FormPedido from '../components/FormPedido';
 import ListaContainer from '../components/ListaContainer';
 import { searchPedidos } from '../features/actions/pedidoActions';
-import { selectPedidos } from '../features/pedidoSlice';
+import { changePedidos, selectPedidos, selectPedidosG } from '../features/pedidoSlice';
 
 
 const Pedidos = (props) =>{
   const [openModal,setOpenModal] = useState(false);
   const pedidos = useSelector(selectPedidos);
+  const pedidosGrupo = useSelector(selectPedidosG);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
+  useEffect(async ()=>{
+    debugger;
     if(props.user.rol !== "Cliente")
-      dispatch(searchPedidos("","","","",props.user))
+      await dispatch(searchPedidos("","","","",props.user))
   },[]);
 
   const toggleModal = ()=>{
     setOpenModal(!openModal);
   };
 
-const closePedido = () =>{
-  setOpenModal(false);
-  dispatch(searchPedidos("","","","",props.user))
-};
+  const closePedido = () =>{
+    setOpenModal(false);
+    dispatch(searchPedidos("","","","",props.user))
+  };
+
+  const changePage = (value) =>{
+    dispatch(changePedidos(value));
+  }
 
 
     return (
@@ -46,7 +52,7 @@ const closePedido = () =>{
             ><FormPedido mode='c' closePedido={closePedido}/></Dialog></Fragment>}
           </Grid>
           <Grid item xs={12}>
-            <ListaContainer items={pedidos} tipo='ped' mode="ped"/>
+            <ListaContainer items={pedidosGrupo} size={pedidos.length} changePage={changePage} tipo='ped' mode="ped"/>
           </Grid>
       </Grid>
     </React.Fragment>

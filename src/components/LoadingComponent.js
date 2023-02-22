@@ -27,7 +27,6 @@ export const Loading = (props) =>{
     },[loading])
 
     const handleClose = async () =>{
-        debugger;
         if(!loading.block){
             setOpenLocal(false);
             //await dispatch(setLoading({loading:false,block:false}));
