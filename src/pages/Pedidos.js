@@ -10,6 +10,8 @@ import { changePedidos, selectPedidos, selectPedidosG } from '../features/pedido
 
 const Pedidos = (props) =>{
   const [openModal,setOpenModal] = useState(false);
+  const [trigger,setTrigger] = useState(false);
+
   const pedidos = useSelector(selectPedidos);
   const pedidosGrupo = useSelector(selectPedidosG);
   const dispatch = useDispatch();
@@ -23,6 +25,10 @@ const Pedidos = (props) =>{
   const toggleModal = ()=>{
     setOpenModal(!openModal);
   };
+
+  const handleTrigger = () =>{
+    setTrigger(!trigger);
+  }
 
   const closePedido = () =>{
     setOpenModal(false);
@@ -38,7 +44,7 @@ const Pedidos = (props) =>{
       <React.Fragment > 
       <Grid container sx={{mt:{xs:12,md:7}}}>
           <Grid item xs={12} >
-            <Busqueda/>
+            <Busqueda resetPage={handleTrigger}/>
           </Grid>
           <Grid item xs={12} p={2} sx={{textAlign:'center'}}>
             {props.user.rol!=='Cliente' && <Fragment><Button variant='contained' onClick={toggleModal}>Nuevo</Button>
@@ -52,7 +58,7 @@ const Pedidos = (props) =>{
             ><FormPedido mode='c' closePedido={closePedido}/></Dialog></Fragment>}
           </Grid>
           <Grid item xs={12}>
-            <ListaContainer items={pedidosGrupo} size={pedidos.length} changePage={changePage} tipo='ped' mode="ped"/>
+            <ListaContainer items={pedidosGrupo} size={pedidos.length} changePage={changePage} tipo='ped' mode="ped" trigger={trigger}/>
           </Grid>
       </Grid>
     </React.Fragment>

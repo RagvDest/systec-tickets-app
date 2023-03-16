@@ -116,7 +116,7 @@ const Perfil = (props) => {
                                     </TableContainer>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Divider textAlign="left"><b>Ultimos Pedidos</b></Divider>
+                                   {/* <Divider textAlign="left"><b>Ultimos Pedidos</b></Divider> */}
                                 </Grid>
                                 <Grid item xs={12} md={12}>
                                     <PedidosLista items={[]}/>

@@ -29,6 +29,7 @@ const BuscarUsuario = (props) => {
             await dispatch(setLoading({loading:true,block:false}));
             await dispatch(searchUsers(filtro,e.target.value,props.mode));
             await dispatch(setLoading({loading:false,block:false}));
+            dispatch(props.resetPage());
         }
             
     }

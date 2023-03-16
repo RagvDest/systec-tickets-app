@@ -21,7 +21,7 @@ const Container = styled.div`
     
 `
 
-const Busqueda = () => {
+const Busqueda = (props) => {
     const dispatch = useDispatch();
     const [filtro,setFiltro] = useState("Nombres");
     const [orden,setOrden] = useState("desc");
@@ -37,6 +37,7 @@ const Busqueda = () => {
             await dispatch(setLoading({loading:true,block:false}));
            await dispatch(searchPedidos(filtro,e.target.value,orden,estado));
            await dispatch(setLoading({loading:false,block:false}));
+           props.resetPage();
         }
             
     }

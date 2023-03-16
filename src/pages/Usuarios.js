@@ -8,11 +8,13 @@ import FormUsuario from '../components/FormUsuario';
 import { actions } from 'react-redux-form';
 import FormUserV2 from '../components/User/FormUserV2';
 import { setLoading } from '../features/appSlice';
+import { changeUsuarios } from '../features/searchUsersSlice';
 
 const mapStateToProps = state => {
   return {
       user:state.user.user,
       users:state.searchUser.users,
+      usersG:state.searchUser.usersGrupo,
       loading:state.app.loading
   };
 };
@@ -20,7 +22,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) =>({
   addUsuario:(usuario,rol)=> dispatch(addUser(usuario,rol)),
   getUsers:(filtro,input,modo)=>{dispatch(searchUsers(filtro,input,modo))},
-  setLoading:(json)=>{dispatch(setLoading(json))}
+  setLoading:(json)=>{dispatch(setLoading(json))},
+  changeUsuarios:(value)=>{dispatch(changeUsuarios(value))}
 })
 
 
@@ -56,6 +59,10 @@ class Usuarios extends React.Component{
     this.props.socket.emit('notificacion','61ee40368094d681eb1f6fdc');
   }
 
+  changePage = (value) =>{
+    this.props.changeUsuarios(value);
+  }
+
   render(){
 
     
@@ -78,7 +85,14 @@ class Usuarios extends React.Component{
                 ><FormUserV2 modo={true} addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
-                <ListaContainer items={this.props.users} modeP={this.props.modeP} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
+                <ListaContainer 
+                  changePage={this.changePage} 
+                  items={this.props.usersG} 
+                  size={this.props.users.length} 
+                  modeP={this.props.modeP} 
+                  mode={this.props.mode==='q' ? 'q' : 'n'} 
+                  selectUser={this.props.selectUser} 
+                  tipo={"us"}/>
               </Grid>
           </Grid>
         </React.Fragment>

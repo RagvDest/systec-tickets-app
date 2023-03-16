@@ -1,8 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+const size=5;
+
 const initialStateX = {
     userSelected:null,
-    users:[]
+    users:[],
+    usersGrupo:[],
+    trigger:false
 }
 
 export const searchUsersSlice = createSlice({
@@ -18,6 +22,13 @@ export const searchUsersSlice = createSlice({
                 console.log(nUsers);
             }
             state.users = nUsers;
+            state.usersGrupo = nUsers.slice(0,5);
+            state.trigger = !state.trigger;
+        },
+        changeUsuarios:(state,action)=>{
+            let newArray = state.users.slice((size*(action.payload-1)),(size*action.payload));
+            console.log(size*(action.payload-1));
+            state.usersGrupo = newArray;
         },
         addUsuario:(state,action)=>{
             state.users.push(action.payload);
@@ -41,8 +52,11 @@ export const searchUsersSlice = createSlice({
 export const {
     getUsuarios, addUsuario,
     updateUsuario, clearUsers,
-    userSelect, clearUsersState
+    userSelect, clearUsersState,
+    changeUsuarios
     } = searchUsersSlice.actions;
 export const selectUsers = (state) => state.searchUser.users;
+export const selectUsersG = (state) => state.searchUser.usersGrupo;
 export const selectUser = (state) => state.searchUser.userSelected;
+export const selectTriggerUs = (state) => state.searchUser.trigger;
 export default searchUsersSlice.reducer;
