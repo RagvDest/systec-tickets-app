@@ -61,7 +61,7 @@ debugger;
         debugger;
         e.preventDefault();
         if(this.props.mode==='u'){
-            await this.props.updateUser(values,this.state.activo);
+            await this.props.updateUser(values,this.state.activo,this.props.modo);
             await this.props.closeForm();
 
         }else{
@@ -208,6 +208,24 @@ debugger;
                                                             validators={{required,validEmail}}
                                                             model='.mail'
                                                             defaultValue={this.props.mode==='u' ? this.props.userSelected.username.u_mail : ''} />
+                                            <Errors 
+                                                className="text-danger"
+                                                model=".mail"
+                                                show="touched"
+                                                messages={{
+                                                    required:'Requerido.  ',
+                                                    validEmail:'Correo inválido'
+                                                }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <InputLabel sx={{py:1}} htmlFor='telefono'>Celular</InputLabel>
+                                            <Control.text   className='form-control'
+                                                            sx={{width:'100%'}} 
+                                                            id='telefono' name="telefono" 
+                                                            validators={{required,isNumber}}
+                                                            model='.telefono'
+                                                            defaultValue={this.props.mode==='u' ? this.props.userSelected.persona.p_tel : ''} />
                                             <Errors 
                                                 className="text-danger"
                                                 model=".mail"

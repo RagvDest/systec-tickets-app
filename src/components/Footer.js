@@ -51,7 +51,7 @@ const Footer = () => {
           </RedesContainer>
           <RightsContainer>
             <Typography variant="caption" component="span" fontSize={10} sx={{opacity:0.6}}>
-                © SYSTEC 2021.TODOS LOS DERECHOS RESERVADOS
+                © SYSTEC 2023.TODOS LOS DERECHOS RESERVADOS
             </Typography>
           </RightsContainer>
       </Container>

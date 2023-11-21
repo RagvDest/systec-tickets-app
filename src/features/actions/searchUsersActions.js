@@ -1,14 +1,17 @@
 import {baseUrl} from "../../shared/baseUrl";
 import { setMensaje } from "../appSlice";
 import { setToast } from "../pagSlice";
-import { getUsuarios, addUsuario, updateUsuario } from "../searchUsersSlice";
+import { getUsuarios, addUsuario, updateUsuario, selectUser, userSelect } from "../searchUsersSlice";
 import { updateCli } from "../userSlice";
 let access_token = '';
 
-export const searchUsers = (filtro,input) =>(dispatch, getState) => {
+export const searchUsers = (filtro,input,modo) =>(dispatch, getState) => {
     const state = getState();
     access_token = state.user.access_token;
     let rol = state.user.user.rol;
+
+    if(modo==null)
+        modo="";
 
     const op = filtro === 'Username' || filtro === 'Correo' ? 'u' : 'p';
     console.log('Filtro: '+filtro);
@@ -17,8 +20,8 @@ export const searchUsers = (filtro,input) =>(dispatch, getState) => {
     
     let query='';
     if(input!=='')
-        query = '?input='+input+'&op='+op+'&filtro='+filtro;
-    return fetch(baseUrl+'users/all'+query,{
+        query = '&input='+input+'&op='+op+'&filtro='+filtro;
+    return fetch(baseUrl+'users/all'+'?mode='+modo+query,{
         method:'GET',
         headers:{
             'Authorization':'Bearer '+access_token
@@ -54,7 +57,8 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
         persona:{
             p_nombres:json.nombres,
             p_cedula:json.cedula,
-            p_apellidos:json.apellidos
+            p_apellidos:json.apellidos,
+            p_tel:json.telefono
         },
         rol:rol
     };
@@ -94,7 +98,7 @@ export const addUser = (json,rol) => (dispatch, getState) =>{
             await dispatch(setMensaje({mensaje:error.message,tipo:'error'}))
         });
 }
-export const updateUser = (json,activo) => (dispatch, getState) =>{
+export const updateUser = (json,activo,modo) => (dispatch, getState) =>{
     const state = getState();
     access_token = state.user.access_token;
 
@@ -107,7 +111,8 @@ export const updateUser = (json,activo) => (dispatch, getState) =>{
         persona:{
             p_nombres:json.nombres,
             p_cedula:json.cedula,
-            p_apellidos:json.apellidos
+            p_apellidos:json.apellidos,
+            p_tel:json.telefono
         }
     };
     return fetch(baseUrl+'users/update/'+json.id,{
@@ -136,11 +141,20 @@ export const updateUser = (json,activo) => (dispatch, getState) =>{
         .then(async response => {
             debugger;
             if(response.usuario['_id'] === state.user.user.username['_id']){
+                debugger;
                 await dispatch(updateCli(response));
+            }else{
+                let user = {
+                    username: response.usuario,
+                    persona: response.persona
+                }
+                await dispatch(userSelect(user));
             }
-            dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
+            await dispatch(setMensaje({mensaje:'Usuario actualizado',tipo:'success'}));
+            
         })
         .catch(error=>{
+            console.log(error);
             dispatch(setMensaje({mensaje:"Ocurrió un error al actualizar el usuario.",tipo:'error'}));
         }
         );

@@ -1,9 +1,12 @@
-import { Dialog, Divider, Grid } from '@mui/material';
+import { Dialog, Divider, Grid, Pagination, Stack } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { searchUsers } from '../features/actions/searchUsersActions';
 import { pedidoSelect } from '../features/pedidoSlice';
+import { selectTriggerUs, selectUser, userSelect } from '../features/searchUsersSlice';
 import Perfil from './Perfil';
 import TarjetaPedido from './TarjetaPedido';
 import TarjetaTicket from './TarjetaTicket';
@@ -13,15 +16,26 @@ import TarjetaUsuario from './TarjetaUsuario';
 const ListaContainer = (props) => {
 
   const [openPerfil, setOpenPerfil] = React.useState(false);
-  const [userSelected, setUserSelected] = React.useState({});
+  const [page, setPage] = React.useState(1);
+  const triggerUs = useSelector(selectTriggerUs);
+  // const [userSelected, setUserSelected] = React.useState({});
+  
+  const userSelected = useSelector(selectUser)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
     
+  useEffect(()=>{
+    debugger;
+    setPage(1);
+  },[props.trigger,triggerUs])
+
   const togglePerfil = (value, modo) => {
     debugger;
-    setUserSelected(props.items[value]);
-    if(props.mode==='n')
+    dispatch(userSelect(props.items[value]))
+    if(props.mode==='n'){
       setOpenPerfil(!openPerfil);
+    }
     else if(modo==='pedq'){
       debugger;
       dispatch(pedidoSelect(value));
@@ -36,6 +50,13 @@ const ListaContainer = (props) => {
 
   const closePerfil = () =>{
     setOpenPerfil(false);
+    dispatch(searchUsers("",""));
+  }
+
+  const handleChange = (e,value) =>{
+    setPage(value);
+    if(props.tipo==='ped' || props.tipo === 'us')
+        props.changePage(value);
   }
 
   const Tarjetas = (items,mode,index) =>{
@@ -47,7 +68,6 @@ const ListaContainer = (props) => {
       return(<TarjetaTicket info={items.items} toggleTicket={props.handleTicket} key={items.index}/>)
   }
 
-  
   return (
       <React.Fragment>
           <Divider/>
@@ -63,6 +83,11 @@ const ListaContainer = (props) => {
                         )
                     }
                 )}
+                {props.size>5 && <Grid item xs={12} className="list-item">
+                    <Stack spacing={2}>
+                      <Pagination count={Math.ceil(props.size/5)} page={page} onChange={handleChange} />
+                    </Stack>
+                </Grid>}
             </Grid>
           </Box>
           <Dialog

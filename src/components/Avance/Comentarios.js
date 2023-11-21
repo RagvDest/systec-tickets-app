@@ -25,7 +25,7 @@ const BotonPc = styled('div')(({theme})=>({
   },
 }))
 
-const Comentarios = () => {
+const Comentarios = ({last}) => {
   const [comentarios,setComentarios] = useState([]);
   const [comentario,setComentario] = useState("");
   const userLogin = useSelector(selectUser)
@@ -84,7 +84,7 @@ const Comentarios = () => {
                     }
                 )}
             </Box>
-            <Grid item container sx={{pt:3}}>
+            { last && <Grid item container sx={{pt:3}}>
               <Grid item xs={10} sm={8}>
                 <Input size='small' onKeyDown={(e)=>{if(e.key==='Enter') addComen();}} onChange={changeComentario} value={comentario} sx={{fontSize:'0.8rem', width:'100%'}} placeholder='Añadir comentario..' inputProps={{ 'aria-label': 'description' }} />
               </Grid> 
@@ -100,7 +100,7 @@ const Comentarios = () => {
                     </IconButton>
                   </BotonMobil>
               </Grid> 
-            </Grid>
+            </Grid>}
           </Grid>
       </Grid>
   )

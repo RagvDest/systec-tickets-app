@@ -11,10 +11,14 @@ import FormAvance from '../Avance/FormAvance';
 import Historial from '../Avance/Historial';
 
 const TicketInfo = (props) => {
+
     const [openModal,setOpenModal] = useState(false);
     const ticket = useSelector(selectTicketOne);
     const [modeAvance,setModeAvance] = useState("c");
     const [avance,setAvance] = useState({});
+
+    const [last,setLast] = useState(false);
+
     const dispatch = useDispatch()
     
     const [openAvance,setOpenAvance] = useState(false);
@@ -36,15 +40,15 @@ const TicketInfo = (props) => {
         setOpenAvance(false);
     }
 
-    const toggleAvance = async (mode,info) =>{
+    const toggleAvance = async (mode,info,last) =>{
             setModeAvance(mode);
+            setLast(last);
             setAvance(info);
             await dispatch(changeEstadoSelected(info));
             setOpenAvance(!openAvance);
     }
 
     const BotonNuevo = () =>{
-        debugger;
         if(props.estado_pedido==='CERRADO')
             return (<React.Fragment/>);
         if(props.user.rol==='Empleado'){
@@ -98,7 +102,7 @@ const TicketInfo = (props) => {
                                 </Grid>
                                 <Grid item container spacing={2} xs={12} md={12} sx={{width:'100%'}}>
                                     <Grid item xs={12}>
-                                        <Historial idTicket={ticket} openAvance={toggleAvance}/>
+                                        <Historial idTicket={ticket} openAvance={toggleAvance} setLast={setLast}/>
                                     </Grid>
                                     <BotonNuevo/>
                                     <Grid item xs={12}>
@@ -142,6 +146,7 @@ const TicketInfo = (props) => {
                     closeAvance={closeAvance} 
                     ticket={ticket.ticket}
                     info={avance}
+                    last={last}
                     /></Dialog>
         </React.Fragment>
   )

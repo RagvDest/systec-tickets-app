@@ -128,7 +128,11 @@ export const logicPass = (body) => (dispatch) =>{
             await dispatch(setMensaje({mensaje:response.mensaje,tipo:'success'}));
             await dispatch(setRedirect('/login'));
         })
-        .catch(error=>{console.log('generate-pass',error.message)});
+        .catch(async error=>{
+            debugger;
+            let err = await error.response.text();
+            dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }
 
 export const logicRecoverPass = (body) => (dispatch) =>{
@@ -155,7 +159,9 @@ export const logicRecoverPass = (body) => (dispatch) =>{
         .then(response => response.json())
         .then(async response => {
             await dispatch(setMensaje({mensaje:response.mensaje,tipo:'info'}));
-            await dispatch(setRedirect('/login'));
         })
-        .catch(error=>{console.log('generate-pass',error.message)});
+        .catch(async error=>{
+            let err = await error.response.text();
+            dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }

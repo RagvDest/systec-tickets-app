@@ -71,14 +71,18 @@ const Historial = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {historial.map((row,index)=>{
+                {historial.map((row,index,historial)=>{
+                    let last = false;
+
+                    if(index === 0)
+                        last = true;
                     return (
                         <TableRow hover 
                         role='checkbox' 
                         tabIndex={-1} 
                         key={index}
                         sx={{cursor:'pointer'}}
-                        onClick={()=>{props.openAvance('q',row)}}
+                        onClick={()=>{props.openAvance('q',row,last)}}
                         >
                             {columns.map((column)=>{
                                 return (

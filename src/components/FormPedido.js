@@ -1,20 +1,26 @@
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { validateTime } from '@mui/lab/internal/pickers/time-utils';
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addPed, updatePed } from '../features/actions/pedidoActions';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Usuarios from '../pages/Usuarios';
 import Recordatorio from './Recordatorio/Recordatorio';
+import { green } from '@mui/material/colors';
+import { setLoading } from '../features/appSlice';
 
 const FormPedido = (props) => {
+
+
     const [open,setOpen] = useState(false);
     const [fechaInicial,setFechaInicial] = useState(new Date());
     const [fechaFinal,setFechaFinal] = useState(null);
     const [estado,setEstado] = useState("ABIERTO");
     const [orden,setOrden] = useState("");
+    const [activarNoti, setActivarNoti] = useState(false);
+
     const [idUsuario,setIdUsuario] = useState("");
     const [idPedido,setPedidoId] = useState("");
     const [openRecordatorioModal,setOpenRecordatorioModal] = useState(false);
@@ -23,17 +29,28 @@ const FormPedido = (props) => {
     const [textUser,setTextUser] = useState("");
     let textUsuario;
 
-    useEffect(()=>{
+    useEffect(async ()=>{
+        debugger;
         if(props.mode==='u'){
             setOrden(props.ped.pedido.ped_nro_orden);
             setPedidoId(props.ped.pedido['_id']);
-            setEstado(props.ped.pedido.ped_estado);
+            await setEstado(props.ped.pedido.ped_estado);
             setFechaFinal(props.ped.pedido.ped_fc_fin);
             setFechaInicial(props.ped.pedido.ped_fc_registro);
             setTextUser(props.ped.p_nombres);
             setIdUsuario(props.ped.id_usuario);
+
+            if(props.ped.pedido.ped_estado==="CERRADO"){
+                setActivarNoti(false);
+            }else{
+                setActivarNoti(true);
+            }
         }
     },[])
+
+    useEffect(()=>{
+        
+    })
 
     const onFechaIniChange = (newValue) => {
         setFechaInicial(newValue);
@@ -62,19 +79,24 @@ const FormPedido = (props) => {
         setOpen(!open)
     }
 
-    const onSubmit = async () =>{
+    const onSubmit = async (e) =>{
         debugger;
+        e.preventDefault();
         if(!validar())
             console.log("Error validacion");
         else{
             if(props.mode=='c'){
-                dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+                await dispatch(setLoading({loading:true,block:true}));
+                await dispatch(addPed(idUsuario,fechaInicial,fechaFinal));
+                await dispatch(setLoading({loading:false,block:false}));
             }
             else if(props.mode=='u'){
+                await dispatch(setLoading({loading:true,block:true}));
                 await dispatch(updatePed(idPedido,
                     fechaInicial,fechaFinal,
                     orden,estado));
-            }
+                    await dispatch(setLoading({loading:false,block:false}));
+                }
             props.closePedido();
         }
     }
@@ -97,6 +119,11 @@ const FormPedido = (props) => {
 
     const toggleRecordatorioModal = () =>{
         setOpenRecordatorioModal(!openRecordatorioModal);
+    }
+
+    const handleClose = () =>{
+        setOpenRecordatorioModal(false);
+        props.closePedido();
     }
 
     const Inputs4Create = () =>{
@@ -124,9 +151,9 @@ const FormPedido = (props) => {
                 <CardHeader 
                     title={props.mode==='u' ? 'Actualizar Pedido' : 'Crear Pedido'}
                     sx={{p:3, px:4, borderBottom:'1px solid',position:'sticky'}}
-                    action={props.mode=='u' &&
-                        <IconButton>
-                            <AccessAlarmIcon onClick={toggleRecordatorioModal} color='primary'/>
+                    action={props.mode=='u' && activarNoti &&
+                        <IconButton onClick={toggleRecordatorioModal}>
+                            <AccessAlarmIcon  color='primary'/>
                         </IconButton>
                     }
                     />
@@ -178,7 +205,11 @@ const FormPedido = (props) => {
                     </Grid>
                 </CardContent>
                 <CardActions sx={{justifyContent:'right',px:4, pb:3}}>
-                        <Button size="middle" variant='contained' type='button' onClick={onSubmit}>
+                        <Button 
+                        size="middle" 
+                        variant='contained' 
+                        type='button' 
+                        onClick={onSubmit}>
                             Guardar
                         </Button>
                 </CardActions>
@@ -193,16 +224,18 @@ const FormPedido = (props) => {
                 ><DialogTitle>Buscar Cliente</DialogTitle>
                 <DialogContent><Usuarios mode='q' modeP='s' selectUser={handleCustomerSearch} /></DialogContent></Dialog>
 
+            {props.mode==='u' &&
             <Dialog
-                  open={openRecordatorioModal}
-                  onClose={toggleRecordatorioModal}
-                  fullWidth
-                  PaperProps={{sx:{}}}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                ><DialogTitle>Recordatorio Personalizado</DialogTitle>
-                <DialogContent><Recordatorio pedido={props.ped.pedido} /></DialogContent>
-            </Dialog>
+                open={openRecordatorioModal}
+                onClose={toggleRecordatorioModal}
+                fullWidth
+                PaperProps={{sx:{}}}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                    <DialogTitle>Recordatorio Personalizado</DialogTitle>
+                    <DialogContent><Recordatorio pedido={props.ped.pedido} handleClose={handleClose}/></DialogContent>
+            </Dialog>}
         </React.Fragment>
   );
 };
