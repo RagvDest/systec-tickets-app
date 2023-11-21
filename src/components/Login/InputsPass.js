@@ -6,7 +6,7 @@ import { Box } from '@mui/system'
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react'
 import { logicPass } from '../../features/actions/userActions';
-import { selectRedirect } from '../../features/appSlice';
+import { selectRedirect, setRedirect } from '../../features/appSlice';
 
 const InputsPass = (props) => {
 
@@ -20,10 +20,14 @@ const InputsPass = (props) => {
     const dispatch = useDispatch();
     const redirect = useSelector(selectRedirect);
 
-    useEffect(()=>{
+    useEffect(async ()=>{
         debugger;
-        if(redirect!=="")
-            navigate(redirect);
+        if(redirect!==""){
+            let urlAux = redirect;
+            await dispatch(setRedirect(""));
+            await navigate(urlAux);
+
+        }
     },[redirect]);
 
     const handleSubmit = async (e) =>{

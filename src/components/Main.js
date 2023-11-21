@@ -9,6 +9,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import LogIn from '../pages/LogIn';
 import PasswordModal from './Login/PasswordModal';
 import { selectApp, setTrigger } from '../features/appSlice';
+import { Loading } from './LoadingComponent';
 
 
 
@@ -19,7 +20,6 @@ const mapStateToProps = state => {
 };
 
 function RequireAuth({ children, redirectTo, user }) {
-    debugger;
     let isAuthenticated = user!=null;
     return isAuthenticated ? children[0] : children[1];
 }

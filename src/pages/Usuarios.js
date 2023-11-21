@@ -6,18 +6,24 @@ import { connect } from 'react-redux';
 import { searchUsers, addUser } from '../features/actions/searchUsersActions';
 import FormUsuario from '../components/FormUsuario';
 import { actions } from 'react-redux-form';
+import FormUserV2 from '../components/User/FormUserV2';
+import { setLoading } from '../features/appSlice';
+import { changeUsuarios } from '../features/searchUsersSlice';
 
 const mapStateToProps = state => {
   return {
       user:state.user.user,
-      users:state.searchUser.users
+      users:state.searchUser.users,
+      usersG:state.searchUser.usersGrupo,
+      loading:state.app.loading
   };
 };
 
 const mapDispatchToProps = (dispatch) =>({
   addUsuario:(usuario,rol)=> dispatch(addUser(usuario,rol)),
-  getUsers:()=>{dispatch(searchUsers("",""))},
-  resetForm:() => { dispatch(actions.reset('userInfo'))}
+  getUsers:(filtro,input,modo)=>{dispatch(searchUsers(filtro,input,modo))},
+  setLoading:(json)=>{dispatch(setLoading(json))},
+  changeUsuarios:(value)=>{dispatch(changeUsuarios(value))}
 })
 
 
@@ -35,8 +41,12 @@ class Usuarios extends React.Component{
     }
 
     this.toggleModal = this.toggleModal.bind(this);
-    this.props.getUsers();
+    this.props.setLoading({loading:true,block:false});
+    this.props.getUsers("","",this.props.mode);
+    this.props.setLoading({loading:false,block:false});
+
   }
+
 
   toggleModal(){
     this.setState({
@@ -47,6 +57,10 @@ class Usuarios extends React.Component{
   handleNotificacion = () =>{
     debugger;
     this.props.socket.emit('notificacion','61ee40368094d681eb1f6fdc');
+  }
+
+  changePage = (value) =>{
+    this.props.changeUsuarios(value);
   }
 
   render(){
@@ -68,10 +82,17 @@ class Usuarios extends React.Component{
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
+                ><FormUserV2 modo={true} addUser={this.props.addUsuario} closeModal={this.toggleModal} resetForm={this.props.resetForm} mode='c'/></Dialog>
               </Grid>
               <Grid item xs={12}>
-                <ListaContainer items={this.props.users} modeP={this.props.modeP} tipo='us' mode={this.props.mode==='q' ? 'q' : 'n'} selectUser={this.props.selectUser}/>
+                <ListaContainer 
+                  changePage={this.changePage} 
+                  items={this.props.usersG} 
+                  size={this.props.users.length} 
+                  modeP={this.props.modeP} 
+                  mode={this.props.mode==='q' ? 'q' : 'n'} 
+                  selectUser={this.props.selectUser} 
+                  tipo={"us"}/>
               </Grid>
           </Grid>
         </React.Fragment>

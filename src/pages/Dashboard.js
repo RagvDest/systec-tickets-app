@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material'
+import { Divider, Grid } from '@mui/material'
 import React, { useEffect } from 'react'
 import MDBox from "../3rdCode/components/MDBox";
 import FactCheckIcon from '@mui/icons-material/FactCheck';
@@ -58,11 +58,6 @@ const Dashboard = (props) => {
               title="Nuevos Usuarios"
               count={datos.nUsers.n}
               color="light"
-              percentage={{
-                color: "dark",
-                amount: `${datos.nUsers.p}%`,
-                label: "than last month",
-              }}
             />
           </MDBox>
         </Grid>

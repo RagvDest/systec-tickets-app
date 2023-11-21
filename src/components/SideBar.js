@@ -109,7 +109,6 @@ function SideBar(props) {
       setOpenToast(true);
       setTipoAlert("info");
 
-      await dispatch(searchNotifis());
     }
 
     if(props.socket!=null){

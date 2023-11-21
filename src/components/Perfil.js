@@ -7,6 +7,9 @@ import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 import { updateUser } from '../features/actions/searchUsersActions';
 import { MapsHomeWork } from '@mui/icons-material';
+import FormUserV2 from './User/FormUserV2';
+
+var capitalize = require('capitalize')
 
 const mapStateToProps = state => {
     return {
@@ -70,11 +73,11 @@ const Perfil = (props) => {
                         <Grid container direction="column">
                             <Grid item container sx={{px:5,pt:4,pb:2, backgroundColor:'#DEF2F1'}}>
                                 <Grid item xs={12} md={11}>
-                                    <Typography variant='h2' component='h1'>
-                                        {props.user.username.u_usuario}
+                                    <Typography variant='h3' component='h1'>
+                                        {capitalize.words(props.user.username.u_usuario)}
                                     </Typography>
                                     <Typography variant='caption' component='span'>
-                                        {props.user.persona.p_nombres} {props.user.persona.p_apellidos}
+                                        {capitalize.words(props.user.persona.p_nombres)} {capitalize.words(props.user.persona.p_apellidos)}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} md={1}>
@@ -113,7 +116,7 @@ const Perfil = (props) => {
                                     </TableContainer>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Divider textAlign="left"><b>Ultimos Pedidos</b></Divider>
+                                   {/* <Divider textAlign="left"><b>Ultimos Pedidos</b></Divider> */}
                                 </Grid>
                                 <Grid item xs={12} md={12}>
                                     <PedidosLista items={[]}/>
@@ -131,9 +134,11 @@ const Perfil = (props) => {
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
-                ><FormUsuario   resetForm={props.resetForm} mode='u' modo={modo}
-                                updateUser={props.updateUsuario} userSelected={props.user}
-                                closeForm={closeForm} /></Dialog>
+                ><FormUserV2   mode='u' modo={modo}
+                               userSelected={props.user}
+                               toggleUpdate={toggleUpdate}
+                />
+            </Dialog>
         </React.Fragment>
   );
 };

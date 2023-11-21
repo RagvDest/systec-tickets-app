@@ -1,10 +1,48 @@
+import { Backdrop, CircularProgress } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import {ThreeDots} from 'react-loader-spinner';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { selectLoading, setLoading } from '../features/appSlice';
 
-export const Loading = () =>{
+
+export const Loading = (props) =>{
+
+    const [openLocal, setOpenLocal] = useState(false);
+
+    const loading = useSelector(selectLoading)
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        async function fetchData(){
+            debugger;
+           await setOpenLocal(loading.loading);
+           console.log(openLocal)
+        };
+        fetchData();
+        
+    },[loading])
+
+    const handleClose = async () =>{
+        if(!loading.block){
+            setOpenLocal(false);
+            //await dispatch(setLoading({loading:false,block:false}));
+            setLoading({loading:false,block:false});
+        }
+    };
+
     return(
-        <div className="col-12 text-center">
-            <span className="fa fa-spinner fa-pulse fa-3x fa-fw text-primary"></span>
-            <p>Loading. . .</p>
-        </div>
+        <Box sx={{ display: 'flex'}}>
+            <Backdrop
+            sx={{ color: '#fff', zIndex:1400}}
+            open={openLocal}
+            onClick={handleClose}
+            >
+                <CircularProgress size={"5rem"} color="inherit" sx={{zIndex:1400}} />
+            </Backdrop>
+        </Box>
     );
 };

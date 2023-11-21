@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, Box, ButtonGroup, FormControl, Grid, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material';
 import { searchPedidos } from '../features/actions/pedidoActions';
+import { setLoading } from '../features/appSlice';
 
 const DrawerHeader = styled1('div')(({ theme }) => ({
     display: 'flex',
@@ -20,9 +21,9 @@ const Container = styled.div`
     
 `
 
-const Busqueda = () => {
+const Busqueda = (props) => {
     const dispatch = useDispatch();
-    const [filtro,setFiltro] = useState("");
+    const [filtro,setFiltro] = useState("Nombres");
     const [orden,setOrden] = useState("desc");
     const [estado,setEstado] = useState("TODOS");
   
@@ -31,9 +32,12 @@ const Busqueda = () => {
         {label:'Cédula', id:1}
     ]
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         if(e.key === 'Enter'){
-           dispatch(searchPedidos(filtro,e.target.value,orden,estado));
+            await dispatch(setLoading({loading:true,block:false}));
+           await dispatch(searchPedidos(filtro,e.target.value,orden,estado));
+           await dispatch(setLoading({loading:false,block:false}));
+           props.resetPage();
         }
             
     }
@@ -56,6 +60,7 @@ const Busqueda = () => {
                     disableClearable
                     isOptionEqualToValue={(option, value) => option.id === value.id}
                     id="combo-box-demo"
+                    defaultValue={{label:'Nombres', id:0}}
                     options={filtros}
                     sx={{ width: '100%' }}
                     onSelect={handleSelect}

@@ -6,6 +6,7 @@ import {styled as styled1} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux';
 import { searchUsers } from '../features/actions/searchUsersActions';
+import { setLoading } from '../features/appSlice';
 
 const Container = styled.div`
     flex-direction: column;
@@ -14,7 +15,7 @@ const Container = styled.div`
 
 const BuscarUsuario = (props) => {
     const dispatch = useDispatch();
-    const [filtro,setFiltro] = useState("");
+    const [filtro,setFiltro] = useState("Username");
   
     const filtros = [
         {label:'Username', id:0},
@@ -23,9 +24,12 @@ const BuscarUsuario = (props) => {
         {label:'Correo',id:3}
     ]
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         if(e.key == 'Enter'){
-            dispatch(searchUsers(filtro,e.target.value));
+            await dispatch(setLoading({loading:true,block:false}));
+            await dispatch(searchUsers(filtro,e.target.value,props.mode));
+            await dispatch(setLoading({loading:false,block:false}));
+            dispatch(props.resetPage());
         }
             
     }
@@ -45,6 +49,7 @@ const BuscarUsuario = (props) => {
                         disableClearable
                         isOptionEqualToValue={(option, value) => option.id === value.id}
                         id="combo-box-demo"
+                        defaultValue={{label:'Username', id:0}}
                         options={filtros}
                         sx={{ width: '100%' }}
                         onSelect={handleSelect}

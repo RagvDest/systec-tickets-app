@@ -6,9 +6,11 @@ import { estadosTickets } from '../../app/utils';
 import { crearAvance } from '../../features/actions/ticketActions';
 import Comentarios from './Comentarios';
 import { selectHistorial } from '../../features/ticketSlice';
+import { setLoading } from '../../features/appSlice';
 import { SettingsPowerRounded } from '@mui/icons-material';
 
 const FormAvance = (props) => {
+
     const userLogin = useSelector(selectUser);
     const [tecnico,setTecnico] = useState("");
     const [estado,setEstado] = useState("");
@@ -46,7 +48,9 @@ const FormAvance = (props) => {
             setTipoAlert("error");
             setOpen(true);
         }else{
+            await dispatch(setLoading({loading:true,block:true}));
             await dispatch(crearAvance({estado:estado,detalle:observacion,usuario:userLogin,ticket:props.ticket['_id']}));
+            await dispatch(setLoading({loading:false,block:false}));
             props.closeAvance();
         }
     }
@@ -74,11 +78,11 @@ const FormAvance = (props) => {
         return valido;
     }
 
-    const ComentariosContainer = () =>{
+    const ComentariosContainer = ({last}) =>{
         if(tecnico==='Sistema')
             return (<React.Fragment/>);
         if(props.mode=='q')
-            return (<Comentarios/>)
+            return (<Comentarios last={last}/>)
         return (<React.Fragment/>)
     }
 
@@ -161,13 +165,16 @@ const FormAvance = (props) => {
                                 />
                         </Grid>
                     </Grid>
-                    <ComentariosContainer/>
+                    <ComentariosContainer last={props.last}/>
                 </Grid>
             </CardContent>
             <CardActions sx={{
                 justifyContent:'right',px:4, 
                 pb:3, display:props.mode=='q' ? 'none': 'block'}}>
-                <Button variant='contained' onClick={onSubmit}>Guardar</Button>
+                <Button 
+                variant='contained' 
+                onClick={onSubmit}
+                >Guardar</Button>
             </CardActions>
         </Card>
       </React.Fragment>

@@ -17,6 +17,7 @@ export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch, get
         query = '?input='+input+'&orden='+orden+'&filtro='+filtro+'&estado='+estado;
     return fetch(baseUrl+'pedido/all'+query,{
         method:'POST',
+        timeout:6000,
         body:JSON.stringify(body),
         headers:{
             'Content-Type':'application/json',
@@ -37,7 +38,12 @@ export const searchPedidos = (filtro,input, orden, estado,user) =>(dispatch, get
             let errmess = new Error(error.message);
             throw errmess;
         }).then(response => response.json())
-        .then(response =>{dispatch(getPedidos(response.results))})
+        .then(response =>{dispatch(getPedidos(response.results))
+        }).catch(async error=>{
+            debugger;
+            let err = await error.response.text();
+            dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }
 export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
     const state = getState();
@@ -51,6 +57,7 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
     };
     return fetch(baseUrl+'pedido/crear',{
         method:'POST',
+        timeout:6000,
         body:JSON.stringify(body),
         headers:{
             'Content-Type':'application/json',
@@ -73,10 +80,17 @@ export const addPed = (id_usuario,fechaIni,fechaFin) => (dispatch, getState) =>{
             throw errmess;
         }).then(response => response.json())
         .then(async (response) => {
+            debugger;
             await dispatch(createPedido(response.pedidoCreado));
             await dispatch(setMensaje({mensaje:'Pedido guardado!',tipo:'success'}))
         })
-        .catch(error=>{dispatch(setToast(error))});
+        .catch(async error=>{
+            debugger;
+            
+            let res = await error.response;
+            let err = res==null ? error.message : res.text();
+            await dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }
 export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit,fcNoti) => (dispatch, getState) =>{
     const state = getState();
@@ -121,7 +135,10 @@ export const updatePed = (pedido_id,fechaIni,fechaFin,orden,estado,edit,fcNoti) 
             if(edit==null)
                 await dispatch(emitNotifi({notifi:response.notificacion}))
         })
-        .catch(error=>{dispatch(setMensaje({mensaje:error.message,tipo:'error'}))});
+        .catch(async error=>{
+            let err = await error.response.text();
+            dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }
 export const changeEstado = (pedido_id,estado) => (dispatch) =>{
     console.log(pedido_id,estado);
@@ -153,5 +170,8 @@ export const getPedInfo = (idPedido) => (dispatch, getState) =>{
             throw errmess;
         }).then(response => response.json())
         .then(response =>{dispatch(pedidoSelect(response))})
-        .catch(error=>{dispatch(setToast(error))});
+        .catch(async error=>{
+            let err = await error.response.text();
+            dispatch(setMensaje({mensaje:err,tipo:'error'}));
+        });
 }
