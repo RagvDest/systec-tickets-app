@@ -135,7 +135,7 @@ const FormUserV2 = (props) => {
             return;
         }
         if(isMail(e.target.value)){
-            setErrorText(errorText => ({...errorText, ...{mail:"Solo números"}}))
+            setErrorText(errorText => ({...errorText, ...{mail:"Formato mail no válido"}}))
             return;
         }
         setErrorText(errorText => ({...errorText, ...{mail:""}}));
