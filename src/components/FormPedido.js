@@ -1,6 +1,5 @@
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { validateTime } from '@mui/lab/internal/pickers/time-utils';
 import { Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -8,7 +7,6 @@ import { addPed, updatePed } from '../features/actions/pedidoActions';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import Usuarios from '../pages/Usuarios';
 import Recordatorio from './Recordatorio/Recordatorio';
-import { green } from '@mui/material/colors';
 import { setLoading } from '../features/appSlice';
 
 const FormPedido = (props) => {
