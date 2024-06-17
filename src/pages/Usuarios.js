@@ -69,8 +69,8 @@ class Usuarios extends React.Component{
 
     return (
         <React.Fragment> 
-          <Grid container sx={{ flexGrow: 1, pt: this.props.mode==='q' ? 0:11,px:0}}>
-              <Grid item xs={12} sx={{ flexGrow: 1, pt:{xs: this.props.mode==='q' ? 0:5,md:0}}}>
+          <Grid container sx={{ flexGrow: 1, pt: this.props.mode==='q' ? 3:11,px:0}}>
+              <Grid item xs={12} sx={{ flexGrow: 1, pt:{xs: this.props.mode==='q' ? 2:5,md:0}}}>
                 <BuscarUsuario mode={this.props.mode}/>
               </Grid>
               <Grid item xs={12} p={2} sx={{textAlign:'center'}}>

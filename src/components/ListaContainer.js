@@ -72,13 +72,13 @@ const ListaContainer = (props) => {
       <React.Fragment>
           <Divider/>
           <Box className='rectangle-radius' sx={{maxHeight:'200vh', overflow:'auto', mx:'2%', p:0}}>
-            <Grid container className='rectangle-radius' sx={{px:3, py:0.7}} spacing={1}>
+            <Grid container sx={{px:0, py:0.7}} spacing={1}>
               {console.log(props)}
                 {props.items.map(
                     (item, index) =>{
                         return (
                         <Grid item xs={12} key={index} className="list-item">
-                            <Tarjetas items={item} mode={props.mode} index={index}/>
+                            <Tarjetas className='rectangle-radius' items={item} mode={props.mode} index={index}/>
                         </Grid>
                         )
                     }
