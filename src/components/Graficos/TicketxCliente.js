@@ -54,7 +54,7 @@ const TicketXCliente = (props) => {
   return (
     <React.Fragment>
       <Typography variant='h6'><b>Tickets por cliente</b></Typography>
-        <Bar options={options} data={data} />
+      <Bar options={options} data={data} />
     </React.Fragment>
   )
 }

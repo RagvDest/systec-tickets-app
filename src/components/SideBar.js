@@ -150,7 +150,7 @@ function SideBar(props) {
     const pagesEmpl = [
       {
         link:'/',
-        name:'Resumen'
+        name:'Inicio'
       },
       {
         link:'users',
@@ -168,7 +168,7 @@ function SideBar(props) {
     const pagesCli = [
       {
         link:'/',
-        name:'Resumen'
+        name:'Inicio'
       },
       {
         link:'pedidos',
