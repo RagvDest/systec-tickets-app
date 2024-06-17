@@ -79,7 +79,7 @@ const LoginCliente = (props) => {
                     </Box>
                     <Box sx={{flexDirection:'column', display:'flex', alignItems:'center', mb:4}}>
                         <Login>
-                            <LoginIcon fontSize="large" sx={{color:'white'}}/>
+                            <LoginIcon fontSize="large" color="white"/>
                         </Login>
                     </Box>
                     <Divider/>

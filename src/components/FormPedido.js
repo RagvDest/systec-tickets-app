@@ -214,8 +214,8 @@ const FormPedido = (props) => {
             </Card>
             <Dialog
                   open={open}
+                  maxWidth="md"
                   onClose={toggleModal}
-                  fullWidth
                   PaperProps={{sx:{height:'100%'}}}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
